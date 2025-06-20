@@ -1,5 +1,5 @@
-import { NextResponse } from "next/server";
-import prisma from "../../../../../lib/prisma";
+import { NextRequest, NextResponse } from "next/server";
+import prisma from "../../../../lib/prisma";
 
 export async function GET() {
   try {
@@ -9,6 +9,25 @@ export async function GET() {
     console.error("Error fetching users: ", error);
     return NextResponse.json(
       { Error: "Failed to fetch users" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function POST(request: NextRequest) {
+  try {
+    const { username, password } = await request.json();
+    const newUser = await prisma.user.create({
+      data: {
+        username,
+        password,
+      },
+    });
+    return NextResponse.json({ NewUser: newUser }, { status: 201 });
+  } catch (error) {
+    console.error("Error creating a user: ", error);
+    return NextResponse.json(
+      { Error: "Failed to create a new user" },
       { status: 500 }
     );
   }
