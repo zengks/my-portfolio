@@ -3,6 +3,7 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "@/lib/prisma";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcrypt";
+import { randomBytes, randomUUID } from "crypto";
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
@@ -25,6 +26,19 @@ export const authOptions = {
       },
     }),
   ],
+  secret: process.env.NEXTAUTH_SECRET,
+  session: {
+    strategy: "jwt" as const,
+
+    // 30 days in seconds
+    maxAge: 30 * 24 * 60 * 60,
+    generateSessionToken: () => {
+      return randomUUID?.() ?? randomBytes(32).toString("hex");
+    },
+  },
+  pages: {
+    signIn: "@/app/auth/users/login",
+  },
 };
 
 const handler = NextAuth(authOptions);
