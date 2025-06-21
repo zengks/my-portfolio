@@ -2,14 +2,14 @@ import NextAuth from "next-auth";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import prisma from "@/lib/prisma";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { compare } from "bcrypt";
+// import { compare } from "bcrypt";
 import { randomBytes, randomUUID } from "crypto";
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
-      name: "Credentials",
+      name: "credentials",
       credentials: {
         username: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" },
@@ -21,7 +21,13 @@ export const authOptions = {
 
         if (!user || !credentials?.password || !user.password) return null;
 
-        const isValid = await compare(credentials?.password, user.password);
+        // const isValid = await compare(credentials?.password, user.password);
+        const isValid = credentials?.password === user.password;
+        if (isValid) {
+          console.log("User authenticated successfully", user);
+        } else {
+          console.log("Invalid credentials");
+        }
         return isValid ? user : null;
       },
     }),
@@ -37,7 +43,7 @@ export const authOptions = {
     },
   },
   pages: {
-    signIn: "@/app/auth/users/login",
+    signIn: "/",
   },
 };
 
