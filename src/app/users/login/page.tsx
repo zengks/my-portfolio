@@ -1,30 +1,35 @@
 "use client";
-
 import { useState, FormEvent } from "react";
 import { signIn } from "next-auth/react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
 
-  const router = useRouter();
+  //   const router = useRouter();
 
-  const handleSubmit = async (event: FormEvent) => {
+  const errorMessages: Record<string, string> = {
+    CredentialsSignin: "Invalid username or password.",
+    AccessDenied: "Access Denied.",
+    Configuration: "Server Configuration Error.",
+  };
+
+  const handleLogin = async (event: FormEvent) => {
     event.preventDefault();
     const result = await signIn("credentials", {
-      redirect: false,
+      redirect: true,
+      callbackUrl: "/",
       username,
       password,
     });
     if (result?.error) {
-      alert("Login failed: " + result.error);
-    } else {
-      router.push("/");
+      setError(result.error);
     }
   };
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleLogin}>
       <div>
         <label htmlFor="username">Username</label>
         <input
@@ -44,6 +49,11 @@ export default function LoginPage() {
       <div>
         <button type="submit">Log In</button>
       </div>
+      {error && (
+        <div className="p-3 rounded bg-red-100 text-red-500 w-100">
+          - {errorMessages[error]}
+        </div>
+      )}
     </form>
   );
 }

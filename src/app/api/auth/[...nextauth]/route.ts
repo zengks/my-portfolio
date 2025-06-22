@@ -18,7 +18,6 @@ export const authOptions = {
         const user = await prisma.user.findUnique({
           where: { username: credentials?.username },
         });
-
         if (!user || !credentials?.password || !user.password) return null;
 
         // const isValid = await compare(credentials?.password, user.password);
@@ -43,7 +42,32 @@ export const authOptions = {
     },
   },
   pages: {
-    signIn: "/",
+    signIn: "/users/login",
+    signOut: "/",
+  },
+  callbacks: {
+    async jwt({ token, user }: { token: Record<string, unknown>; user: User }) {
+      if (user) {
+        token.id = user.id;
+        token.username = user.username;
+        token.role = user.role;
+      }
+      return token;
+    },
+    async session({
+      session,
+      token,
+    }: {
+      session: Record<string, unknown>;
+      token: Record<string, unknown>;
+    }) {
+      session.user = {
+        id: token.id,
+        username: token.username,
+        role: token.role,
+      };
+      return session;
+    },
   },
 };
 
