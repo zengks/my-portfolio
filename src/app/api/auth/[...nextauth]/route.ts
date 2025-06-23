@@ -1,9 +1,9 @@
-import NextAuth from "next-auth";
+import NextAuth from "next-auth/next";
 import { PrismaAdapter } from "@auth/prisma-adapter";
-import prisma from "@/lib/prisma";
+import prisma from "lib/prisma";
 import CredentialsProvider from "next-auth/providers/credentials";
-// import { compare } from "bcrypt";
 import { randomBytes, randomUUID } from "crypto";
+import { verifyHashedPassword } from "lib/hash";
 
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
@@ -20,8 +20,11 @@ export const authOptions = {
         });
         if (!user || !credentials?.password || !user.password) return null;
 
-        // const isValid = await compare(credentials?.password, user.password);
-        const isValid = credentials?.password === user.password;
+        const isValid = await verifyHashedPassword(
+          credentials?.password,
+          user.password
+        );
+
         if (isValid) {
           console.log("User authenticated successfully", user);
         } else {

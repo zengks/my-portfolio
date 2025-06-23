@@ -1,6 +1,7 @@
 "use client";
 import { useState, FormEvent } from "react";
-import { SignInButton } from "@/app/components/AuthButtons";
+import { SignInButton } from "app/components/AuthButtons";
+import { hashPassword } from "lib/hash";
 
 type AuthErrorMessages = {
   CredentialsSignin: string;
@@ -25,7 +26,7 @@ export default function LoginPage() {
       redirect: true,
       callbackUrl: "/",
       username,
-      password,
+      password: await hashPassword(password),
     });
     if (result?.error) {
       setError(result.error);
@@ -37,6 +38,7 @@ export default function LoginPage() {
         <label htmlFor="username">Username</label>
         <input
           type="text"
+          name="username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
@@ -45,6 +47,7 @@ export default function LoginPage() {
         <label htmlFor="password">Password</label>
         <input
           type="password"
+          name="password"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />

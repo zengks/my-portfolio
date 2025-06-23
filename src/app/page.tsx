@@ -1,4 +1,4 @@
-import { auth } from "@/lib/auth";
+import { auth } from "lib/auth";
 import { SignOutButton } from "./components/AuthButtons";
 
 export default async function Home() {
