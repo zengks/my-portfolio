@@ -1,11 +1,8 @@
 import { auth } from "@/lib/auth";
-import { cookies } from "next/headers";
-import SignOutButton from "./components/SignOutButton";
+import { SignOutButton } from "./components/AuthButtons";
 
 export default async function Home() {
   const session = await auth();
-  console.log("Session:", session);
-  console.log("COOKIES:", (await cookies()).getAll());
 
   return (
     <div>

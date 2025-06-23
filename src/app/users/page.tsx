@@ -14,7 +14,6 @@ export default async function UsersPage() {
           <div key={user.id}>
             <li>{user.id}</li>
             <li>{user.username}</li>
-            <li>{user.password}</li>
             <li>{user.role}</li>
             <li>{user.createdAt.toString()}</li>
             <li>{user.updatedAt.toString()}</li>

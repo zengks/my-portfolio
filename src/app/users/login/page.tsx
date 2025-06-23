@@ -1,16 +1,19 @@
 "use client";
 import { useState, FormEvent } from "react";
-import { signIn } from "next-auth/react";
-// import { useRouter } from "next/navigation";
+import { SignInButton } from "@/app/components/AuthButtons";
+
+type AuthErrorMessages = {
+  CredentialsSignin: string;
+  AccessDenied: string;
+  Configuration: string;
+};
 
 export default function LoginPage() {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
-  //   const router = useRouter();
-
-  const errorMessages: Record<string, string> = {
+  const errorMessages: AuthErrorMessages = {
     CredentialsSignin: "Invalid username or password.",
     AccessDenied: "Access Denied.",
     Configuration: "Server Configuration Error.",
@@ -18,7 +21,7 @@ export default function LoginPage() {
 
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault();
-    const result = await signIn("credentials", {
+    const result = await SignInButton("credentials", {
       redirect: true,
       callbackUrl: "/",
       username,
@@ -51,9 +54,14 @@ export default function LoginPage() {
       </div>
       {error && (
         <div className="p-3 rounded bg-red-100 text-red-500 w-100">
-          - {errorMessages[error]}
+          -{" "}
+          {errorMessages[error as keyof typeof errorMessages] ??
+            "An unknown error occurred."}
         </div>
       )}
+      <div>
+        <a href="/users/register">Register Now</a>
+      </div>
     </form>
   );
 }
