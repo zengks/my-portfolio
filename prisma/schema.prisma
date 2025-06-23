@@ -89,7 +89,7 @@ model Certificate {
     createdAt   DateTime  @default(now())
     updatedAt   DateTime  @default(now())
     certNumber  String?
-    user        User      @relation(fields: [userId], references: [id])
+    user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Project {
@@ -102,7 +102,7 @@ model Project {
     preview_image_link String?
     createdAt          DateTime @default(now())
     updatedAt          DateTime @default(now())
-    user               User     @relation(fields: [userId], references: [id])
+    user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model WorkExperience {
@@ -115,7 +115,7 @@ model WorkExperience {
     description String?
     createdAt   DateTime  @default(now())
     updatedAt   DateTime  @default(now())
-    user        User      @relation(fields: [userId], references: [id])
+    user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model Education {
@@ -130,7 +130,7 @@ model Education {
     description  String?
     createdAt    DateTime  @default(now())
     updatedAt    DateTime  @default(now())
-    user         User      @relation(fields: [userId], references: [id])
+    user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model SocialMedia {
@@ -140,7 +140,7 @@ model SocialMedia {
     socialMediaLink String
     createdAt       DateTime @default(now())
     updatedAt       DateTime @default(now())
-    user            User     @relation(fields: [userId], references: [id])
+    user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 model BlogPost {
@@ -152,5 +152,5 @@ model BlogPost {
     createdAt  DateTime @default(now())
     updatedAt  DateTime @default(now())
     viewsCount Int      @default(0)
-    author     User     @relation(fields: [authorId], references: [id])
+    author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
 }

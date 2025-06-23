@@ -37,7 +37,6 @@ export async function PUT(
     }
 
     const body = await request.json();
-    console.log("Request body for update:", body);
     const updatedUser = await updateUser(params.username, body);
     return NextResponse.json({ updatedUser }, { status: 200 });
   } catch (error) {
@@ -51,10 +50,19 @@ export async function DELETE(
   { params }: { params: { username: string } }
 ) {
   try {
+    const isUserExists = await checkUserExists(params.username);
+
+    if (!isUserExists) {
+      return NextResponse.json(
+        { Error: "User you are trying to delete does not exist." },
+        { status: 404 }
+      );
+    }
+
     const deletedUser = await deleteUser(params.username);
     return NextResponse.json({ deletedUser }, { status: 200 });
   } catch (error) {
-    console.error("Error in deleting the user", error);
+    console.error("Error in deleting the user: ", error);
     return NextResponse.json({ Error: "Server error" }, { status: 500 });
   }
 }

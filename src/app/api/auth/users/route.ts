@@ -23,9 +23,9 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const { username, password } = await request.json();
+    const body = await request.json();
 
-    const userExists = await checkUserExists(username);
+    const userExists = await checkUserExists(body.username);
 
     if (userExists) {
       return NextResponse.json(
@@ -34,7 +34,7 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const newUser = await createUser(username, password);
+    const newUser = await createUser(body.username, body.password, body.role);
     return NextResponse.json({ NewUser: newUser }, { status: 201 });
   } catch (error) {
     console.error("Error creating a user: ", error);
