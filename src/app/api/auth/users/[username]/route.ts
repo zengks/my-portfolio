@@ -3,6 +3,7 @@ import {
   getUserByUsername,
   updateUser,
   deleteUser,
+  checkUserExists,
 } from "controllers/userController";
 
 export async function GET(
@@ -26,8 +27,18 @@ export async function PUT(
   { params }: { params: { username: string } }
 ) {
   try {
-    const newUserData = await request.json();
-    const updatedUser = await updateUser(params.username, newUserData);
+    const isUserExists = await checkUserExists(params.username);
+
+    if (!isUserExists) {
+      return NextResponse.json(
+        { Error: "User you are trying to update does not exist." },
+        { status: 404 }
+      );
+    }
+
+    const body = await request.json();
+    console.log("Request body for update:", body);
+    const updatedUser = await updateUser(params.username, body);
     return NextResponse.json({ updatedUser }, { status: 200 });
   } catch (error) {
     console.error("Error in updating the user", error);
