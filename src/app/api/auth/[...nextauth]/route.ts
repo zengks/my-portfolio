@@ -5,6 +5,9 @@ import CredentialsProvider from "next-auth/providers/credentials";
 import { randomBytes, randomUUID } from "crypto";
 import { verifyHashedPassword } from "lib/hash";
 
+import type { Session } from "next-auth";
+import type { JWT } from "next-auth/jwt";
+
 export const authOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
@@ -24,6 +27,8 @@ export const authOptions = {
           credentials?.password,
           user.password
         );
+
+        console.log(credentials?.password, user.password, isValid);
 
         if (isValid) {
           console.log("User authenticated successfully", user);
@@ -49,7 +54,7 @@ export const authOptions = {
     signOut: "/",
   },
   callbacks: {
-    async jwt({ token, user }: { token: Record<string, unknown>; user: User }) {
+    async jwt({ token, user }: { token: JWT; user?: User | undefined }) {
       if (user) {
         token.id = user.id;
         token.username = user.username;
@@ -57,17 +62,11 @@ export const authOptions = {
       }
       return token;
     },
-    async session({
-      session,
-      token,
-    }: {
-      session: Record<string, unknown>;
-      token: Record<string, unknown>;
-    }) {
+    async session({ session, token }: { session: Session; token: JWT }) {
       session.user = {
-        id: token.id,
-        username: token.username,
-        role: token.role,
+        id: token.id as string,
+        username: token.username as string,
+        role: token.role as string,
       };
       return session;
     },

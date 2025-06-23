@@ -1,7 +1,6 @@
 "use client";
 import { useState, FormEvent } from "react";
 import { SignInButton } from "app/components/AuthButtons";
-import { hashPassword } from "lib/hash";
 
 type AuthErrorMessages = {
   CredentialsSignin: string;
@@ -24,9 +23,9 @@ export default function LoginPage() {
     event.preventDefault();
     const result = await SignInButton("credentials", {
       redirect: true,
-      callbackUrl: "/",
+      callbackUrl: "/dashboard",
       username,
-      password: await hashPassword(password),
+      password,
     });
     if (result?.error) {
       setError(result.error);
