@@ -1,6 +1,8 @@
 "use client";
-import { useState, FormEvent } from "react";
+import { useState, FormEvent, useEffect } from "react";
 import { SignInButton } from "app/components/AuthButtons";
+import { useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 
 type AuthErrorMessages = {
   CredentialsSignin: string;
@@ -13,6 +15,15 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
 
+  const router = useRouter();
+  const { status } = useSession();
+
+  useEffect(() => {
+    if (status === "authenticated") {
+      router.replace("/dashboard");
+    }
+  }, [router, status]);
+
   const errorMessages: AuthErrorMessages = {
     CredentialsSignin: "Invalid username or password.",
     AccessDenied: "Access Denied.",
@@ -22,13 +33,14 @@ export default function LoginPage() {
   const handleLogin = async (event: FormEvent) => {
     event.preventDefault();
     const result = await SignInButton("credentials", {
-      redirect: true,
-      callbackUrl: "/dashboard",
+      redirect: false,
       username,
       password,
     });
     if (result?.error) {
       setError(result.error);
+    } else if (result?.ok) {
+      router.replace("/dashboard");
     }
   };
   return (

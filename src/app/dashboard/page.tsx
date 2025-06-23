@@ -11,7 +11,7 @@ export default function UsersPage() {
 
   useEffect(() => {
     if (status === "unauthenticated") {
-      router.push("/users/login");
+      router.replace("/users/login");
     }
   }, [router, status]);
 
