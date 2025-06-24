@@ -3,17 +3,36 @@
 import { SignOutButton } from "app/components/AuthButtons";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { apiPaths } from "lib/apiPaths";
 
 export default function UsersPage() {
   const { data: session, status } = useSession();
+
   const router = useRouter();
+
+  const [profile, setProfile] = useState(null);
+
+  const username = session?.user?.username;
 
   useEffect(() => {
     if (status === "unauthenticated") {
       router.replace("/users/login");
     }
-  }, [router, status]);
+
+    if (status === "authenticated" && username) {
+      const fetchProfile = async () => {
+        try {
+          const res = await fetch(apiPaths.userProfile(username));
+          const data = await res.json();
+          setProfile(data.profile);
+        } catch (error) {
+          console.error("Error fetching user profile: ", error);
+        }
+      };
+      fetchProfile();
+    }
+  }, [router, status, username]);
 
   return (
     <>
@@ -22,10 +41,30 @@ export default function UsersPage() {
           <h1>Current LoggedIn Users</h1>
           <br />
           <ul>
-            <li>{session?.user?.id}</li>
-            <li>{session?.user?.username}</li>
-            <li>{session?.user?.role}</li>
+            <li>User ID: {session?.user?.id}</li>
+            <li>Username: {session?.user?.username}</li>
+            <li>User Role: {session?.user?.role}</li>
           </ul>
+          <br />
+          <h1>Your Profile</h1>
+          <br />
+          {profile ? (
+            <div>
+              <ul>
+                <li>Profile ID: {profile.id}</li>
+                <li>Profile User ID: {profile.userId}</li>
+                <li>First Name: {profile.firstName}</li>
+                <li>Last Name: {profile.lastName}</li>
+                <li>Email: {profile.email}</li>
+                <li>Bio: {profile.bio}</li>
+                <li>Image Link: {profile.imageLink}</li>
+                <li>Created At: {profile.createdAt}</li>
+                <li>Updated At: {profile.updatedAt}</li>
+              </ul>
+            </div>
+          ) : (
+            <div>Profile Not Found</div>
+          )}
           <br />
           <SignOutButton />
         </div>
