@@ -14,12 +14,19 @@ export default function UsersPage() {
   const router = useRouter();
 
   const [profile, setProfile] = useState<Profile | undefined>();
+  const [loading, setLoading] = useState<boolean>(false);
 
   const username = session?.user?.username;
 
   useEffect(() => {
     if (status === "unauthenticated") {
       router.replace("/users/login");
+    }
+
+    if (status === "loading") {
+      setLoading(true);
+    } else {
+      setLoading(false);
     }
 
     if (status === "authenticated" && username) {
@@ -38,6 +45,7 @@ export default function UsersPage() {
 
   return (
     <>
+      {loading && <div>Loading...</div>}
       {status === "authenticated" && (
         <div>
           <h1>Current LoggedIn Users</h1>
@@ -65,7 +73,7 @@ export default function UsersPage() {
               </ul>
             </div>
           ) : (
-            <div>Profile Not Found</div>
+            <div>Profile Loading...</div>
           )}
           <br />
           <SignOutButton />
