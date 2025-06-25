@@ -2,13 +2,19 @@ import { NextRequest, NextResponse } from "next/server";
 import {
   getUserProfile,
   updateUserProfile,
-} from "controllers/userProfileController";
-import { auth } from "lib/auth";
+} from "src/controllers/userProfileController";
+import { auth } from "src/lib/auth";
 
 export async function GET() {
   const session = await auth();
   try {
-    const profile = await getUserProfile(session?.user);
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { Error: "User not authenticated" },
+        { status: 401 }
+      );
+    }
+    const profile = await getUserProfile(session.user.id);
     return NextResponse.json({ profile }, { status: 200 });
   } catch (error) {
     console.error("Error fetching user profile: ", error);
@@ -20,10 +26,17 @@ export async function GET() {
 }
 
 export async function PUT(request: NextRequest) {
+  const session = await auth();
   try {
-    const session = await auth();
     const body = await request.json();
-    const updatedUserProfile = await updateUserProfile(session?.user, body);
+    if (!session?.user?.id) {
+      return NextResponse.json(
+        { Error: "User not authenticated" },
+        { status: 401 }
+      );
+    }
+
+    const updatedUserProfile = await updateUserProfile(session?.user.id, body);
     return NextResponse.json({ updatedUserProfile }, { status: 200 });
   } catch (error) {
     console.error("Error updating user profile: ", error);
