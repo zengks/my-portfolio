@@ -1,10 +1,11 @@
 "use client";
-
-import { SignOutButton } from "src/app/components/AuthButtons";
+import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+
 import { apiPaths } from "src/lib/apiPaths";
+import UserProfileData from "../components/UserProfileData";
+import { SignOutButton } from "src/app/components/AuthButtons";
 
 import { Profile } from "types/profile";
 
@@ -58,23 +59,7 @@ export default function UsersPage() {
           <br />
           <h1>Your Profile</h1>
           <br />
-          {profile ? (
-            <div>
-              <ul>
-                <li>Profile ID: {profile.id}</li>
-                <li>Profile User ID: {profile.userId}</li>
-                <li>First Name: {profile.firstName}</li>
-                <li>Last Name: {profile.lastName}</li>
-                <li>Email: {profile.email}</li>
-                <li>Bio: {profile.bio}</li>
-                <li>Image Link: {profile.imageLink}</li>
-                <li>Created At: {profile.createdAt}</li>
-                <li>Updated At: {profile.updatedAt}</li>
-              </ul>
-            </div>
-          ) : (
-            <div>Profile Loading...</div>
-          )}
+          <UserProfileData profile={profile} />
           <br />
           <SignOutButton />
         </div>
