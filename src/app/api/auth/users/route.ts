@@ -5,6 +5,7 @@ import {
   checkUserExists,
 } from "controllers/userController";
 
+// Admin able to view all users and create new users separately
 export async function GET() {
   try {
     const users = await getAllUsers();
