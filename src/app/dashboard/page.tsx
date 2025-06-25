@@ -1,17 +1,19 @@
 "use client";
 
-import { SignOutButton } from "app/components/AuthButtons";
+import { SignOutButton } from "src/app/components/AuthButtons";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { apiPaths } from "lib/apiPaths";
+import { apiPaths } from "src/lib/apiPaths";
+
+import { Profile } from "types/profile";
 
 export default function UsersPage() {
   const { data: session, status } = useSession();
 
   const router = useRouter();
 
-  const [profile, setProfile] = useState(null);
+  const [profile, setProfile] = useState<Profile | undefined>();
 
   const username = session?.user?.username;
 
@@ -23,7 +25,7 @@ export default function UsersPage() {
     if (status === "authenticated" && username) {
       const fetchProfile = async () => {
         try {
-          const res = await fetch(apiPaths.userProfile(username));
+          const res = await fetch(apiPaths.userProfile());
           const data = await res.json();
           setProfile(data.profile);
         } catch (error) {

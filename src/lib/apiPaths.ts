@@ -1,3 +1,3 @@
 export const apiPaths = {
-  userProfile: (username: string) => `api/auth/users/${username}/profile`,
+  userProfile: () => `api/auth/profile`,
 };
