@@ -1,5 +1,5 @@
-import prisma from "lib/prisma";
-import { hashPassword } from "lib/hash";
+import prisma from "src/lib/prisma";
+import { hashPassword } from "src/lib/hash";
 
 export async function getAllUsers() {
   return await prisma.user.findMany();

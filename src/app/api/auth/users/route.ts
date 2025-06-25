@@ -3,7 +3,7 @@ import {
   getAllUsers,
   createUser,
   checkUserExists,
-} from "controllers/userController";
+} from "src/controllers/userController";
 
 // Admin able to view all users and create new users separately
 export async function GET() {
