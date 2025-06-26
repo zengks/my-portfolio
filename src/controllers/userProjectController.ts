@@ -9,16 +9,23 @@ export async function getUserProject(userId: string) {
   });
 }
 
-export async function updateUserProject(
-  projectId: number,
-  userId: string,
-  newProjectData: Project
-) {
+async function updateOneProject(projectId: number, projectData: Project) {
   return await prisma.project.update({
     where: {
       id: projectId,
-      userId: userId,
     },
-    data: newProjectData,
+    data: projectData,
   });
+}
+
+export async function updateUserProject(newProjectData: Project[]) {
+  if (newProjectData.length === 0) {
+    throw new Error("No project data provided for update");
+  }
+
+  const updatedProjects = await Promise.all(
+    newProjectData.map((project) => updateOneProject(project.id, project))
+  );
+
+  return updatedProjects;
 }

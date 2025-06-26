@@ -10,7 +10,7 @@ export async function GET(): Promise<NextResponse> {
   return withAuth(async (session) => {
     try {
       const profile = await getUserProfile(session.user.id);
-      console.log("User profile fetched successfully: ", profile);
+
       return NextResponse.json({ profile }, { status: 200 });
     } catch (error) {
       console.error("Error fetching user profile: ", error);
