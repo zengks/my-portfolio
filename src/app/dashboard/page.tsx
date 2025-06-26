@@ -10,6 +10,7 @@ import UserCertificate from "../components/UserCertificate";
 import UserWorkExperience from "../components/UserWorkExperience";
 import UserEducation from "../components/UserEducation";
 import UserBlogPosts from "../components/UserBlogPosts";
+import UserSocialMedia from "../components/UserSocialMedia";
 
 import { fetchUserProfile } from "@/controllers/userProfileController";
 import { fetchAllUserProjects } from "@/controllers/userProjectController";
@@ -17,6 +18,7 @@ import { fetchAllUserCertificate } from "@/controllers/userCertificateController
 import { fetchAllUserWorkExperience } from "@/controllers/userWorkExpController";
 import { fetchAllUserEducation } from "@/controllers/userEducationController";
 import { fetchAllUserBlogPosts } from "@/controllers/userBlogPostController";
+import { fetchAllUserSocialMedia } from "@/controllers/userSocialMedia";
 
 import { Profile } from "types/profile";
 import { Project } from "types/project";
@@ -24,6 +26,7 @@ import { Certificate } from "types/certificate";
 import { WorkExperience } from "types/workExp";
 import { Education } from "types/education";
 import { BlogPost } from "types/blogPost";
+import { SocialMedia } from "types/socialMedia";
 
 export default function UsersPage() {
   const { data: session, status } = useSession();
@@ -39,6 +42,7 @@ export default function UsersPage() {
   >();
   const [education, setEducation] = useState<Education[] | undefined>();
   const [blogPosts, setBlogPosts] = useState<BlogPost[] | undefined>();
+  const [socialMedia, setSocialMedia] = useState<SocialMedia[] | undefined>();
 
   const username = session?.user?.username;
 
@@ -62,6 +66,7 @@ export default function UsersPage() {
           workExpData,
           educationData,
           blogPostsData,
+          socialMediaData,
         ] = await Promise.all([
           fetchUserProfile(),
           fetchAllUserProjects(),
@@ -69,6 +74,7 @@ export default function UsersPage() {
           fetchAllUserWorkExperience(),
           fetchAllUserEducation(),
           fetchAllUserBlogPosts(),
+          fetchAllUserSocialMedia(),
         ]);
         setProfile(profileData);
         setProjects(projectsData);
@@ -76,6 +82,7 @@ export default function UsersPage() {
         setWorkExperience(workExpData);
         setEducation(educationData);
         setBlogPosts(blogPostsData);
+        setSocialMedia(socialMediaData);
       } catch (error) {
         console.log("Failed to load user data, ", error);
       }
@@ -110,6 +117,8 @@ export default function UsersPage() {
           <UserEducation education={education} />
           <br />
           <UserBlogPosts blogPosts={blogPosts} />
+          <br />
+          <UserSocialMedia socialMedia={socialMedia} />
           <br />
           <SignOutButton />
         </div>

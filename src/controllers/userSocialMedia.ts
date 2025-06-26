@@ -34,7 +34,7 @@ export async function fetchAllUserSocialMedia(): Promise<
   SocialMedia[] | undefined
 > {
   try {
-    const res = await fetch(apiPaths.userBlogPost());
+    const res = await fetch(apiPaths.userSocialMedia());
     const data = await res.json();
     return data.socialMedia;
   } catch (error) {
