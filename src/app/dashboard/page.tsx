@@ -31,7 +31,8 @@ export default function UsersPage() {
 
     if (status === "loading") {
       setLoading(true);
-      return;
+    } else {
+      setLoading(false);
     }
 
     const loadUserData = async () => {
@@ -54,11 +55,11 @@ export default function UsersPage() {
 
   return (
     <>
-      {loading && <div>Loading...</div>}
+      {loading && <div>Loading current user...</div>}
       {status === "authenticated" && (
         <div>
-          <h1>Current LoggedIn Users</h1>
-          <br />
+          <h1>Current Logged In Users</h1>
+          <p>-----------------------------------------------</p>
           <ul>
             <li>User ID: {session?.user?.id}</li>
             <li>Username: {session?.user?.username}</li>
@@ -66,10 +67,11 @@ export default function UsersPage() {
           </ul>
           <br />
           <h1>Your Profile</h1>
-          <br />
+          <p>-----------------------------------------------</p>
           <UserProfileData profile={profile} />
           <br />
           <UserProject projects={projects} />
+          <br />
           <SignOutButton />
         </div>
       )}
