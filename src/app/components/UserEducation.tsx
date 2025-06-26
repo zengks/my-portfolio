@@ -7,6 +7,7 @@ export default function UserEducation({
 }) {
   return (
     <>
+      Your Education List
       {education ? (
         <div>
           {education.length === 0 && <div>No education added.</div>}

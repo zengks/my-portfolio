@@ -9,18 +9,21 @@ import UserProject from "../components/UserProject";
 import UserCertificate from "../components/UserCertificate";
 import UserWorkExperience from "../components/UserWorkExperience";
 import UserEducation from "../components/UserEducation";
+import UserBlogPosts from "../components/UserBlogPosts";
 
 import { fetchUserProfile } from "@/controllers/userProfileController";
 import { fetchAllUserProjects } from "@/controllers/userProjectController";
 import { fetchAllUserCertificate } from "@/controllers/userCertificateController";
 import { fetchAllUserWorkExperience } from "@/controllers/userWorkExpController";
 import { fetchAllUserEducation } from "@/controllers/userEducationController";
+import { fetchAllUserBlogPosts } from "@/controllers/userBlogPostController";
 
 import { Profile } from "types/profile";
 import { Project } from "types/project";
 import { Certificate } from "types/certificate";
 import { WorkExperience } from "types/workExp";
 import { Education } from "types/education";
+import { BlogPost } from "types/blogPost";
 
 export default function UsersPage() {
   const { data: session, status } = useSession();
@@ -35,6 +38,7 @@ export default function UsersPage() {
     WorkExperience[] | undefined
   >();
   const [education, setEducation] = useState<Education[] | undefined>();
+  const [blogPosts, setBlogPosts] = useState<BlogPost[] | undefined>();
 
   const username = session?.user?.username;
 
@@ -57,18 +61,21 @@ export default function UsersPage() {
           certificateData,
           workExpData,
           educationData,
+          blogPostsData,
         ] = await Promise.all([
           fetchUserProfile(),
           fetchAllUserProjects(),
           fetchAllUserCertificate(),
           fetchAllUserWorkExperience(),
           fetchAllUserEducation(),
+          fetchAllUserBlogPosts(),
         ]);
         setProfile(profileData);
         setProjects(projectsData);
         setCertificate(certificateData);
         setWorkExperience(workExpData);
         setEducation(educationData);
+        setBlogPosts(blogPostsData);
       } catch (error) {
         console.log("Failed to load user data, ", error);
       }
@@ -101,6 +108,8 @@ export default function UsersPage() {
           <UserWorkExperience workExperience={workExperience} />
           <br />
           <UserEducation education={education} />
+          <br />
+          <UserBlogPosts blogPosts={blogPosts} />
           <br />
           <SignOutButton />
         </div>
