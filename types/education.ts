@@ -6,7 +6,7 @@ export interface Education {
   fieldOfStudy: string | null;
   startDate: string;
   endDate: string | null;
-  gpa: Float16Array;
+  gpa: number | null;
   description: string | null;
   createdAt: string;
   updatedAt: string;
