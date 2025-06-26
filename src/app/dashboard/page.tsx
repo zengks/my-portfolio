@@ -3,19 +3,24 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-import { apiPaths } from "src/lib/apiPaths";
-import UserProfileData from "../components/UserProfileData";
 import { SignOutButton } from "src/app/components/AuthButtons";
+import UserProfileData from "../components/UserProfile";
+import UserProject from "../components/UserProject";
+
+import { fetchUserProfile } from "@/controllers/userProfileController";
+import { fetchAllUserProjects } from "@/controllers/userProjectController";
 
 import { Profile } from "types/profile";
+import { Project } from "types/project";
 
 export default function UsersPage() {
   const { data: session, status } = useSession();
 
   const router = useRouter();
 
-  const [profile, setProfile] = useState<Profile | undefined>();
   const [loading, setLoading] = useState<boolean>(false);
+  const [profile, setProfile] = useState<Profile | undefined>();
+  const [projects, setProjects] = useState<Project[] | undefined>();
 
   const username = session?.user?.username;
 
@@ -26,21 +31,24 @@ export default function UsersPage() {
 
     if (status === "loading") {
       setLoading(true);
-    } else {
-      setLoading(false);
+      return;
     }
 
+    const loadUserData = async () => {
+      try {
+        const [profileData, projectsData] = await Promise.all([
+          fetchUserProfile(),
+          fetchAllUserProjects(),
+        ]);
+        setProfile(profileData);
+        setProjects(projectsData);
+      } catch (error) {
+        console.log("Failed to load user data, ", error);
+      }
+    };
+
     if (status === "authenticated" && username) {
-      const fetchProfile = async () => {
-        try {
-          const res = await fetch(apiPaths.userProfile());
-          const data = await res.json();
-          setProfile(data.profile);
-        } catch (error) {
-          console.error("Error fetching user profile: ", error);
-        }
-      };
-      fetchProfile();
+      loadUserData();
     }
   }, [router, status, username]);
 
@@ -61,6 +69,7 @@ export default function UsersPage() {
           <br />
           <UserProfileData profile={profile} />
           <br />
+          <UserProject projects={projects} />
           <SignOutButton />
         </div>
       )}

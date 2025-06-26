@@ -1,6 +1,6 @@
 import { Profile } from "types/profile";
 
-export default function UserProfileData({
+export default function UserProfile({
   profile,
 }: {
   profile: Profile | undefined;
