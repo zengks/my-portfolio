@@ -26,7 +26,6 @@ export async function PUT(request: NextRequest): Promise<NextResponse> {
   return withAuth(async () => {
     try {
       const body = await request.json();
-      console.log("Request body for updating project: ", body);
       const updatedProjects = await updateUserProject(body);
       return NextResponse.json({ updatedProjects }, { status: 200 });
     } catch (error) {
