@@ -6,12 +6,15 @@ import { useRouter } from "next/navigation";
 import { SignOutButton } from "src/app/components/AuthButtons";
 import UserProfileData from "../components/UserProfile";
 import UserProject from "../components/UserProject";
+import UserCertificate from "../components/UserCertificate";
 
 import { fetchUserProfile } from "@/controllers/userProfileController";
 import { fetchAllUserProjects } from "@/controllers/userProjectController";
+import { fetchAllUserCertificate } from "@/controllers/userCertificateController";
 
 import { Profile } from "types/profile";
 import { Project } from "types/project";
+import { Certificate } from "types/certificate";
 
 export default function UsersPage() {
   const { data: session, status } = useSession();
@@ -21,6 +24,7 @@ export default function UsersPage() {
   const [loading, setLoading] = useState<boolean>(false);
   const [profile, setProfile] = useState<Profile | undefined>();
   const [projects, setProjects] = useState<Project[] | undefined>();
+  const [certificate, setCertificate] = useState<Certificate[] | undefined>();
 
   const username = session?.user?.username;
 
@@ -37,12 +41,14 @@ export default function UsersPage() {
 
     const loadUserData = async () => {
       try {
-        const [profileData, projectsData] = await Promise.all([
+        const [profileData, projectsData, certificateData] = await Promise.all([
           fetchUserProfile(),
           fetchAllUserProjects(),
+          fetchAllUserCertificate(),
         ]);
         setProfile(profileData);
         setProjects(projectsData);
+        setCertificate(certificateData);
       } catch (error) {
         console.log("Failed to load user data, ", error);
       }
@@ -66,11 +72,11 @@ export default function UsersPage() {
             <li>User Role: {session?.user?.role}</li>
           </ul>
           <br />
-          <h1>Your Profile</h1>
-          <p>-----------------------------------------------</p>
           <UserProfileData profile={profile} />
           <br />
           <UserProject projects={projects} />
+          <br />
+          <UserCertificate certificate={certificate} />
           <br />
           <SignOutButton />
         </div>

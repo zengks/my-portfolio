@@ -41,7 +41,6 @@ export async function fetchAllUserCertificate(): Promise<
   try {
     const res = await fetch(apiPaths.userCertificate());
     const data = await res.json();
-    console.log("cert", data);
     return data.certificate;
   } catch (error) {
     console.error("Error fetching user certificate, ", error);
