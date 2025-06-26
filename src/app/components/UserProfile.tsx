@@ -25,7 +25,7 @@ export default function UserProfile({
           <p>-----------------------------------------------</p>
         </div>
       ) : (
-        <div>Loading your profile...</div>
+        <div>No profile found.</div>
       )}
     </>
   );
