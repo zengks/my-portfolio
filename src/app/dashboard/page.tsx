@@ -8,16 +8,19 @@ import UserProfileData from "../components/UserProfile";
 import UserProject from "../components/UserProject";
 import UserCertificate from "../components/UserCertificate";
 import UserWorkExperience from "../components/UserWorkExperience";
+import UserEducation from "../components/UserEducation";
 
 import { fetchUserProfile } from "@/controllers/userProfileController";
 import { fetchAllUserProjects } from "@/controllers/userProjectController";
 import { fetchAllUserCertificate } from "@/controllers/userCertificateController";
 import { fetchAllUserWorkExperience } from "@/controllers/userWorkExpController";
+import { fetchAllUserEducation } from "@/controllers/userEducationController";
 
 import { Profile } from "types/profile";
 import { Project } from "types/project";
 import { Certificate } from "types/certificate";
 import { WorkExperience } from "types/workExp";
+import { Education } from "types/education";
 
 export default function UsersPage() {
   const { data: session, status } = useSession();
@@ -31,6 +34,7 @@ export default function UsersPage() {
   const [workExperience, setWorkExperience] = useState<
     WorkExperience[] | undefined
   >();
+  const [education, setEducation] = useState<Education[] | undefined>();
 
   const username = session?.user?.username;
 
@@ -47,17 +51,24 @@ export default function UsersPage() {
 
     const loadUserData = async () => {
       try {
-        const [profileData, projectsData, certificateData, workExpData] =
-          await Promise.all([
-            fetchUserProfile(),
-            fetchAllUserProjects(),
-            fetchAllUserCertificate(),
-            fetchAllUserWorkExperience(),
-          ]);
+        const [
+          profileData,
+          projectsData,
+          certificateData,
+          workExpData,
+          educationData,
+        ] = await Promise.all([
+          fetchUserProfile(),
+          fetchAllUserProjects(),
+          fetchAllUserCertificate(),
+          fetchAllUserWorkExperience(),
+          fetchAllUserEducation(),
+        ]);
         setProfile(profileData);
         setProjects(projectsData);
         setCertificate(certificateData);
         setWorkExperience(workExpData);
+        setEducation(educationData);
       } catch (error) {
         console.log("Failed to load user data, ", error);
       }
@@ -88,6 +99,8 @@ export default function UsersPage() {
           <UserCertificate certificate={certificate} />
           <br />
           <UserWorkExperience workExperience={workExperience} />
+          <br />
+          <UserEducation education={education} />
           <br />
           <SignOutButton />
         </div>
