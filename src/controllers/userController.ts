@@ -1,5 +1,6 @@
-import prisma from "lib/prisma";
-import { hashPassword } from "lib/hash";
+import prisma from "src/lib/prisma";
+import { hashPassword } from "src/lib/hash";
+import { UserUpdateInput } from "types/user";
 
 export async function getAllUsers() {
   return await prisma.user.findMany();
@@ -33,7 +34,10 @@ export async function checkUserExists(username: string) {
   return user === null ? false : true;
 }
 
-export async function updateUser(username: string, newUserData: User) {
+export async function updateUser(
+  username: string,
+  newUserData: UserUpdateInput
+) {
   if (newUserData.password) {
     newUserData.password = await hashPassword(newUserData.password);
   }

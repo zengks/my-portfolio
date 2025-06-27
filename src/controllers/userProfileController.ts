@@ -1,19 +1,36 @@
-import prisma from "lib/prisma";
+import prisma from "src/lib/prisma";
+import { Profile } from "types/profile";
+import { apiPaths } from "@/lib/apiPaths";
 
-export async function getUserProfile(user: User) {
+export async function getUserProfile(userId: string) {
   const profile = await prisma.profile.findUnique({
     where: {
-      userId: user.id,
+      userId,
     },
   });
   return profile;
 }
 
-export async function updateUserProfile(user: User, newProfileData: Profile) {
+export async function updateUserProfile(
+  userId: string,
+  newProfileData: Profile
+) {
   return await prisma.profile.update({
     where: {
-      userId: user.id,
+      userId,
     },
     data: newProfileData,
   });
+}
+
+// client-side fetch user profile
+export async function fetchUserProfile(): Promise<Profile | undefined> {
+  try {
+    const res = await fetch(apiPaths.userProfile());
+    const data = await res.json();
+    return data.profile;
+  } catch (error) {
+    console.error("Error fetching user profile: ", error);
+    return undefined;
+  }
 }

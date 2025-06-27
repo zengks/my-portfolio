@@ -1,14 +1,14 @@
 import NextAuth from "next-auth/next";
-import { PrismaAdapter } from "@auth/prisma-adapter";
-import prisma from "lib/prisma";
+import { PrismaAdapter } from "@next-auth/prisma-adapter";
+import prisma from "src/lib/prisma";
 import CredentialsProvider from "next-auth/providers/credentials";
 import { randomBytes, randomUUID } from "crypto";
-import { verifyHashedPassword } from "lib/hash";
+import { verifyHashedPassword } from "src/lib/hash";
 
-import type { Session } from "next-auth";
+import type { AuthOptions, Session } from "next-auth";
 import type { JWT } from "next-auth/jwt";
 
-export const authOptions = {
+export const authOptions: AuthOptions = {
   adapter: PrismaAdapter(prisma),
   providers: [
     CredentialsProvider({
@@ -28,14 +28,20 @@ export const authOptions = {
           user.password
         );
 
-        console.log(credentials?.password, user.password, isValid);
-
         if (isValid) {
           console.log("User authenticated successfully", user);
         } else {
           console.log("Invalid credentials");
         }
-        return isValid ? user : null;
+        return isValid
+          ? {
+              id: user.id,
+              username: user.username,
+              role: user.role ?? "guest",
+              updatedAt: user.updatedAt,
+              createdAt: user.createdAt,
+            }
+          : null;
       },
     }),
   ],
@@ -54,15 +60,21 @@ export const authOptions = {
     signOut: "/",
   },
   callbacks: {
-    async jwt({ token, user }: { token: JWT; user?: User | undefined }) {
-      if (user) {
+    async jwt({ token, user }) {
+      if (user && "username" in user && "role" in user) {
         token.id = user.id;
         token.username = user.username;
-        token.role = user.role;
+        token.role = user.role ?? "guest";
       }
       return token;
     },
-    async session({ session, token }: { session: Session; token: JWT }) {
+    async session({
+      session,
+      token,
+    }: {
+      session: Session;
+      token: JWT;
+    }): Promise<Session> {
       session.user = {
         id: token.id as string,
         username: token.username as string,

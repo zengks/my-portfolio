@@ -4,7 +4,7 @@ import {
   updateUser,
   deleteUser,
   checkUserExists,
-} from "controllers/userController";
+} from "src/controllers/userController";
 
 export async function GET(
   request: NextRequest,
