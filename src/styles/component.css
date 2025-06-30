@@ -20,7 +20,7 @@
 }
 
 .outer-glass-container {
-  @apply bg-gray-50 my-10 mx-20;
+  @apply bg-gray-50 pt-30 px-10 my-10 mx-20;
 }
 
 .glass-menu {
@@ -52,5 +52,9 @@
 }
 
 .glass-button {
-  /* @apply px-6 py-3 rounded-full hover:shadow-md; */
+  @apply px-6 py-3 rounded-full hover:shadow-md;
+}
+
+.glass-footer {
+  @apply bg-white/10 border border-white/20 shadow-lg backdrop-blur-lg backdrop-saturate-150 p-2;
 }
