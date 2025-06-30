@@ -24,11 +24,11 @@ export default function NavBar() {
     setBubbleStyle({ left: offsetLeft, width: offsetWidth });
   };
   return (
-    <nav className="glass-menu" ref={menuRef}>
+    <nav className="glass-container glass-menu" ref={menuRef}>
       {MENU_ITEMS.map((item) => (
         <a
           key={item.name}
-          href="#"
+          href={item.link}
           className="glass-menu-item"
           onMouseEnter={handleHover}
         >
