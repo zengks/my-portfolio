@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import SessionWrapper from "./components/SessionWrapper";
+import NavBar from "./components/UI/NavBar";
+import Footer from "./components/UI/Footer";
 
 import "./globals.css";
 import "@/styles/component.css";
@@ -28,9 +30,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-sky-300 via-sky-200 to-sky-200 animate-gradient-xy`}
       >
-        <SessionWrapper>{children}</SessionWrapper>
+        <div className="glass-container outer-glass-container">
+          <NavBar />
+          <SessionWrapper>{children}</SessionWrapper>
+        </div>
+        <Footer />
       </body>
     </html>
   );

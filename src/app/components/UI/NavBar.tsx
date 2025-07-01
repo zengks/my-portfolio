@@ -14,7 +14,6 @@ export default function NavBar() {
     if (menuItems.length > 0) {
       const firstItem = menuItems[0];
       const { offsetLeft, offsetWidth } = firstItem;
-      console.log(offsetLeft, offsetWidth);
       setBubbleStyle({ left: offsetLeft, width: offsetWidth });
     }
   }, []);
