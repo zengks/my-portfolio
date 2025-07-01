@@ -32,7 +32,7 @@
 }
 
 .glass-menu-span {
-  @apply absolute bg-white/20 h-full rounded-full backdrop-blur transition-all duration-300 ease-linear -z-10;
+  @apply absolute bg-white/20 h-full rounded-full backdrop-blur transition-all duration-300 ease-linear -z-10 shadow-xl;
 }
 
 .glass-section {

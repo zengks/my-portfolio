@@ -1,16 +1,24 @@
 import UserExp from "./UserExp";
+import { WorkExperience } from "types/workExp";
 
-export default function WorkExpSection() {
+export default function WorkExpSection({
+  workExp,
+}: {
+  workExp: WorkExperience[] | undefined;
+}) {
   return (
     <div className="glass-container glass-section">
       <p className="section-title">Work Exp</p>
-      <section className="flex justify-around">
-        <UserExp />
-        <UserExp />
-        <UserExp />
-        <UserExp />
-        <UserExp />
-      </section>
+
+      {workExp ? (
+        <section className="flex justify-around">
+          {workExp.map((each) => (
+            <UserExp data={each} key={each.id} />
+          ))}
+        </section>
+      ) : (
+        <section>Loading...</section>
+      )}
     </div>
   );
 }

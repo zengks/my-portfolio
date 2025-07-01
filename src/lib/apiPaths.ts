@@ -1,4 +1,5 @@
 export const apiPaths = {
+  userData: (username: string) => `api/auth/users/${username}`,
   userProfile: () => `api/auth/profile`,
   userProjects: () => `api/auth/project`,
   userCertificate: () => `api/auth/certificate`,
