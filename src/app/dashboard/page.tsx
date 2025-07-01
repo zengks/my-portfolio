@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 
-import { SignOutButton } from "src/app/components/AuthButtons";
+import { SignOutButton } from "@/app/components/UI/AuthButtons";
 import UserProfileData from "../components/UserProfile";
 import UserProject from "../components/UserProject";
 import UserCertificate from "../components/UserCertificate";
