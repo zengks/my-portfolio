@@ -1,3 +1,5 @@
+"use client";
+
 export default function AboutSection() {
   return (
     <div className="glass-container glass-section">

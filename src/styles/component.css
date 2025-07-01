@@ -16,7 +16,7 @@
 }
 
 .outer-glass-container {
-  @apply bg-white/20 pt-30 mt-[2rem] mb-[4rem] mx-[10rem] -z-30;
+  @apply bg-white/20 pt-30 mt-[2rem] mb-[4rem] mx-[10rem];
 }
 
 .glass-container {
