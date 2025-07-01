@@ -1,6 +1,6 @@
 "use client";
 import { useState, FormEvent, useEffect } from "react";
-import { SignInButton } from "src/app/components/AuthButtons";
+import { SignInButton } from "@/app/components/UI/AuthButtons";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
