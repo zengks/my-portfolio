@@ -4,8 +4,8 @@ export interface WorkExperience {
   jobTitle: string;
   company: string;
   startDate: string;
-  endDate: string | null;
-  description: string | null;
-  createdAt: string;
-  updatedAt: string;
+  endDate: string | "Present";
+  description: string | "";
+  //   createdAt: string;
+  //   updatedAt: string;
 }

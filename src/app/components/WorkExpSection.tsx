@@ -4,7 +4,7 @@ import { WorkExperience } from "types/workExp";
 export default function WorkExpSection({
   workExp,
 }: {
-  workExp: WorkExperience[] | undefined;
+  workExp: WorkExperience[];
 }) {
   return (
     <div className="glass-container glass-section">

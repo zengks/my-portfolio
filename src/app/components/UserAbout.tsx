@@ -1,10 +1,10 @@
 "use client";
 
-export default function AboutSection({ data }: { data: string }) {
+export default function AboutSection({ about }: { about: string }) {
   return (
     <div className="glass-container glass-section">
       <p className="section-title">About Myself</p>
-      <p>{data ? data : "Loading..."}</p>
+      <p>{about ? about : "Loading..."}</p>
     </div>
   );
 }

@@ -1,8 +1,9 @@
 import Image from "next/image";
 
 import emoji from "src/assets/images/emoji.jpg";
+import { Profile } from "types/profile";
 
-export default function SideBar() {
+export default function SideBar({ profile }: { profile: Profile | null }) {
   return (
     <aside className="glass-container glass-sidebar rounded-2xl">
       <Image src={emoji} alt="my emoji style" className="rounded-full" />
