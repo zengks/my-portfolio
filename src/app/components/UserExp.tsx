@@ -9,7 +9,7 @@ export default function UserExp({ data }: { data: WorkExperience }) {
     }
   };
   return (
-    <div className="glass-container glass-card mr-3">
+    <div className="glass-container glass-card mr-3 py-3 px-2">
       <p className="border-b-1 border-black/20 py-1 font-bold">
         {data.company.toUpperCase()}
       </p>

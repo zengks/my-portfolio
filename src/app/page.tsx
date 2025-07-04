@@ -10,10 +10,6 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 
 export default async function Home() {
-  const borderStyle = {
-    // border: "1px solid red",
-  };
-
   const session = await getServerSession(authOptions);
 
   const user = await getUserByUsername("zengks");
@@ -23,10 +19,10 @@ export default async function Home() {
   return user ? (
     <div>
       <main className="flex">
-        <section className="flex-20/100" style={borderStyle}>
-          <SideBar profile={user.profile} />
+        <section className="flex-30/100 flex flex-col justify-between items-center">
+          <SideBar userId={user?.id} />
         </section>
-        <section className="flex-80/100 pl-15 pr-60" style={borderStyle}>
+        <section className="flex-70/100 mr-30">
           <UserAbout about={user?.aboutUser ?? ""} />
           <UserSkillSet />
           <WorkExpSection userId={user?.id} />

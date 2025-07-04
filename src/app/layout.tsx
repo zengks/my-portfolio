@@ -30,9 +30,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-sky-300 via-sky-200 to-sky-200 animate-gradient-xy`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-sky-300 via-sky-200 to-sky-100 animate-gradient-xy`}
       >
-        <div className="glass-container outer-glass-container">
+        <div className="absolute inset-0 bg-white/10 backdrop-blur-2xl -z-10" />
+        <div className="glass-container outer-glass-container h-screen">
           <NavBar />
           <SessionWrapper>{children}</SessionWrapper>
         </div>

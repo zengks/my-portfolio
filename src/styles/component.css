@@ -48,7 +48,7 @@
 }
 
 .glass-sidebar {
-  @apply my-30 mx-20 px-8 py-10;
+  @apply px-5 w-50 h-9/12;
 }
 
 .glass-button {
