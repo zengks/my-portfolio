@@ -8,7 +8,12 @@ export default async function SideBar({ userId }: { userId: string }) {
   const profile = await getUserProfile(userId);
   return (
     <aside className="glass-container glass-sidebar rounded-2xl flex flex-col items-center justify-around h-1/2">
-      <Image src={emoji} alt="my emoji style" className="rounded-full" />
+      <Image
+        src={emoji}
+        alt="my emoji style"
+        className="rounded-full"
+        priority
+      />
       <p>Name: {`${profile?.firstName} ${profile?.lastName}`}</p>
       <p>Email: {profile?.email}</p>
       <Link href="/contact">Contact Me</Link>

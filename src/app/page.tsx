@@ -1,10 +1,13 @@
+export const revalidate = 60;
+
 import UserAbout from "./components/UserAbout";
 import SideBar from "./components/SideBar";
 import UserSkillSet from "./components/UserSkillSet";
 import WorkExpSection from "./components/WorkExpSection";
 import EducationSection from "./components/EducationSection";
 
-import { getUserByUsername } from "@/controllers/userController";
+// import { getUserByUsername } from "@/controllers/userController";
+import { getCachedUserByUsername } from "@/lib/cachedFetchers";
 
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
@@ -12,7 +15,7 @@ import { authOptions } from "./api/auth/[...nextauth]/route";
 export default async function Home() {
   const session = await getServerSession(authOptions);
 
-  const user = await getUserByUsername("zengks");
+  const user = await getCachedUserByUsername("zengks");
 
   const isOwner = session?.user.username === user?.username;
 
