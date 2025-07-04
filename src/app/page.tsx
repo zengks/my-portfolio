@@ -13,10 +13,13 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 
 export default async function Home() {
-  const session = await getServerSession(authOptions);
+  //   const session = await getServerSession(authOptions);
 
-  const user = await getCachedUserByUsername("zengks");
-
+  //   const user = await getCachedUserByUsername("zengks");
+  const [session, user] = await Promise.all([
+    getServerSession(authOptions),
+    getCachedUserByUsername("zengks"),
+  ]);
   const isOwner = session?.user.username === user?.username;
 
   return user ? (
