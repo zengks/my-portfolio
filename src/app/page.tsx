@@ -17,24 +17,25 @@ export default async function Home() {
   const session = await getServerSession(authOptions);
 
   const user = await getUserByUsername("zengks");
-  console.log(user);
 
   const isOwner = session?.user.username === user?.username;
 
-  return (
+  return user ? (
     <div>
       <main className="flex">
         <section className="flex-20/100" style={borderStyle}>
-          <SideBar profile={user?.profile} />
+          <SideBar profile={user.profile} />
         </section>
         <section className="flex-80/100 pl-15 pr-60" style={borderStyle}>
           <UserAbout about={user?.aboutUser ?? ""} />
           <UserSkillSet />
-          <WorkExpSection workExp={user?.workExperience} />
-          <EducationSection education={user?.education} />
+          <WorkExpSection userId={user?.id} />
+          <EducationSection userId={user?.id} />
           {isOwner && <button>Edit</button>}
         </section>
       </main>
     </div>
+  ) : (
+    <></>
   );
 }

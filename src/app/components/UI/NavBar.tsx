@@ -9,7 +9,7 @@ export default function NavBar() {
   const [bubbleStyle, setBubbleStyle] = useState({ left: 0, width: 0 });
 
   const handleHover = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    const { offsetLeft, offsetWidth } = e.target;
+    const { offsetLeft, offsetWidth } = e.target as HTMLAnchorElement;
     setBubbleStyle({ left: offsetLeft, width: offsetWidth });
   };
 
@@ -28,7 +28,10 @@ export default function NavBar() {
       <span
         ref={itemBubbleRef}
         className="glass-menu-span"
-        style={{ left: bubbleStyle.left, width: bubbleStyle.width }}
+        style={{
+          left: `${bubbleStyle.left}px`,
+          width: `${bubbleStyle.width}px`,
+        }}
       />
     </nav>
   );

@@ -44,7 +44,7 @@
 }
 
 .glass-card {
-  @apply px-10 py-2 rounded-xl;
+  @apply px-1 rounded-xl;
 }
 
 .glass-sidebar {

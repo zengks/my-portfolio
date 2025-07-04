@@ -3,9 +3,7 @@ export interface WorkExperience {
   userId: string;
   jobTitle: string;
   company: string;
-  startDate: string;
-  endDate: string | "Present";
-  description: string | "";
-  //   createdAt: string;
-  //   updatedAt: string;
+  startDate: Date;
+  endDate: Date | null;
+  description: string | null;
 }

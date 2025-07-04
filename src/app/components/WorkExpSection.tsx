@@ -1,17 +1,14 @@
 import UserExp from "./UserExp";
-import { WorkExperience } from "types/workExp";
+import { getUserWorkExp } from "@/controllers/userWorkExpController";
 
-export default function WorkExpSection({
-  workExp,
-}: {
-  workExp: WorkExperience[];
-}) {
+export default async function WorkExpSection({ userId }: { userId: string }) {
+  const workExp = await getUserWorkExp(userId);
   return (
     <div className="glass-container glass-section">
-      <p className="section-title">Work Exp</p>
+      <p className="section-title">Work Experience</p>
 
-      {workExp ? (
-        <section className="flex justify-around">
+      {workExp.length > 0 ? (
+        <section className="flex">
           {workExp.map((each) => (
             <UserExp data={each} key={each.id} />
           ))}
