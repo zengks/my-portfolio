@@ -20,7 +20,7 @@
 }
 
 .glass-container {
-  @apply relative border border-white/1 text-black/70 shadow-md backdrop-blur-lg transition-all rounded-3xl overflow-hidden;
+  @apply relative border border-white/1 text-black/70 shadow-md backdrop-blur-lg transition-all rounded-2xl overflow-hidden;
 }
 
 .glass-menu {
@@ -44,7 +44,7 @@
 }
 
 .glass-card {
-  @apply px-1 rounded-xl;
+  @apply px-1 rounded-2xl;
 }
 
 .glass-sidebar {

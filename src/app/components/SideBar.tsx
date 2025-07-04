@@ -13,6 +13,7 @@ export default async function SideBar({ userId }: { userId: string }) {
         alt="my emoji style"
         className="rounded-full"
         priority
+        placeholder="blur"
       />
       <p>Name: {`${profile?.firstName} ${profile?.lastName}`}</p>
       <p>Email: {profile?.email}</p>
