@@ -1,43 +1,29 @@
-export const revalidate = 60;
+import UserAbout from './components/UserAbout';
+import SideBar from './components/SideBar';
+import UserSkillSet from './components/userSkills/UserSkillSet';
+import WorkExpSection from './components/userWorkExperience/WorkExpSection';
+import EducationSection from './components/userEducation/EducationSection';
 
-import UserAbout from "./components/UserAbout";
-import SideBar from "./components/SideBar";
-import UserSkillSet from "./components/UserSkillSet";
-import WorkExpSection from "./components/WorkExpSection";
-import EducationSection from "./components/EducationSection";
-
-// import { getUserByUsername } from "@/controllers/userController";
-import { getCachedUserByUsername } from "@/lib/cachedFetchers";
-
-import { getServerSession } from "next-auth";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+import { getUserByUsername } from '@/controllers/userController';
 
 export default async function Home() {
-  //   const session = await getServerSession(authOptions);
+	const user = await getUserByUsername('zengks');
 
-  //   const user = await getCachedUserByUsername("zengks");
-  const [session, user] = await Promise.all([
-    getServerSession(authOptions),
-    getCachedUserByUsername("zengks"),
-  ]);
-  const isOwner = session?.user.username === user?.username;
-
-  return user ? (
-    <div>
-      <main className="flex">
-        <section className="flex-30/100 flex flex-col justify-between items-center">
-          <SideBar userId={user?.id} />
-        </section>
-        <section className="flex-70/100 mr-30">
-          <UserAbout about={user?.aboutUser ?? ""} />
-          <UserSkillSet />
-          <WorkExpSection userId={user?.id} />
-          <EducationSection userId={user?.id} />
-          {isOwner && <button>Edit</button>}
-        </section>
-      </main>
-    </div>
-  ) : (
-    <></>
-  );
+	return user ? (
+		<div>
+			<main className="flex">
+				<section className="flex-30/100 flex flex-col justify-between items-center">
+					<SideBar userId={user?.id} />
+				</section>
+				<section className="flex-70/100 mr-30">
+					<UserAbout about={user?.aboutUser} />
+					<UserSkillSet />
+					<WorkExpSection userId={user?.id} />
+					<EducationSection userId={user?.id} />
+				</section>
+			</main>
+		</div>
+	) : (
+		<h1>User Not Found!</h1>
+	);
 }

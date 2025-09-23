@@ -29,6 +29,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head></head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-sky-300 via-sky-200 to-sky-100 animate-gradient-xy`}
       >

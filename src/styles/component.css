@@ -1,60 +1,60 @@
-@import "tailwindcss";
+@import 'tailwindcss';
 
 @keyframes gradient-xy {
-  0%,
-  100% {
-    background-position: 0% 50%;
-  }
-  50% {
-    background-position: 100% 50%;
-  }
+	0%,
+	100% {
+		background-position: 0% 50%;
+	}
+	50% {
+		background-position: 100% 50%;
+	}
 }
 
 .animate-gradient-xy {
-  background-size: 200% 200%;
-  animation: gradient-xy 15s ease infinite;
+	background-size: 200% 200%;
+	animation: gradient-xy 15s ease infinite;
 }
 
 .outer-glass-container {
-  @apply bg-white/20 pt-30 mt-[2rem] mb-[4rem] mx-[10rem];
+	@apply relative min-h-screen bg-white/20 pt-30 mt-[2rem] mb-[4rem] mx-[10rem];
 }
 
 .glass-container {
-  @apply relative border border-white/1 text-black/70 shadow-md backdrop-blur-lg transition-all rounded-2xl overflow-hidden;
+	@apply relative overflow-y-auto border border-white/1 text-black/70 shadow-md backdrop-blur-lg transition-all rounded-2xl overflow-hidden;
 }
 
 .glass-menu {
-  @apply fixed top-6 left-1/2 transform -translate-x-1/2 z-30 bg-white/10 backdrop-blur-lg border border-white/20 rounded-full px-8 py-3 flex justify-around items-center;
+	@apply fixed top-6 left-1/2 transform -translate-x-1/2 z-30 bg-white/10 backdrop-blur-lg border border-white/20 rounded-full px-8 py-3 flex justify-around items-center;
 }
 
 .glass-menu-item {
-  @apply relative text-black z-10 py-2 px-6 flex justify-center items-center;
+	@apply relative text-black z-10 py-2 px-6 flex justify-center items-center;
 }
 
 .glass-menu-span {
-  @apply absolute bg-white/20 h-full rounded-full backdrop-blur transition-all duration-300 ease-linear -z-10 shadow-xl;
+	@apply absolute bg-white/20 h-full rounded-full backdrop-blur transition-all duration-300 ease-linear -z-10 shadow-xl;
 }
 
 .glass-section {
-  @apply mb-6 px-4 pt-2 pb-4;
+	@apply mb-6 px-4 pt-2 pb-4;
 }
 
 .section-title {
-  @apply border-b-1 border-black/10 mb-2 text-black text-shadow-sm/10 text-xl py-1;
+	@apply border-b-1 border-black/10 mb-2 text-black text-shadow-sm/10 text-xl py-1;
 }
 
 .glass-card {
-  @apply px-1 rounded-2xl;
+	@apply px-1 rounded-2xl;
 }
 
 .glass-sidebar {
-  @apply px-5 w-50 h-9/12;
+	@apply px-5 w-50 h-9/12;
 }
 
 .glass-button {
-  @apply px-6 py-3 rounded-full hover:shadow-md;
+	@apply px-6 py-3 rounded-full hover:shadow-md;
 }
 
 .glass-footer {
-  @apply p-2;
+	@apply p-2;
 }
