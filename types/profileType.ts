@@ -6,6 +6,4 @@ export interface Profile {
   email: string;
   bio: string | null;
   imageLink: string | null;
-  createdAt: string;
-  updatedAt: string;
 }
