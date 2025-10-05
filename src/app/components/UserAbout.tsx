@@ -1,6 +1,4 @@
-'use client';
-
-export default function AboutSection({ about }: { about: string | null | undefined }) {
+export default function AboutSection({ about }: { about: string | null }) {
 	return (
 		<div className="glass-container glass-section">
 			<p className="section-title">About Myself</p>

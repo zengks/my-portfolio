@@ -3,9 +3,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("POSTGRES_PRISMA_URL")
-  directUrl = env("POSTGRES_URL_NON_POOLING")
+  provider = "postgresql"
+  url      = env("POSTGRES_PRISMA_URL")
 }
 
 model User {
@@ -40,6 +39,8 @@ model Profile {
   createdAt DateTime @default(now())
   updatedAt DateTime @default(now())
   user      User     @relation(fields: [userId], references: [id])
+
+  @@index([userId])
 }
 
 model Account {
@@ -90,6 +91,8 @@ model Certificate {
   updatedAt   DateTime  @default(now())
   certNumber  String?
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model Project {
@@ -103,6 +106,8 @@ model Project {
   createdAt          DateTime @default(now())
   updatedAt          DateTime @default(now())
   user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model WorkExperience {
@@ -116,6 +121,8 @@ model WorkExperience {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now())
   user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model Education {
@@ -131,6 +138,8 @@ model Education {
   createdAt    DateTime  @default(now())
   updatedAt    DateTime  @default(now())
   user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model SocialMedia {
@@ -141,6 +150,8 @@ model SocialMedia {
   createdAt       DateTime @default(now())
   updatedAt       DateTime @default(now())
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
 }
 
 model BlogPost {
@@ -153,4 +164,6 @@ model BlogPost {
   updatedAt  DateTime @default(now())
   viewsCount Int      @default(0)
   author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+
+  @@index([authorId])
 }

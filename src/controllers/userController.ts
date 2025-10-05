@@ -10,15 +10,51 @@ export async function getAllUsers() {
 export async function getUserByUsername(username: string) {
 	return await prisma.user.findUnique({
 		where: { username },
-		// include: {
-		// 	blogPost: false,
-		// 	certificate: false,
-		// 	education: false,
-		// 	profile: false,
-		// 	project: false,
-		// 	socialMedia: false,
-		// 	workExperience: false,
-		// },
+		select: {
+			role: true,
+			aboutUser: true,
+			certificate: {
+				select: {
+					name: true,
+					dateIssued: true,
+					dateExpired: true,
+					certNumber: true,
+				},
+			},
+			education: {
+				select: {
+					id: true,
+					school: true,
+					degree: true,
+					fieldOfStudy: true,
+					startDate: true,
+					endDate: true,
+					gpa: true,
+					description: true,
+				},
+			},
+			profile: {
+				select: {
+					id: true,
+					userId: true,
+					firstName: true,
+					lastName: true,
+					email: true,
+					bio: true,
+					imageLink: true,
+				},
+			},
+			workExperience: {
+				select: {
+					id: true,
+					jobTitle: true,
+					company: true,
+					startDate: true,
+					endDate: true,
+					description: true,
+				},
+			},
+		},
 	});
 }
 
