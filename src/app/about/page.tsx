@@ -1,20 +1,19 @@
-// import { getServerSession } from "next-auth";
-// import { authOptions } from "../api/auth/[...nextauth]/route";
-// import { getUserByUsername } from "@/controllers/userController";
 export const revalidate = 60;
 
-import { getCachedUserByUsername } from "@/lib/cachedFetchers";
+import { getUserAbout } from "@/controllers/userAboutController";
 
 export default async function About() {
-  //   const session = await getServerSession(authOptions);
-  const user = await getCachedUserByUsername("zengks");
-  //   const isOwner = session?.user.username === user?.username;
-  return user ? (
+  const userAboutContent = await getUserAbout("zengks");
+  return userAboutContent ? (
     <div className="glass-container glass-section w-10/12 mx-auto">
       <main>
         <section className="section-title">About Myself</section>
         <section>
-          <p>{user.aboutUser ? user.aboutUser : "Loading..."}</p>
+          <p>
+            {userAboutContent.aboutUser
+              ? userAboutContent.aboutUser
+              : "Loading..."}
+          </p>
         </section>
       </main>
     </div>

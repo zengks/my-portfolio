@@ -1,12 +1,16 @@
 import { Education } from 'types/educationType';
 import { getYear } from '@/utility';
-export default async function EducationSection({ eduHistory }: { eduHistory: Education[] }) {
+import { getAllUserEducation } from '@/controllers/userEducationController';
+
+export default async function EducationSection() {
+	const eduData = await getAllUserEducation();
+	if (!eduData) return;
 	return (
 		<div className="glass-container glass-section">
 			<p className="section-title">Education</p>
-			{eduHistory.length > 0 ? (
+			{eduData.length > 0 ? (
 				<section>
-					{eduHistory.map((data: Education, index: number) => (
+					{eduData.map((data: Education, index: number) => (
 						<div
 							className="glass-container glass-card flex justify-between mb-2 px-3 py-2 font-bold"
 							key={index}

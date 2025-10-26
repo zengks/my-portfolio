@@ -1,6 +1,23 @@
 import prisma from '@/lib/prisma';
 import { WorkExperience } from 'types/workExpType';
 import { apiPaths } from '@/lib/apiPaths';
+import { getUserIdByUsername } from './userController';
+
+export async function getUserWorkExpByUsername(username: string = 'zengks') {
+	const user = await getUserIdByUsername(username);
+	if (!user) return null;
+	return await prisma.workExperience.findMany({
+		where: { userId: user.id },
+		select: {
+			id: true,
+			jobTitle: true,
+			company: true,
+			startDate: true,
+			endDate: true,
+			description: true,
+		},
+	});
+}
 
 export async function getUserWorkExp(userId: string) {
 	return await prisma.workExperience.findMany({

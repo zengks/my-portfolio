@@ -1,5 +1,5 @@
-import TechSkill from './TechSkill';
-import { SKILLS } from '@/lib/constant';
+// import TechSkill from './TechSkill';
+// import { SKILLS } from '@/lib/constant';
 
 export default function UserSkillSet() {
 	return (

@@ -13,13 +13,13 @@ import { fetchAllUserEducation } from '@/controllers/userEducationController';
 import { fetchAllUserBlogPosts } from '@/controllers/userBlogPostController';
 import { fetchAllUserSocialMedia } from '@/controllers/userSocialMedia';
 
-import { Profile } from 'types/profileType';
-import { Project } from 'types/projectType';
-import { Certificate } from 'types/certificateType';
-import { WorkExperience } from 'types/workExpType';
-import { Education } from 'types/educationType';
-import { BlogPost } from 'types/blogPostType';
-import { SocialMedia } from 'types/socialMediaType';
+// import { Profile } from 'types/profileType';
+// import { Project } from 'types/projectType';
+// import { Certificate } from 'types/certificateType';
+// import { WorkExperience } from 'types/workExpType';
+// import { Education } from 'types/educationType';
+// import { BlogPost } from 'types/blogPostType';
+// import { SocialMedia } from 'types/socialMediaType';
 
 export default function UsersPage() {
 	const { data: session, status } = useSession();
@@ -27,13 +27,13 @@ export default function UsersPage() {
 	const router = useRouter();
 
 	const [loading, setLoading] = useState<boolean>(false);
-	const [profile, setProfile] = useState<Profile | undefined>();
-	const [projects, setProjects] = useState<Project[] | undefined>();
-	const [certificate, setCertificate] = useState<Certificate[] | undefined>();
-	const [workExperience, setWorkExperience] = useState<WorkExperience[] | undefined>();
-	const [education, setEducation] = useState<Education[] | undefined>();
-	const [blogPosts, setBlogPosts] = useState<BlogPost[] | undefined>();
-	const [socialMedia, setSocialMedia] = useState<SocialMedia[] | undefined>();
+	// const [profile, setProfile] = useState<Profile | undefined>();
+	// const [projects, setProjects] = useState<Project[] | undefined>();
+	// const [certificate, setCertificate] = useState<Certificate[] | undefined>();
+	// const [workExperience, setWorkExperience] = useState<WorkExperience[] | undefined>();
+	// const [education, setEducation] = useState<Education[] | undefined>();
+	// const [blogPosts, setBlogPosts] = useState<BlogPost[] | undefined>();
+	// const [socialMedia, setSocialMedia] = useState<SocialMedia[] | undefined>();
 
 	const username = session?.user?.username;
 
@@ -51,13 +51,13 @@ export default function UsersPage() {
 		const loadUserData = async () => {
 			try {
 				const [
-					profileData,
-					projectsData,
-					certificateData,
-					workExpData,
-					educationData,
-					blogPostsData,
-					socialMediaData,
+					// profileData,
+					// projectsData,
+					// certificateData,
+					// workExpData,
+					// educationData,
+					// blogPostsData,
+					// socialMediaData,
 				] = await Promise.all([
 					fetchUserProfile(),
 					fetchAllUserProjects(),
@@ -67,13 +67,13 @@ export default function UsersPage() {
 					fetchAllUserBlogPosts(),
 					fetchAllUserSocialMedia(),
 				]);
-				setProfile(profileData);
-				setProjects(projectsData);
-				setCertificate(certificateData);
-				setWorkExperience(workExpData);
-				setEducation(educationData);
-				setBlogPosts(blogPostsData);
-				setSocialMedia(socialMediaData);
+				// setProfile(profileData);
+				// setProjects(projectsData);
+				// setCertificate(certificateData);
+				// setWorkExperience(workExpData);
+				// setEducation(educationData);
+				// setBlogPosts(blogPostsData);
+				// setSocialMedia(socialMediaData);
 			} catch (error) {
 				console.log('Failed to load user data, ', error);
 			}
