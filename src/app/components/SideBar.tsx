@@ -6,7 +6,7 @@ import { getUserProfile } from '@/controllers/userProfileController';
 export default async function SideBar() {
 	const profileData = await getUserProfile();
 	return (
-		<aside className="section-container flex flex-col items-center gap-6">
+		<aside className="section-container flex flex-col items-center gap-6 w-50">
 			<Image
 				src={emoji}
 				alt="my emoji style"

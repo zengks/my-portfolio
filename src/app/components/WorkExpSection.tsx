@@ -6,19 +6,20 @@ export default async function WorkExpSection() {
 	const workData = await getUserWorkExpByUsername();
 	return (
 		workData && (
-			<div className="glass-container glass-section">
+			<div className="section-container">
 				<p className="section-title">Work Experience</p>
 
 				{workData.length > 0 ? (
-					<section className="flex">
+					<section className="w-50/100">
 						{workData.map((data: WorkExperience, index: number) => (
-							<div className="glass-container glass-card mr-3 py-3 px-2" key={index}>
-								<p className="border-b-1 border-black/20 py-1 font-bold">
-									{data.company.toUpperCase()}
-								</p>
-								<p className="py-2">{data.jobTitle}</p>
-								<p className="pb-2">{data.description}</p>
-								<p className="pb-2">{`${getYear(data.startDate)} - ${getYear(data.endDate)}`}</p>
+							<div
+								className="section-container flex justify-between items-center gap-5"
+								key={index}
+							>
+								<p className="font-bold">{data.company.toUpperCase()}</p>
+								<p>{data.jobTitle}</p>
+								<p>{data.description}</p>
+								<p>{`${getYear(data.startDate)} - ${getYear(data.endDate)}`}</p>
 							</div>
 						))}
 					</section>

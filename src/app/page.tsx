@@ -2,6 +2,7 @@ import UserAbout from './components/UserAbout';
 import SideBar from './components/SideBar';
 import WorkExpSection from './components/WorkExpSection';
 import EducationSection from './components/EducationSection';
+import CertificateSection from './components/CertificateSection';
 import { Suspense } from 'react';
 
 export const revalidate = 3600;
@@ -9,13 +10,13 @@ export const revalidate = 3600;
 export default async function Home() {
 	return (
 		<div>
-			<main className="flex justify-start items-center gap-20">
+			<main className="flex justify-between ">
 				<section>
 					<Suspense fallback={<div>Loading...</div>}>
 						<SideBar />
 					</Suspense>
 				</section>
-				<section className="flex-70/100 mr-30">
+				<section className="border-1 w-70/100 mx-auto">
 					<Suspense fallback={<div>Loading...</div>}>
 						<UserAbout />
 					</Suspense>
@@ -24,6 +25,9 @@ export default async function Home() {
 					</Suspense>
 					<Suspense fallback={<div>Loading...</div>}>
 						<EducationSection />
+					</Suspense>
+					<Suspense fallback={<div>Loading...</div>}>
+						<CertificateSection />
 					</Suspense>
 				</section>
 			</main>
