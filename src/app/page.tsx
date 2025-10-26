@@ -9,8 +9,8 @@ export const revalidate = 3600;
 export default async function Home() {
 	return (
 		<div>
-			<main className="flex">
-				<section className="flex-30/100 flex flex-col justify-between items-center">
+			<main className="flex justify-start items-center gap-20">
+				<section>
 					<Suspense fallback={<div>Loading...</div>}>
 						<SideBar />
 					</Suspense>

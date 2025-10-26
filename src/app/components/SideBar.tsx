@@ -6,20 +6,37 @@ import { getUserProfile } from '@/controllers/userProfileController';
 export default async function SideBar() {
 	const profileData = await getUserProfile();
 	return (
-		<aside className="glass-container glass-sidebar rounded-2xl flex flex-col items-center justify-around h-1/2">
-			<Image src={emoji} alt="my emoji style" className="rounded-full" priority />
-			<p>
-				Name:{' '}
-				{profileData ? `${profileData.firstName} ${profileData.lastName || ''}` : 'Loading...'}
-			</p>
+		<aside className="section-container flex flex-col items-center gap-6">
+			<Image
+				src={emoji}
+				alt="my emoji style"
+				width={80}
+				height={80}
+				className="rounded-full"
+				priority
+			/>
 
-			<p className="text-sm">{profileData ? profileData.email : 'Loading...'}</p>
+			<section className="text-center">
+				<p>
+					{profileData ? `${profileData.firstName} ${profileData.lastName || ''}` : 'Loading...'}
+				</p>
 
-			<Link href="/contact">Contact Me</Link>
-			<section className="flex justify-around">
-				<p>social</p>
-				<p>social</p>
-				<p>social</p>
+				<p>FullStack Developer</p>
+			</section>
+
+			<section className="flex justify-around items-center">
+				<p>LinkedIn</p>
+				<p>GitHub</p>
+			</section>
+
+			<section className="section-container flex flex-col items-center gap-4">
+				<p className="text-sm">{profileData ? profileData.email : 'Loading...'}</p>
+				<p>My Location</p>
+			</section>
+
+			<section>
+				<Link href="/contact">Contact Me</Link>
+				<p>Download Resume</p>
 			</section>
 		</aside>
 	);
