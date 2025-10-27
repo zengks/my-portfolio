@@ -2,25 +2,43 @@ import { WorkExperience } from 'types/workExpType';
 import { getYear } from '@/utility';
 import { getUserWorkExpByUsername } from '@/controllers/userWorkExpController';
 
+const TABLE_HEADERS = ['Company', 'Job Title', 'Duration'];
+
 export default async function WorkExpSection() {
 	const workData = await getUserWorkExpByUsername();
+	if (!workData) return;
+	const sortedWorkData = workData
+		? [...workData].sort((a: WorkExperience, b: WorkExperience) => {
+				return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+		  })
+		: null;
 	return (
-		workData && (
+		sortedWorkData && (
 			<div className="section-container">
 				<p className="section-title">Recent Work Experience</p>
-				{workData.length > 0 ? (
-					<section className="flex flex-col gap-4">
-						{workData.map((data: WorkExperience, index: number) => (
-							<div className="flex justify-between items-center text-center" key={index}>
-								<p className="font-bold">{data.company.toUpperCase()}</p>
-								<p>{data.jobTitle}</p>
-								<p>{data.description}</p>
-								<p>{`${getYear(data.startDate)} - ${getYear(data.endDate)}`}</p>
-							</div>
-						))}
-					</section>
+				{sortedWorkData.length > 0 ? (
+					<>
+						<section className="columns-3">
+							{/* {TABLE_HEADERS.map((header, index) => (
+								<p key={index} className="italic font-extrabold ">
+									{header}
+								</p>
+							))} */}
+						</section>
+						<section className="flex flex-col gap-4">
+							{sortedWorkData.map((data: WorkExperience, index: number) => (
+								<div className="columns-3" key={index}>
+									<p className="font-bold">{data.company.toUpperCase()}</p>
+									<p>{data.jobTitle}</p>
+									<p>{`${getYear(data.startDate)} - ${getYear(data.endDate)}`}</p>
+								</div>
+							))}
+						</section>
+					</>
 				) : (
-					<section>Loading...</section>
+					<section>
+						<p>No Work History</p>
+					</section>
 				)}
 			</div>
 		)

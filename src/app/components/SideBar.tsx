@@ -30,7 +30,7 @@ export default async function SideBar() {
 			</section>
 
 			<section className="flex flex-col items-center gap-4">
-				<p className="text-sm">{profileData ? profileData.email : 'Loading...'}</p>
+				<p>{profileData ? profileData.email : 'Loading...'}</p>
 				<p>My Location</p>
 			</section>
 

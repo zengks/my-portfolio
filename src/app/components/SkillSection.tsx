@@ -6,8 +6,8 @@ import {
 } from '@/lib/constant';
 import Image from 'next/image';
 
-const iconWidth = 30;
-const iconHeight = 30;
+const iconWidth = 25;
+const iconHeight = 25;
 
 export default async function SkillSection() {
 	return (

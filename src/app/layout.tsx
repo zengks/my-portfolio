@@ -33,7 +33,7 @@ export default function RootLayout({
 		<html lang="en" className={`${manrope.variable} ${lora.variable}`}>
 			<body className="flex flex-col min-h-screen justify-between">
 				<NavBar />
-				<section className="w-85/100 mx-auto border-1">
+				<section>
 					<SessionWrapper>{children}</SessionWrapper>
 				</section>
 				<Footer />

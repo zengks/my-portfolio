@@ -1,19 +1,19 @@
 @import 'tailwindcss';
 
 body {
-	@apply font-mono text-sm;
+	@apply font-serif bg-[#F8F9FA] text-[#292721] text-base/7;
 }
 
 .section-sidebar {
-	@apply border-1 ms-[100px] mt-[100] py-[30] px-[50];
+	@apply ms-20 py-[30];
 }
 
 .section-title {
-	@apply font-serif border-b border-gray-300 pb-2 mb-2 text-base text-shadow-md font-semibold w-fit;
+	@apply font-serif border-b border-gray-400 pb-1 mb-3 text-base text-shadow-lg font-semibold w-fit;
 }
 
 .section-container {
-	@apply ms-[100] px-[100] pt-[50] border-1 w-full;
+	@apply ms-[100] ps-[20] pt-[40] w-full;
 }
 
 .skill-row {
@@ -21,5 +21,5 @@ body {
 }
 
 .skill-item {
-	@apply bg-gray-100 px-3 py-2 rounded-full text-sm flex items-center justify-start gap-1;
+	@apply bg-[#E9ECEF] px-3 py-2 rounded-full text-sm flex items-center justify-start gap-1;
 }
