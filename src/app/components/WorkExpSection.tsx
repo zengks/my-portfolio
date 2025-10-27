@@ -7,15 +7,11 @@ export default async function WorkExpSection() {
 	return (
 		workData && (
 			<div className="section-container">
-				<p className="section-title">Work Experience</p>
-
+				<p className="section-title">Recent Work Experience</p>
 				{workData.length > 0 ? (
-					<section className="w-50/100">
+					<section className="flex flex-col gap-4">
 						{workData.map((data: WorkExperience, index: number) => (
-							<div
-								className="section-container flex justify-between items-center gap-5"
-								key={index}
-							>
+							<div className="flex justify-between items-center text-center" key={index}>
 								<p className="font-bold">{data.company.toUpperCase()}</p>
 								<p>{data.jobTitle}</p>
 								<p>{data.description}</p>

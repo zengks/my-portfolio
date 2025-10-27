@@ -1,18 +1,18 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import emoji from 'src/assets/images/emoji.jpg';
+import profileIcon from 'src/assets/images/profile.svg';
 import { getUserProfile } from '@/controllers/userProfileController';
 
 export default async function SideBar() {
 	const profileData = await getUserProfile();
 	return (
-		<aside className="section-container flex flex-col items-center gap-6 w-50">
+		<aside className="section-sidebar flex flex-col items-center gap-6 relative">
 			<Image
-				src={emoji}
+				src={profileIcon}
 				alt="my emoji style"
-				width={80}
-				height={80}
-				className="rounded-full"
+				width={50}
+				height={50}
+				className="absolute top-0 translate-y-[-50%]"
 				priority
 			/>
 
@@ -29,7 +29,7 @@ export default async function SideBar() {
 				<p>GitHub</p>
 			</section>
 
-			<section className="section-container flex flex-col items-center gap-4">
+			<section className="flex flex-col items-center gap-4">
 				<p className="text-sm">{profileData ? profileData.email : 'Loading...'}</p>
 				<p>My Location</p>
 			</section>

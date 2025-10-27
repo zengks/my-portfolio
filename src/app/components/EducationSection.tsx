@@ -9,9 +9,9 @@ export default async function EducationSection() {
 		<div className="section-container">
 			<p className="section-title">Education</p>
 			{eduData.length > 0 ? (
-				<section className="w-80/100">
+				<section className="flex flex-col gap-4">
 					{eduData.map((data: Education, index: number) => (
-						<div className="section-container flex justify-between" key={index}>
+						<div className="flex justify-between items-center" key={index}>
 							<p>{`${data.degree} in ${data.fieldOfStudy}`}</p>
 							<p>{data.school}</p>
 							<p>{`${getYear(data.startDate)} - ${getYear(data.endDate)}`}</p>

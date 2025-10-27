@@ -25,10 +25,6 @@ import wordpressIcon from '@/assets/icons/wordpress.svg';
 
 export const MENU_ITEMS = [
 	{
-		name: 'home',
-		link: '/',
-	},
-	{
 		name: 'about',
 		link: '/about',
 	},
@@ -37,8 +33,8 @@ export const MENU_ITEMS = [
 		link: '/projects',
 	},
 	{
-		name: 'Work Experience',
-		link: '/work-experience',
+		name: 'Work',
+		link: '/work',
 	},
 	{
 		name: 'resume',
@@ -47,6 +43,62 @@ export const MENU_ITEMS = [
 	{
 		name: 'contact',
 		link: '/contact',
+	},
+];
+
+export const MERN_STACK = [
+	{
+		name: 'MongoDB',
+		src: MongoDBIcon,
+		altText: 'MongoDB Icon',
+	},
+	{
+		name: 'Express JS',
+		src: ExpressIcon,
+		altText: 'ExpressJS Icon',
+	},
+	{
+		name: 'React JS',
+		src: ReactIcon,
+		altText: 'React Icon',
+	},
+	{
+		name: 'Node JS',
+		src: NodeJSIcon,
+		altText: 'NodeJS Icon',
+	},
+];
+
+export const NEXT_STACK = [
+	{
+		name: 'Next JS',
+		src: NextJSIcon,
+		altText: 'NextJS Icon',
+	},
+	{
+		name: 'Prisma',
+		src: prismaIcon,
+		altText: 'Prisma Icon',
+	},
+	{
+		name: 'PostgreSQL',
+		src: PostgreSQLIcon,
+		altText: 'PostgreSQL Icon',
+	},
+	{
+		name: 'Tailwind CSS',
+		src: tailwindcssIcon,
+		altText: 'Tailwind CSS Icon',
+	},
+	{
+		name: 'TypeScript',
+		src: TypeScriptIcon,
+		altText: 'TypeScript Icon',
+	},
+	{
+		name: 'Vercel',
+		src: vercelIcon,
+		altText: 'Vercel Icon',
 	},
 ];
 

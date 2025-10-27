@@ -10,9 +10,9 @@ export default async function CertificateSection() {
 		<div className="section-container">
 			<p className="section-title">Certificates</p>
 			{certData.length > 0 ? (
-				<section className="w-80/100">
+				<section className="flex flex-col gap-4">
 					{certData.map((data: Certificate, index: number) => (
-						<div className="section-container flex justify-between" key={index}>
+						<div className="flex justify-between items-center" key={index}>
 							<p>{data.name}</p>
 							<p>{data.certNumber}</p>
 							<p>{`${getYear(data.dateIssued)} - ${getYear(data.dateExpired)}`}</p>

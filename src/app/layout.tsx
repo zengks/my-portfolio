@@ -1,10 +1,23 @@
 import type { Metadata } from 'next';
+import { Manrope, Lora } from 'next/font/google';
+
 import SessionWrapper from './components/SessionWrapper';
 import NavBar from './components/UI/NavBar';
 import Footer from './components/UI/Footer';
 
 import './globals.css';
-import '@/styles/component.css';
+
+const manrope = Manrope({
+	subsets: ['latin'],
+	display: 'swap',
+	variable: '--font-manrope',
+});
+
+const lora = Lora({
+	subsets: ['latin'],
+	display: 'swap',
+	variable: '--font-lora',
+});
 
 export const metadata: Metadata = {
 	title: 'CZ',
@@ -17,8 +30,8 @@ export default function RootLayout({
 	children: React.ReactNode;
 }>) {
 	return (
-		<html lang="en">
-			<body className="border-1 flex flex-col min-h-screen justify-between">
+		<html lang="en" className={`${manrope.variable} ${lora.variable}`}>
+			<body className="flex flex-col min-h-screen justify-between">
 				<NavBar />
 				<section className="w-85/100 mx-auto border-1">
 					<SessionWrapper>{children}</SessionWrapper>
