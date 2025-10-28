@@ -6,7 +6,8 @@ export default async function AboutSection() {
 	return (
 		<div className="section-container">
 			<p className="section-title">About Myself</p>
-			<p className="pe-[200] text-wrap">{userAboutContent?.aboutUser}</p>
+			{/* <p className="pe-[200] text-wrap">{userAboutContent?.aboutUser}</p> */}
+			<p className="text-wrap">{userAboutContent?.aboutUser}</p>
 		</div>
 	);
 }

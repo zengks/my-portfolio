@@ -9,7 +9,7 @@ body {
 }
 
 .section-title {
-	@apply font-serif border-b border-gray-400 pb-1 mb-3 text-base text-shadow-lg font-semibold w-fit;
+	@apply font-light uppercase tracking-widest text-[#343A40] mb-6 text-xl;
 }
 
 .section-container {

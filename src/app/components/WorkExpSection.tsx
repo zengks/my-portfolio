@@ -2,7 +2,7 @@ import { WorkExperience } from 'types/workExpType';
 import { getYear } from '@/utility';
 import { getUserWorkExpByUsername } from '@/controllers/userWorkExpController';
 
-const TABLE_HEADERS = ['Company', 'Job Title', 'Duration'];
+// const TABLE_HEADERS = ['Company', 'Job Title', 'Duration'];
 
 export default async function WorkExpSection() {
 	const workData = await getUserWorkExpByUsername();
