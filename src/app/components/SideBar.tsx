@@ -2,7 +2,6 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 import emojiPhoto from 'src/assets/images/emoji.png';
-import profileIcon from 'src/assets/images/profile.svg';
 import linkedInIcon from 'src/assets/icons/linkedin.svg';
 import githubIcon from 'src/assets/icons/github.svg';
 import emailIcon from 'src/assets/icons/email.svg';

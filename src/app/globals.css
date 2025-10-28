@@ -5,7 +5,7 @@ body {
 }
 
 .section-sidebar {
-	@apply border-1 ms-20 py-[30];
+	@apply ms-20 py-[30];
 }
 
 .section-title {
@@ -13,7 +13,7 @@ body {
 }
 
 .section-container {
-	@apply ms-[100] ps-[20] pb-[40];
+	@apply ms-[100] pb-[40];
 }
 
 .skill-row {
@@ -22,4 +22,26 @@ body {
 
 .skill-item {
 	@apply bg-[#E9ECEF] px-3 py-2 rounded-full text-sm flex items-center justify-start gap-1;
+}
+
+.logo {
+	font-family: 'Hurricane', cursive;
+	font-weight: 700;
+	font-style: normal;
+	font-size: 32px;
+	text-transform: uppercase;
+}
+
+.logo-creative {
+	background: linear-gradient(to right, #4a4a4a, #292721);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	text-fill-color: transparent;
+
+	transition: opacity 0.3s ease;
+}
+
+.logo-creative:hover {
+	opacity: 0.8;
 }
