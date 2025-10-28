@@ -18,7 +18,7 @@ export default async function CertificateSection() {
 			<div className="section-container">
 				<p className="section-title">Certificates</p>
 				{sortedCertData.length > 0 ? (
-					<section className="flex flex-col gap-4">
+					<section className="flex flex-col gap-2">
 						{sortedCertData.map((data: Certificate, index: number) => (
 							<div className="columns-3" key={index}>
 								<p>{data.name}</p>

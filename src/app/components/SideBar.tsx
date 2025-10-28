@@ -27,7 +27,7 @@ export default async function SideBar() {
 	const profileData = await getUserProfile();
 	return (
 		<aside className="section-sidebar flex flex-col justify-center items-center gap-8 relative">
-			<Image src={emojiPhoto} alt="my emoji style" width={120} height={120} priority />
+			<Image src={emojiPhoto} alt="my emoji style" width={120} priority />
 
 			<section className="mt-3">
 				<div className="flex justify-start items-center gap-2">

@@ -25,7 +25,7 @@ export default async function WorkExpSection() {
 								</p>
 							))} */}
 						</section>
-						<section className="flex flex-col gap-4">
+						<section className="flex flex-col gap-2">
 							{sortedWorkData.map((data: WorkExperience, index: number) => (
 								<div className="columns-3" key={index}>
 									<p>{data.company.toUpperCase()}</p>

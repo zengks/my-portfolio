@@ -16,7 +16,7 @@ export default async function EducationSection() {
 			<div className="section-container">
 				<p className="section-title">Education</p>
 				{sortedEduData.length > 0 ? (
-					<section className="flex flex-col gap-4">
+					<section className="flex flex-col gap-2">
 						{sortedEduData.map((data: Education, index: number) => (
 							<div className="columns-3" key={index}>
 								<p>{`${data.degree} in ${data.fieldOfStudy}`}</p>

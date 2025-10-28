@@ -17,7 +17,7 @@ body {
 }
 
 .skill-row {
-	@apply mb-[20] flex justify-start flex-wrap gap-4 items-center;
+	@apply mb-[15] flex justify-start flex-wrap gap-2 items-center;
 }
 
 .skill-item {
