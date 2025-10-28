@@ -26,7 +26,7 @@ const infoIconSize = {
 export default async function SideBar() {
 	const profileData = await getUserProfile();
 	return (
-		<aside className="section-sidebar flex flex-col justify-start gap-12 relative">
+		<aside className="section-sidebar flex flex-col justify-center items-center gap-8 relative">
 			<Image
 				src={profileIcon}
 				alt="my emoji style"

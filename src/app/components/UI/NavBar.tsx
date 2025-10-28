@@ -3,6 +3,10 @@ import { MENU_ITEMS } from '@/lib/constant';
 import Link from 'next/link';
 import { useRef } from 'react';
 
+import moonIcon from 'src/assets/icons/moon.svg';
+import sunIcon from 'src/assets/icons/sun.svg';
+import Image from 'next/image';
+
 export default function NavBar() {
 	const menuRef = useRef<HTMLAnchorElement>(null);
 
@@ -18,7 +22,14 @@ export default function NavBar() {
 						</Link>
 					))}
 				</nav>
-				<p>Theme Button</p>
+				<div className="flex justify-center items-center gap-2 me-4">
+					<button>
+						<Image src={sunIcon} alt="Light Mode Icon" width={25} height={25} />
+					</button>
+					<button>
+						<Image src={moonIcon} alt="Dark Mode Icon" width={25} height={25} />
+					</button>
+				</div>
 			</div>
 		</div>
 	);
