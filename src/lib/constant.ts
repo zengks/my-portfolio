@@ -25,6 +25,10 @@ import wordpressIcon from '@/assets/icons/wordpress.svg';
 
 export const MENU_ITEMS = [
 	{
+		name: 'home',
+		link: '/',
+	},
+	{
 		name: 'about',
 		link: '/about',
 	},

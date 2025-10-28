@@ -28,7 +28,7 @@ export default async function WorkExpSection() {
 						<section className="flex flex-col gap-4">
 							{sortedWorkData.map((data: WorkExperience, index: number) => (
 								<div className="columns-3" key={index}>
-									<p className="font-bold">{data.company.toUpperCase()}</p>
+									<p>{data.company.toUpperCase()}</p>
 									<p>{data.jobTitle}</p>
 									<p>{`${getYear(data.startDate)} - ${getYear(data.endDate)}`}</p>
 								</div>
