@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
+import emojiPhoto from 'src/assets/images/emoji.png';
 import profileIcon from 'src/assets/images/profile.svg';
 import linkedInIcon from 'src/assets/icons/linkedin.svg';
 import githubIcon from 'src/assets/icons/github.svg';
@@ -28,11 +29,11 @@ export default async function SideBar() {
 	return (
 		<aside className="section-sidebar flex flex-col justify-center items-center gap-8 relative">
 			<Image
-				src={profileIcon}
+				src={emojiPhoto}
 				alt="my emoji style"
-				width={50}
-				height={50}
-				className="absolute top-0 translate-y-[-50%] left-1/2 translate-x-[-50%]"
+				width={120}
+				height={120}
+				// className="absolute top-0 translate-y-[-50%] left-1/2 translate-x-[-50%]"
 				priority
 			/>
 

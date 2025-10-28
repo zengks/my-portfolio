@@ -5,7 +5,7 @@ body {
 }
 
 .section-sidebar {
-	@apply ms-20 py-[30];
+	@apply border-1 ms-20 py-[30];
 }
 
 .section-title {
@@ -13,7 +13,7 @@ body {
 }
 
 .section-container {
-	@apply ms-[100] ps-[20] pt-[40];
+	@apply ms-[100] ps-[20] pb-[40];
 }
 
 .skill-row {
