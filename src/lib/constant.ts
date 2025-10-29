@@ -41,6 +41,10 @@ export const MENU_ITEMS = [
 		link: '/work',
 	},
 	{
+		name: 'Skills',
+		link: '/skills',
+	},
+	{
 		name: 'resume',
 		link: '/resume',
 	},

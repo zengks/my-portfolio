@@ -7,8 +7,6 @@ import SkillSection from './components/SkillSection';
 
 import { Suspense } from 'react';
 
-export const revalidate = 3600;
-
 export default async function Home() {
 	return (
 		<div>

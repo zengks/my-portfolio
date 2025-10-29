@@ -7,11 +7,11 @@ import Image from 'next/image';
 
 export default function NavBar() {
 	return (
-		<div className="flex justify-around items-center my-8 ">
+		<div className="flex justify-around items-center my-8">
 			<Link href="/" className="tracking-[16]">
 				<p className="logo logo-creative0">steven</p>
 			</Link>
-			<div className="flex justify-between items-center  gap-10">
+			<div className="flex justify-between items-center gap-10">
 				<nav className="flex justify-center gap-9 text-[15px] items-center">
 					{MENU_ITEMS.map((item) => (
 						<Link key={item.name} href={item.link}>
