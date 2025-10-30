@@ -10,8 +10,8 @@ import { Suspense } from 'react';
 export default async function Home() {
 	return (
 		<div>
-			<main className="flex justify-around">
-				<section className="w-1/4 sticky top-30 self-start">
+			<main className="flex">
+				<section className="w-1/4">
 					<Suspense fallback={<div>Loading...</div>}>
 						<SideBar />
 					</Suspense>

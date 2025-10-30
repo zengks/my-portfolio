@@ -1,18 +1,23 @@
-import Image from 'next/image';
 import { getUserAbout } from '@/controllers/userAboutController';
-import selfieImage from '@/assets/images/selfie.png';
+import SideBar from '../components/SideBar';
+
+import selfiePhoto from 'src/assets/images/selfie-portrait.jpg';
+import Image from 'next/image';
 
 export default async function About() {
 	const userAboutContent = await getUserAbout('zengks');
 	return userAboutContent ? (
 		<div className="flex">
-			<section className="flex-1/4 ps-24 sticky top-23 self-start">
-				<Image src={selfieImage} alt="Image of Myself" width={260} />
+			<section className="w-1/4">
+				<SideBar />
 			</section>
-			<section className="flex-3/4 text-lg">
+			<section className="w-3/4">
 				<section className="section-container text-wrap">
 					<p className="section-title">Hi, I&apos;m Steven</p>
-					<p>{userAboutContent.aboutUser ? userAboutContent.aboutUser : 'Loading...'}</p>
+					<div className="flex justify-between gap-8">
+						<p>{userAboutContent.aboutUser ? userAboutContent.aboutUser : 'Loading...'}</p>
+						<Image src={selfiePhoto} alt="selfie photo" width={132} />
+					</div>
 				</section>
 				<section className="section-container text-wrap">
 					<p className="section-title">Why Me?</p>
