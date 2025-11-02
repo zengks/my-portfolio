@@ -106,7 +106,16 @@ export default async function SideBar() {
 						width={infoIconSize.width}
 						height={infoIconSize.height}
 					/>
-					<p>Download Resume</p>
+
+					<p className="inline-block hover:bg-emerald-100 transition">
+						<a
+							href="/zoho.pdf"
+							download
+							// className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+						>
+							Download Resume
+						</a>
+					</p>
 				</div>
 			</section>
 		</aside>

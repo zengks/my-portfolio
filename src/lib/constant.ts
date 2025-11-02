@@ -45,10 +45,6 @@ export const MENU_ITEMS = [
 		link: '/skills',
 	},
 	{
-		name: 'resume',
-		link: '/resume',
-	},
-	{
 		name: 'contact',
 		link: '/contact',
 	},
