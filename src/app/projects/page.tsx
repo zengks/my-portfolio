@@ -1,5 +1,6 @@
-import ProjectAccordion from '../components/ProjectAccordion';
+// import ProjectAccordion from '../components/projects/ProjectAccordion';
 import SideBar from '../components/SideBar';
+import ProjectList from '../components/projects/ProjectList';
 
 import { Suspense } from 'react';
 
@@ -12,9 +13,9 @@ export default function Projects() {
 				</Suspense>
 			</section>
 			<section className="w-3/4">
-				<p>Work History</p>
+				<p>Projects</p>
 				<Suspense fallback={<div>Loading...</div>}>
-					<ProjectAccordion />
+					<ProjectList />
 				</Suspense>
 			</section>
 		</main>

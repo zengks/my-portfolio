@@ -12,18 +12,18 @@ model User {
   username       String           @unique
   password       String
   role           String?          @default("guest")
-  aboutUser      String?          @db.Text
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
+  aboutUser      String?
+  accounts       Account[]
   blogPost       BlogPost[]
   certificate    Certificate[]
   education      Education[]
   profile        Profile?
   project        Project[]
+  sessions       Session[]
   socialMedia    SocialMedia[]
   workExperience WorkExperience[]
-  accounts       Account[]
-  sessions       Session[]
 
   @@map("users")
 }
@@ -58,8 +58,7 @@ model Account {
   session_state      String?
   oauth_token_secret String?
   oauth_token        String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user               User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -98,13 +97,14 @@ model Certificate {
 model Project {
   id                 Int      @id @default(autoincrement())
   userId             String
-  title              String?
+  title              String
   repo_link          String?
   project_link       String?
   description        String?
   preview_image_link String?
   createdAt          DateTime @default(now())
   updatedAt          DateTime @default(now())
+  tech_stack         String[]
   user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])

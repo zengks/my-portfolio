@@ -9,31 +9,29 @@ import { Suspense } from 'react';
 
 export default async function Home() {
 	return (
-		<div>
-			<main className="flex">
-				<section className="w-1/4">
-					<Suspense fallback={<div>Loading...</div>}>
-						<SideBar />
-					</Suspense>
-				</section>
-				<section className="w-3/4">
-					<Suspense fallback={<div>Loading...</div>}>
-						<UserAbout />
-					</Suspense>
-					<Suspense fallback={<div>Loading...</div>}>
-						<SkillSection />
-					</Suspense>
-					<Suspense fallback={<div>Loading...</div>}>
-						<WorkExpSection />
-					</Suspense>
-					<Suspense fallback={<div>Loading...</div>}>
-						<EducationSection />
-					</Suspense>
-					<Suspense fallback={<div>Loading...</div>}>
-						<CertificateSection />
-					</Suspense>
-				</section>
-			</main>
-		</div>
+		<main className="flex">
+			<section className="w-1/4">
+				<Suspense fallback={<div>Loading...</div>}>
+					<SideBar />
+				</Suspense>
+			</section>
+			<section className="w-3/4">
+				<Suspense fallback={<div>Loading...</div>}>
+					<UserAbout />
+				</Suspense>
+				<Suspense fallback={<div>Loading...</div>}>
+					<SkillSection />
+				</Suspense>
+				<Suspense fallback={<div>Loading...</div>}>
+					<WorkExpSection />
+				</Suspense>
+				<Suspense fallback={<div>Loading...</div>}>
+					<EducationSection />
+				</Suspense>
+				<Suspense fallback={<div>Loading...</div>}>
+					<CertificateSection />
+				</Suspense>
+			</section>
+		</main>
 	);
 }

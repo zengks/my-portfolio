@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 export default async function About() {
 	const userAboutContent = await getUserAbout('zengks');
-	return userAboutContent ? (
+	return (
 		<div className="flex">
 			<section className="w-1/4">
 				<SideBar />
@@ -15,7 +15,12 @@ export default async function About() {
 				<section className="section-container text-wrap">
 					<p className="section-title">Hi, I&apos;m Steven</p>
 					<div className="flex justify-between gap-8">
-						<p>{userAboutContent.aboutUser ? userAboutContent.aboutUser : 'Loading...'}</p>
+						{userAboutContent ? (
+							<p>{userAboutContent?.aboutUser ? userAboutContent?.aboutUser : 'Loading...'}</p>
+						) : (
+							<p>Nothing retrieved</p>
+						)}
+
 						<Image src={selfiePhoto} alt="selfie photo" width={132} />
 					</div>
 				</section>
@@ -69,7 +74,5 @@ export default async function About() {
 				</section>
 			</section>
 		</div>
-	) : (
-		<div></div>
 	);
 }

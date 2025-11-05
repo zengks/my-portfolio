@@ -7,7 +7,9 @@ export default async function AboutSection() {
 		<div className="section-container">
 			<section>
 				<p className="section-title">About Myself</p>
-				<p className="text-wrap">{userAboutContent?.aboutUser}</p>
+				<p className="text-wrap">
+					{userAboutContent ? userAboutContent.aboutUser : 'Nothing to show'}
+				</p>
 			</section>
 		</div>
 	);

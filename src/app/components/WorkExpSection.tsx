@@ -6,17 +6,17 @@ import { getUserWorkExpByUsername } from '@/controllers/userWorkExpController';
 
 export default async function WorkExpSection() {
 	const workData = await getUserWorkExpByUsername();
-	if (!workData) return;
 	const sortedWorkData = workData
 		? [...workData].sort((a: WorkExperience, b: WorkExperience) => {
 				return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
 		  })
 		: null;
 	return (
-		sortedWorkData && (
-			<div className="section-container">
-				<p className="section-title">Recent Work Experience</p>
-				{sortedWorkData.length > 0 ? (
+		<div className="section-container">
+			<p className="section-title">Recent Work Experience</p>
+
+			<div>
+				{sortedWorkData ? (
 					<>
 						<section className="columns-3">
 							{/* {TABLE_HEADERS.map((header, index) => (
@@ -26,7 +26,7 @@ export default async function WorkExpSection() {
 							))} */}
 						</section>
 						<section className="flex flex-col gap-2">
-							{sortedWorkData.map((data: WorkExperience, index: number) => (
+							{sortedWorkData?.map((data: WorkExperience, index: number) => (
 								<div className="columns-3" key={index}>
 									<p>{data.company.toUpperCase()}</p>
 									<p>{data.jobTitle}</p>
@@ -41,6 +41,6 @@ export default async function WorkExpSection() {
 					</section>
 				)}
 			</div>
-		)
+		</div>
 	);
 }

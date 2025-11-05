@@ -1,23 +1,36 @@
 'use client';
 
 import { useState } from 'react';
+import { Project } from 'types/projectType';
+import Image from 'next/image';
 
-export default function ProjectAccordion() {
+import { SKILLS_MAP } from '@/lib/constant';
+
+export default function ProjectAccordion({ project }: { project: Project }) {
 	const [isHidden, setIsHidden] = useState(false);
 
 	const toggleAccordion = () => {
-		console.log('toggled');
 		setIsHidden((prev) => !prev);
 	};
 
 	return (
-		<div className="border-b bg-amber-200 border-slate-400">
+		<div className="border-b bg-amber-200 border-slate-400 mx-auto">
 			<button
 				onClick={toggleAccordion}
-				className="w-7/10 flex justify-between items-center py-5 px-5 text-slate-800 hover:bg-amber-900 cursor-pointer"
+				className="w-full flex justify-between items-center py-5 px-5 text-slate-800 hover:bg-amber-900 cursor-pointer"
 			>
-				<span>Project Name</span>
-				<span>Tech Styles Icon List</span>
+				<span>{project.title}</span>
+				<span className="flex justify-between items-center gap-3">
+					{project.tech_stack.map((each, index: number) => (
+						<Image
+							key={index}
+							src={SKILLS_MAP[each as keyof typeof SKILLS_MAP]}
+							alt="My icon description"
+							width={32}
+							height={32}
+						/>
+					))}
+				</span>
 				<span
 					id="icon-1"
 					className={`text-slate-800 transition-transform duration-500 ${

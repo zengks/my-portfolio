@@ -1,27 +1,47 @@
-import NextJSIcon from '@/assets/icons/nextjs.svg';
 import AngularIcon from '@/assets/icons/angular.svg';
-import ReactIcon from '@/assets/icons/react.svg';
-import TypeScriptIcon from '@/assets/icons/typescript.svg';
-import JavaScriptIcon from '@/assets/icons/javascript.svg';
-import HTML5Icon from '@/assets/icons/html5.svg';
+import BootstrapIcon from '@/assets/icons/bootstrap.svg';
+import ConfluenceIcon from '@/assets/icons/confluence.svg';
+import ContactMeIcon from '@/assets/icons/contactMe.svg';
+import CSharpIcon from '@/assets/icons/csharp.svg';
 import CSSIcon from '@/assets/icons/css.svg';
-import NodeJSIcon from '@/assets/icons/nodejs.svg';
-import ExpressIcon from '@/assets/icons/express.svg';
-import MongoDBIcon from '@/assets/icons/mongodb.svg';
-import PostgreSQLIcon from '@/assets/icons/postgresql.svg';
-import VueIcon from '@/assets/icons/vue.svg';
+import CypressIcon from '@/assets/icons/cypress.svg';
+import DjangoIcon from '@/assets/icons/django.svg';
 import DockerIcon from '@/assets/icons/docker.svg';
-import djangoIcon from '@/assets/icons/django.svg';
-import githubIcon from '@/assets/icons/github.svg';
-import prismaIcon from '@/assets/icons/prisma.svg';
-import bootstrapIcon from '@/assets/icons/bootstrap.svg';
-import tailwindcssIcon from '@/assets/icons/tailwindcss.svg';
-import vercelIcon from '@/assets/icons/vercel.svg';
-import gitlabIcon from '@/assets/icons/gitlab.svg';
-import swiftIcon from '@/assets/icons/swift.svg';
-import confluenceIcon from '@/assets/icons/confluence.svg';
-import jiraIcon from '@/assets/icons/jira.svg';
-import wordpressIcon from '@/assets/icons/wordpress.svg';
+import EmailIcon from '@/assets/icons/email.svg';
+import ExpressIcon from '@/assets/icons/express.svg';
+import FirebaseIcon from '@/assets/icons/firebase.svg';
+import GitIcon from '@/assets/icons/git.svg';
+import GithubIcon from '@/assets/icons/github.svg';
+import GitlabIcon from '@/assets/icons/gitlab.svg';
+import GraphQLIcon from '@/assets/icons/graphql.svg';
+import HTML5Icon from '@/assets/icons/html5.svg';
+import JavaIcon from '@/assets/icons/java.svg';
+import JavaScriptIcon from '@/assets/icons/javascript.svg';
+import JestIcon from '@/assets/icons/jest.svg';
+import JiraIcon from '@/assets/icons/jira.svg';
+import JobIcon from '@/assets/icons/job.svg';
+import LaravelIcon from '@/assets/icons/laravel.svg';
+import LinkedinIcon from '@/assets/icons/linkedin.svg';
+import LocationIcon from '@/assets/icons/location.svg';
+import MongoDBIcon from '@/assets/icons/mongodb.svg';
+import MoonIcon from '@/assets/icons/moon.svg';
+import NextJSIcon from '@/assets/icons/nextjs.svg';
+import NodeJSIcon from '@/assets/icons/nodejs.svg';
+import PHPIcon from '@/assets/icons/php.svg';
+import PostgreSQLIcon from '@/assets/icons/postgresql.svg';
+import PrismaIcon from '@/assets/icons/prisma.svg';
+import PythonIcon from '@/assets/icons/python.svg';
+import ReactIcon from '@/assets/icons/react.svg';
+import ResumeIcon from '@/assets/icons/resume.svg';
+import SunIcon from '@/assets/icons/sun.svg';
+import SwiftIcon from '@/assets/icons/swift.svg';
+import TailwindCSSIcon from '@/assets/icons/tailwindcss.svg';
+import TypeScriptIcon from '@/assets/icons/typescript.svg';
+import UserIcon from '@/assets/icons/user.svg';
+import VercelIcon from '@/assets/icons/vercel.svg';
+import VSCodeIcon from '@/assets/icons/vscode.svg';
+import VueIcon from '@/assets/icons/vue.svg';
+import WordPressIcon from '@/assets/icons/wordpress.svg';
 
 export const MENU_ITEMS = [
 	{
@@ -81,7 +101,7 @@ export const NEXT_STACK = [
 	},
 	{
 		name: 'Prisma',
-		src: prismaIcon,
+		src: PrismaIcon,
 		altText: 'Prisma Icon',
 	},
 	{
@@ -91,7 +111,7 @@ export const NEXT_STACK = [
 	},
 	{
 		name: 'Tailwind CSS',
-		src: tailwindcssIcon,
+		src: TailwindCSSIcon,
 		altText: 'Tailwind CSS Icon',
 	},
 	{
@@ -101,7 +121,7 @@ export const NEXT_STACK = [
 	},
 	{
 		name: 'Vercel',
-		src: vercelIcon,
+		src: VercelIcon,
 		altText: 'Vercel Icon',
 	},
 ];
@@ -139,7 +159,7 @@ export const WEB_DEV_SKILLS = [
 	},
 	{
 		name: 'WordPress',
-		src: wordpressIcon,
+		src: WordPressIcon,
 		altText: 'WordPress Icon',
 	},
 	{
@@ -179,27 +199,27 @@ export const WEB_DEV_SKILLS = [
 	},
 	{
 		name: 'Prisma',
-		src: prismaIcon,
+		src: PrismaIcon,
 		altText: 'Prisma Icon',
 	},
 	{
 		name: 'Tailwind CSS',
-		src: tailwindcssIcon,
+		src: TailwindCSSIcon,
 		altText: 'Tailwind CSS Icon',
 	},
 	{
 		name: 'Bootstrap',
-		src: bootstrapIcon,
+		src: BootstrapIcon,
 		altText: 'Bootstrap Icon',
 	},
 	{
 		name: 'Vercel',
-		src: vercelIcon,
+		src: VercelIcon,
 		altText: 'Vercel Icon',
 	},
 	{
 		name: 'Django',
-		src: djangoIcon,
+		src: DjangoIcon,
 		altText: 'Django Icon',
 	},
 ];
@@ -212,7 +232,7 @@ export const MOBILE_DEV_SKILLS = [
 	},
 	{
 		name: 'Swift',
-		src: swiftIcon,
+		src: SwiftIcon,
 		altText: 'Swift Icon',
 	},
 ];
@@ -220,22 +240,69 @@ export const MOBILE_DEV_SKILLS = [
 export const PROJECT_MANAGEMENT_TOOLS = [
 	{
 		name: 'GitHub',
-		src: githubIcon,
+		src: GithubIcon,
 		altText: 'GitHub Icon',
 	},
 	{
 		name: 'GitLab',
-		src: gitlabIcon,
+		src: GitlabIcon,
 		altText: 'GitLab Icon',
 	},
 	{
 		name: 'Jira',
-		src: jiraIcon,
+		src: JiraIcon,
 		altText: 'Jira Icon',
 	},
 	{
 		name: 'Confluence',
-		src: confluenceIcon,
+		src: ConfluenceIcon,
 		altText: 'Confluence Icon',
 	},
 ];
+
+export const SKILLS_MAP = {
+	angular: AngularIcon,
+	bootstrap: BootstrapIcon,
+	confluence: ConfluenceIcon,
+	contactMe: ContactMeIcon,
+	csharp: CSharpIcon,
+	css: CSSIcon,
+	cypress: CypressIcon,
+	django: DjangoIcon,
+	docker: DockerIcon,
+	email: EmailIcon,
+	expressjs: ExpressIcon,
+	firebase: FirebaseIcon,
+	git: GitIcon,
+	github: GithubIcon,
+	gitlab: GitlabIcon,
+	graphql: GraphQLIcon,
+	html5: HTML5Icon,
+	java: JavaIcon,
+	javascript: JavaScriptIcon,
+	jest: JestIcon,
+	jira: JiraIcon,
+	job: JobIcon,
+	laravel: LaravelIcon,
+	linkedin: LinkedinIcon,
+	location: LocationIcon,
+	mongodb: MongoDBIcon,
+	moon: MoonIcon,
+	nextjs: NextJSIcon,
+	nodejs: NodeJSIcon,
+	php: PHPIcon,
+	postgresql: PostgreSQLIcon,
+	prisma: PrismaIcon,
+	python: PythonIcon,
+	reactjs: ReactIcon,
+	resume: ResumeIcon,
+	sun: SunIcon,
+	swift: SwiftIcon,
+	tailwindcss: TailwindCSSIcon,
+	typescript: TypeScriptIcon,
+	user: UserIcon,
+	vercel: VercelIcon,
+	vscode: VSCodeIcon,
+	vue: VueIcon,
+	wordpress: WordPressIcon,
+};
