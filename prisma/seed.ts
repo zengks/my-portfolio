@@ -60,12 +60,24 @@ async function main() {
 		},
 	});
 
-	await prisma.project.create({
-		data: {
-			userId: adminUser.id,
-			title: 'BCIT Quiz Page',
-			tech_stack: ['nextjs', 'mongodb', 'reactjs', 'expressjs', 'nodejs'],
-		},
+	await prisma.project.createMany({
+		data: [
+			{
+				userId: adminUser.id,
+				title: 'BCIT Quiz Page',
+				tech_stack: ['mongodb', 'reactjs', 'expressjs', 'nodejs'],
+			},
+			{
+				userId: adminUser.id,
+				title: 'Personal Portfolio Website',
+				tech_stack: ['nextjs', 'prisma', 'tailwindcss', 'typescript'],
+			},
+			{
+				userId: adminUser.id,
+				title: 'Kombucha Guide',
+				tech_stack: ['reactjs', 'python', 'css'],
+			},
+		],
 	});
 }
 

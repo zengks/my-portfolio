@@ -17,10 +17,10 @@ export default function ProjectAccordion({ project }: { project: Project }) {
 		<div className="border-b bg-amber-200 border-slate-400 mx-auto">
 			<button
 				onClick={toggleAccordion}
-				className="w-full flex justify-between items-center py-5 px-5 text-slate-800 hover:bg-amber-900 cursor-pointer"
+				className="columns-3 flex justify-between items-center w-full py-5 px-5 text-slate-800 hover:bg-amber-900 cursor-pointer"
 			>
 				<span>{project.title}</span>
-				<span className="flex justify-between items-center gap-3">
+				<span className="flex justify-between items-center gap-3 border-2">
 					{project.tech_stack.map((each, index: number) => (
 						<Image
 							key={index}
