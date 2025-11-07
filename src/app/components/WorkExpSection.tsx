@@ -12,35 +12,25 @@ export default async function WorkExpSection() {
 		  })
 		: null;
 	return (
-		<div className="section-container">
+		<section className="section-container">
 			<p className="section-title">Recent Work Experience</p>
-
 			<div>
-				{sortedWorkData ? (
-					<>
-						<section className="columns-3">
-							{/* {TABLE_HEADERS.map((header, index) => (
-								<p key={index} className="italic font-extrabold ">
-									{header}
-								</p>
-							))} */}
-						</section>
-						<section className="flex flex-col gap-2">
-							{sortedWorkData?.map((data: WorkExperience, index: number) => (
-								<div className="columns-3" key={index}>
-									<p>{data.company.toUpperCase()}</p>
-									<p>{data.jobTitle}</p>
-									<p>{`${getYear(data.startDate)} - ${getYear(data.endDate)}`}</p>
-								</div>
-							))}
-						</section>
-					</>
+				{sortedWorkData && sortedWorkData.length > 0 ? (
+					<section className="flex flex-col gap-2">
+						{sortedWorkData?.map((data: WorkExperience, index: number) => (
+							<div className="columns-3" key={index}>
+								<p>{data.company.toUpperCase()}</p>
+								<p>{data.jobTitle}</p>
+								<p>{`${getYear(data.startDate)} - ${getYear(data.endDate)}`}</p>
+							</div>
+						))}
+					</section>
 				) : (
 					<section>
-						<p>No Work History</p>
+						<p>No Work History Found.</p>
 					</section>
 				)}
 			</div>
-		</div>
+		</section>
 	);
 }

@@ -3,26 +3,27 @@
 import { useState } from 'react';
 
 export default function WorkAccordion() {
-	const [isHidden, setIsHidden] = useState(false);
+	const [isOpen, setIsOpen] = useState(false);
 
 	const toggleAccordion = () => {
-		console.log('toggled');
-		setIsHidden((prev) => !prev);
+		setIsOpen((prev) => !prev);
 	};
 
 	return (
-		<div className="border-b bg-amber-200 border-slate-400">
+		<div className="mb-3 rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden">
 			<button
 				onClick={toggleAccordion}
-				className="w-full flex justify-between items-center py-5 px-5 text-slate-800 hover:bg-amber-900 cursor-pointer"
+				className="flex w-full items-center justify-between p-5 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-opacity-50"
 			>
-				<span>Multimedia Developer</span>
-				<span>British Columbia Institute of Technology</span>
-				<span>July, 2023 - Present</span>
+				<div className="flex-1 items-center grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 text-left pr-4">
+					<span className="font-medium text-gray-900">Multimedia Developer</span>
+					<span className="text-sm text-gray-700">British Columbia Institute of Technology</span>
+					<span className="text-sm text-center text-gray-500">July, 2023 - Present</span>
+				</div>
+
 				<span
-					id="icon-1"
 					className={`text-slate-800 transition-transform duration-500 ${
-						isHidden ? 'rotate-45' : ''
+						isOpen ? 'rotate-45' : ''
 					}`}
 				>
 					<svg
@@ -35,46 +36,23 @@ export default function WorkAccordion() {
 					</svg>
 				</span>
 			</button>
+
 			<div
-				id="content-1"
 				className={`overflow-hidden transition-all duration-500 ease-in-out ${
-					isHidden ? 'max-h-[500px]' : 'max-h-0'
+					isOpen ? 'max-h-[1000px]' : 'max-h-0'
 				}`}
 			>
-				<div className="pb-5 text-sm text-slate-500">
-					<ul>
+				<div className="p-5 border-t border-gray-200">
+					<ul className="list-disc list-inside space-y-2 text-sm text-gray-700">
 						<li>
-							{' '}
 							Material Tailwind is a framework that enhances Tailwind CSS with additional styles and
 							components.
 						</li>
 						<li>
-							{' '}
 							Material Tailwind is a framework that enhances Tailwind CSS with additional styles and
 							components.
 						</li>
 						<li>
-							{' '}
-							Material Tailwind is a framework that enhances Tailwind CSS with additional styles and
-							components.
-						</li>
-						<li>
-							{' '}
-							Material Tailwind is a framework that enhances Tailwind CSS with additional styles and
-							components.
-						</li>
-						<li>
-							{' '}
-							Material Tailwind is a framework that enhances Tailwind CSS with additional styles and
-							components.
-						</li>
-						<li>
-							{' '}
-							Material Tailwind is a framework that enhances Tailwind CSS with additional styles and
-							components.
-						</li>
-						<li>
-							{' '}
 							Material Tailwind is a framework that enhances Tailwind CSS with additional styles and
 							components.
 						</li>

@@ -10,7 +10,7 @@ const iconWidth = 25;
 
 export default async function SkillSection() {
 	return (
-		<div className="section-container">
+		<section className="section-container">
 			<p className="section-title">Core Technical Skills</p>
 			<section>
 				<div>
@@ -30,17 +30,6 @@ export default async function SkillSection() {
 					<SkillRow skillsArray={PROJECT_MANAGEMENT_TOOLS} iconWidth={iconWidth} />
 				</div>
 			</section>
-			{/* <section>
-				<SkillRow skillsArray={MERN_STACK} iconWidth={iconWidth} />
-
-				<SkillRow skillsArray={NEXT_STACK} iconWidth={iconWidth} />
-			</section>
-			<section>
-				<SkillRow skillsArray={MOBILE_DEV_SKILLS} iconWidth={iconWidth} />
-			</section>
-			<section>
-				<SkillRow skillsArray={PROJECT_MANAGEMENT_TOOLS} iconWidth={iconWidth} />
-			</section> */}
-		</div>
+		</section>
 	);
 }

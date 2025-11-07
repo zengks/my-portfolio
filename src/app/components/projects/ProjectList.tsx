@@ -4,7 +4,6 @@ import { Project } from 'types/projectType';
 
 export default async function ProjectList() {
 	const projectData = await getUserProjectByUsername();
-	console.log(projectData);
 	return (
 		<div>
 			{projectData?.length ? (

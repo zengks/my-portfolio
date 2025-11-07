@@ -5,32 +5,18 @@ import EducationSection from './components/EducationSection';
 import CertificateSection from './components/CertificateSection';
 import SkillSection from './components/SkillSection';
 
-import { Suspense } from 'react';
-
 export default async function Home() {
 	return (
 		<main className="flex">
 			<section className="w-1/4">
-				<Suspense fallback={<div>Loading...</div>}>
-					<SideBar />
-				</Suspense>
+				<SideBar />
 			</section>
 			<section className="w-3/4">
-				<Suspense fallback={<div>Loading...</div>}>
-					<UserAbout />
-				</Suspense>
-				<Suspense fallback={<div>Loading...</div>}>
-					<SkillSection />
-				</Suspense>
-				<Suspense fallback={<div>Loading...</div>}>
-					<WorkExpSection />
-				</Suspense>
-				<Suspense fallback={<div>Loading...</div>}>
-					<EducationSection />
-				</Suspense>
-				<Suspense fallback={<div>Loading...</div>}>
-					<CertificateSection />
-				</Suspense>
+				<UserAbout />
+				<SkillSection />
+				<WorkExpSection />
+				<EducationSection />
+				<CertificateSection />
 			</section>
 		</main>
 	);

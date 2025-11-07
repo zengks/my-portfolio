@@ -13,9 +13,9 @@ export default async function CertificateSection() {
 		  })
 		: null;
 	return (
-		<div className="section-container">
+		<section className="section-container">
 			<p className="section-title">Certificates</p>
-			{sortedCertData ? (
+			{sortedCertData && sortedCertData.length > 0 ? (
 				<section className="flex flex-col gap-2">
 					{sortedCertData.map((data: Certificate, index: number) => (
 						<div className="columns-3" key={index}>
@@ -26,8 +26,8 @@ export default async function CertificateSection() {
 					))}
 				</section>
 			) : (
-				<section>No certificate found</section>
+				<section>No certificate found.</section>
 			)}
-		</div>
+		</section>
 	);
 }

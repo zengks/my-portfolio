@@ -1,21 +1,17 @@
 import WorkAccordion from '../components/WorkAccordion';
 import SideBar from '../components/SideBar';
 
-import { Suspense } from 'react';
-
 export default function Work() {
 	return (
 		<main className="flex">
 			<section className="w-1/4">
-				<Suspense fallback={<div>Loading...</div>}>
-					<SideBar />
-				</Suspense>
+				<SideBar />
 			</section>
 			<section className="w-3/4">
-				<p>Work History</p>
-				<Suspense fallback={<div>Loading...</div>}>
+				<section className="section-container">
+					<p className="section-title">Work History</p>
 					<WorkAccordion />
-				</Suspense>
+				</section>
 			</section>
 		</main>
 	);

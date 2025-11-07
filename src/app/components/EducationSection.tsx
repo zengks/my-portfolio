@@ -11,9 +11,9 @@ export default async function EducationSection() {
 		: null;
 
 	return (
-		<div className="section-container">
+		<section className="section-container">
 			<p className="section-title">Education</p>
-			{sortedEduData ? (
+			{sortedEduData && sortedEduData.length > 0 ? (
 				<section className="flex flex-col gap-2">
 					{sortedEduData.map((data: Education, index: number) => (
 						<div className="columns-3" key={index}>
@@ -24,8 +24,8 @@ export default async function EducationSection() {
 					))}
 				</section>
 			) : (
-				<section>No eduction history</section>
+				<section>No eduction history found.</section>
 			)}
-		</div>
+		</section>
 	);
 }
