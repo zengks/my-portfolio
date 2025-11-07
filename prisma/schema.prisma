@@ -29,16 +29,22 @@ model User {
 }
 
 model Profile {
-  id        Int      @id @default(autoincrement())
-  userId    String   @unique
-  firstName String
-  lastName  String?
-  email     String   @unique
-  bio       String?
-  imageLink String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
-  user      User     @relation(fields: [userId], references: [id])
+  id          Int      @id @default(autoincrement())
+  userId      String   @unique
+  firstName   String
+  lastName    String?
+  email       String   @unique
+  jobTitle    String?
+  bioLink     String?
+  imageLink   String?
+  city        String?
+  province    String?
+  country     String?
+  linkedInUrl String?
+  githubUrl   String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  user        User     @relation(fields: [userId], references: [id])
 
   @@index([userId])
 }

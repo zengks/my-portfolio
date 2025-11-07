@@ -21,7 +21,7 @@ const lora = Lora({
 
 const hurricane = Hurricane({
 	subsets: ['latin'],
-	weight: '400', // Hurricane only has 400 weight
+	weight: '400',
 	variable: '--font-hurricane',
 });
 
