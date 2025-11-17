@@ -7,8 +7,15 @@ export default function ContactForm() {
 	const [email, setEmail] = useState('');
 	const [message, setMessage] = useState('');
 
+	const [isLoading, setIsLoading] = useState(false);
+	const [statusMessage, setStatusMessage] = useState<string | null>(null);
+	const [isError, setIsError] = useState(false);
+
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+		setIsLoading(true);
+		setStatusMessage(null);
+		setIsError(false);
 
 		const formData = {
 			name,
@@ -28,16 +35,19 @@ export default function ContactForm() {
 			const data = await response.json();
 
 			if (response.ok) {
-				// setStatus({ success: true, message: data.message });
-				console.log(data.message);
-				// setName('');
-				// setEmail('');
-				// setMessage('');
+				setStatusMessage(data.message);
+				setName('');
+				setEmail('');
+				setMessage('');
 			} else {
-				throw new Error(data.message);
+				throw new Error(data.message || 'Something went wrong');
 			}
-		} catch (error) {
-			console.error(error);
+			// eslint-disable-next-line @typescript-eslint/no-explicit-any
+		} catch (error: any) {
+			setIsError(true);
+			setStatusMessage(error.message);
+		} finally {
+			setIsLoading(false);
 		}
 	};
 
@@ -96,12 +106,17 @@ export default function ContactForm() {
 					/>
 				</section>
 
-				<section className="mt-8 flex justify-end items-center">
+				<section
+					className={`mt-8 flex items-center ${statusMessage ? 'justify-between' : 'justify-end'}`}
+				>
+					{statusMessage && (
+						<p className={`${isError ? 'text-red-600' : 'text-green-600'}`}>{statusMessage}</p>
+					)}
 					<button
 						type="submit"
-						className="cursor-pointer py-2 px-6 rounded-md shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+						className="cursor-pointer text-end py-2 px-6 rounded-md shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
 					>
-						Send Now
+						{isLoading ? 'Sending...' : 'Send Now'}
 					</button>
 				</section>
 			</form>
