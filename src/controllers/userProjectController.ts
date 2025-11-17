@@ -1,6 +1,24 @@
 import prisma from 'src/lib/prisma';
 import { Project } from 'types/projectType';
 import { apiPaths } from '@/lib/apiPaths';
+import { getUserIdByUsername } from './userController';
+
+export async function getUserProjectByUsername(username: string = 'zengks') {
+	const user = await getUserIdByUsername(username);
+	if (!user) return null;
+	return await prisma.project.findMany({
+		where: { userId: user.id },
+		select: {
+			id: true,
+			title: true,
+			repo_link: true,
+			project_link: true,
+			description: true,
+			preview_image_link: true,
+			tech_stack: true,
+		},
+	});
+}
 
 export async function getUserProject(userId: string) {
 	return await prisma.project.findMany({

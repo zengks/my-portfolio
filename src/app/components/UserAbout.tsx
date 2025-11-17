@@ -1,12 +1,17 @@
 import { getUserAbout } from '@/controllers/userAboutController';
+import ViewMore from './ViewMoreLink';
 
 export default async function AboutSection() {
 	const userAboutContent = await getUserAbout();
-
 	return (
-		<div className="glass-container glass-section">
+		<section className="section-container section-card relative">
 			<p className="section-title">About Myself</p>
-			<p className="section-content">{userAboutContent?.aboutUser}</p>
-		</div>
+			<p className="text-wrap">
+				{userAboutContent && userAboutContent.aboutUser !== null
+					? userAboutContent.aboutUser
+					: 'Nothing to show'}
+			</p>
+			<ViewMore target_url="/about" />
+		</section>
 	);
 }

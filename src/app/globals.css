@@ -1,25 +1,66 @@
-@import "tailwindcss";
-
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    /* --foreground: #ededed; */
-  }
-}
+@import 'tailwindcss';
 
 body {
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+	@apply font-serif bg-[#F8F9FA] text-[#292721] text-base/7;
+}
+
+.section-sidebar {
+	@apply ms-25 pt-[30] border border-gray-200 rounded-lg bg-white shadow-sm overflow-hidden;
+}
+
+.section-sidebar-row {
+	@apply rounded-lg bg-gray-50 shadow-sm overflow-hidden mt-2 ps-[20] py-[15] flex flex-col gap-2;
+}
+
+.section-sidebar-row-item {
+	@apply flex justify-start items-center gap-3;
+}
+
+.section-title {
+	@apply font-light uppercase tracking-widest text-[#343A40] mb-6 text-xl;
+}
+
+.section-container {
+	@apply mx-[100];
+}
+
+.section-card {
+	@apply mb-[15] px-[40] py-[30] border border-gray-200 rounded-lg bg-white shadow-sm overflow-hidden;
+}
+
+.section-skill-card {
+	@apply border border-gray-200 rounded-lg bg-neutral-50 shadow-sm overflow-hidden;
+}
+
+.skill-row {
+	@apply pb-[10] flex justify-start flex-wrap gap-2 items-center;
+}
+
+.skill-sort-title {
+	@apply pb-2 font-light text-base;
+}
+
+.skill-item {
+	@apply bg-[#E9ECEF] px-3 py-2 rounded-full text-sm flex items-center justify-start gap-1;
+}
+
+.logo {
+	font-family: 'Hurricane', cursive;
+	font-weight: 700;
+	font-style: normal;
+	font-size: 32px;
+	text-transform: uppercase;
+}
+
+.logo-creative {
+	background: linear-gradient(to right, #4a4a4a, #292721);
+	-webkit-background-clip: text;
+	-webkit-text-fill-color: transparent;
+	background-clip: text;
+	text-fill-color: transparent;
+	transition: opacity 0.3s ease;
+}
+
+.logo-creative:hover {
+	opacity: 0.8;
 }

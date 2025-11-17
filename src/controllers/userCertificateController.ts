@@ -1,6 +1,22 @@
 import prisma from '@/lib/prisma';
 import { Certificate } from 'types/certificateType';
 import { apiPaths } from '@/lib/apiPaths';
+import { getUserIdByUsername } from './userController';
+
+export async function getUserCertificateByUsername(username: string = 'zengks') {
+	const user = await getUserIdByUsername(username);
+	if (!user) return null;
+	return await prisma.certificate.findMany({
+		where: { userId: user.id },
+		select: {
+			id: true,
+			name: true,
+			certNumber: true,
+			dateIssued: true,
+			dateExpired: true,
+		},
+	});
+}
 
 export async function getUserCertificate(userId: string) {
 	return await prisma.certificate.findMany({

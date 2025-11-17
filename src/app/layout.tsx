@@ -1,45 +1,55 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import SessionWrapper from "./components/SessionWrapper";
-import NavBar from "./components/UI/NavBar";
-import Footer from "./components/UI/Footer";
+import type { Metadata } from 'next';
+import { Manrope, Lora, Hurricane } from 'next/font/google';
 
-import "./globals.css";
-import "@/styles/component.css";
+import SessionWrapper from './components/SessionWrapper';
+import NavBar from './components/UI/NavBar';
+import Footer from './components/UI/Footer';
+import SideBar from './components/SideBar';
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+import './globals.css';
+
+const manrope = Manrope({
+	subsets: ['latin'],
+	display: 'swap',
+	variable: '--font-manrope',
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+const lora = Lora({
+	subsets: ['latin'],
+	display: 'swap',
+	variable: '--font-lora',
+});
+
+const hurricane = Hurricane({
+	subsets: ['latin'],
+	weight: '400',
+	variable: '--font-hurricane',
 });
 
 export const metadata: Metadata = {
-  title: "CZ",
-  description: "CZ's portfolio website",
+	title: 'Steven Portfolio',
+	description: "CZ's portfolio website",
 };
 
 export default function RootLayout({
-  children,
+	children,
 }: Readonly<{
-  children: React.ReactNode;
+	children: React.ReactNode;
 }>) {
-  return (
-    <html lang="en">
-      <head></head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-gradient-to-br from-sky-300 via-sky-200 to-sky-100 animate-gradient-xy`}
-      >
-        <div className="absolute inset-0 bg-white/10 backdrop-blur-2xl -z-10" />
-        <div className="glass-container outer-glass-container h-screen">
-          <NavBar />
-          <SessionWrapper>{children}</SessionWrapper>
-        </div>
-        <Footer />
-      </body>
-    </html>
-  );
+	return (
+		<html lang="en" className={`${manrope.variable} ${lora.variable} ${hurricane.variable}`}>
+			<body className="flex flex-col min-h-screen justify-between max-w-[1440px] mx-auto">
+				<NavBar />
+				<main className="flex">
+					<section className="w-1/4">
+						<SideBar />
+					</section>
+					<section className="w-3/4">
+						<SessionWrapper>{children}</SessionWrapper>
+					</section>
+				</main>
+				<Footer />
+			</body>
+		</html>
+	);
 }

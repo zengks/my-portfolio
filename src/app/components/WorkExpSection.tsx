@@ -1,31 +1,37 @@
 import { WorkExperience } from 'types/workExpType';
 import { getYear } from '@/utility';
 import { getUserWorkExpByUsername } from '@/controllers/userWorkExpController';
+import ViewMore from './ViewMoreLink';
+
+// const TABLE_HEADERS = ['Company', 'Job Title', 'Duration'];
 
 export default async function WorkExpSection() {
 	const workData = await getUserWorkExpByUsername();
+	const sortedWorkData = workData
+		? [...workData].sort((a: WorkExperience, b: WorkExperience) => {
+				return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+		  })
+		: null;
 	return (
-		workData && (
-			<div className="glass-container glass-section">
-				<p className="section-title">Work Experience</p>
+		<section className="section-container section-card">
+			<p className="section-title">Recent Work Experience</p>
 
-				{workData.length > 0 ? (
-					<section className="flex">
-						{workData.map((data: WorkExperience, index: number) => (
-							<div className="glass-container glass-card mr-3 py-3 px-2" key={index}>
-								<p className="border-b-1 border-black/20 py-1 font-bold">
-									{data.company.toUpperCase()}
-								</p>
-								<p className="py-2">{data.jobTitle}</p>
-								<p className="pb-2">{data.description}</p>
-								<p className="pb-2">{`${getYear(data.startDate)} - ${getYear(data.endDate)}`}</p>
-							</div>
-						))}
-					</section>
-				) : (
-					<section>Loading...</section>
-				)}
-			</div>
-		)
+			{sortedWorkData && sortedWorkData.length > 0 ? (
+				<section className="flex flex-col gap-2">
+					{sortedWorkData?.map((data: WorkExperience, index: number) => (
+						<div className="columns-3" key={index}>
+							<p>{data.company.toUpperCase()}</p>
+							<p>{data.jobTitle}</p>
+							<p>{`${getYear(data.startDate)} - ${getYear(data.endDate)}`}</p>
+						</div>
+					))}
+					<ViewMore target_url="/work" />
+				</section>
+			) : (
+				<section>
+					<p>No Work History Found.</p>
+				</section>
+			)}
+		</section>
 	);
 }
