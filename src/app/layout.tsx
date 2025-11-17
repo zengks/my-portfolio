@@ -4,6 +4,7 @@ import { Manrope, Lora, Hurricane } from 'next/font/google';
 import SessionWrapper from './components/SessionWrapper';
 import NavBar from './components/UI/NavBar';
 import Footer from './components/UI/Footer';
+import SideBar from './components/SideBar';
 
 import './globals.css';
 
@@ -39,9 +40,14 @@ export default function RootLayout({
 		<html lang="en" className={`${manrope.variable} ${lora.variable} ${hurricane.variable}`}>
 			<body className="flex flex-col min-h-screen justify-between max-w-[1440px] mx-auto">
 				<NavBar />
-				<section>
-					<SessionWrapper>{children}</SessionWrapper>
-				</section>
+				<main className="flex">
+					<section className="w-1/4">
+						<SideBar />
+					</section>
+					<section className="w-3/4">
+						<SessionWrapper>{children}</SessionWrapper>
+					</section>
+				</main>
 				<Footer />
 			</body>
 		</html>
