@@ -10,15 +10,15 @@ export default function WorkAccordion() {
 	};
 
 	return (
-		<div className="mb-3 rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden">
+		<div className="mb-3 rounded-lg border border-gray-200 bg-neutral-50 shadow-sm overflow-hidden">
 			<button
 				onClick={toggleAccordion}
-				className="flex w-full items-center justify-between p-5 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-opacity-50"
+				className="flex w-full items-center justify-between p-5 hover:bg-gray-100 focus:outline-none focus:ring-gray-900 focus:ring-opacity-50 cursor-pointer"
 			>
-				<div className="flex-1 items-center grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 text-left pr-4">
-					<span className="font-medium text-gray-900">Multimedia Developer</span>
-					<span className="text-sm text-gray-700">British Columbia Institute of Technology</span>
-					<span className="text-sm text-center text-gray-500">July, 2023 - Present</span>
+				<div className="flex-1 items-center grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 text-left pr-4 text-sm tracking-wide">
+					<span className="text-gray-900">Multimedia Developer</span>
+					<span className="text-gray-700">BCIT</span>
+					<span className="text-gray-500">July, 2023 - Present</span>
 				</div>
 
 				<span

@@ -14,10 +14,10 @@ export default function ProjectAccordion({ project }: { project: Project }) {
 	};
 
 	return (
-		<div className="mb-3 rounded-lg border border-gray-200 bg-white shadow-sm overflow-hidden">
+		<div className="mb-3 rounded-lg border border-gray-200 bg-neutral-50 shadow-sm overflow-hidden">
 			<button
 				onClick={toggleAccordion}
-				className="w-full flex items-center justify-between p-4 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-gray-900 focus:ring-opacity-50"
+				className="w-full flex items-center justify-between p-4 hover:bg-gray-100 focus:outline-none focus:ring-gray-900 focus:ring-opacity-50 cursor-pointer"
 			>
 				<div className="flex-1 items-center grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-4 text-left pr-4">
 					<span className="font-medium text-gray-900">{project.title}</span>
