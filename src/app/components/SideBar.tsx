@@ -29,7 +29,7 @@ const GITHUB_REPO_URL = 'https://github.com/zengks?tab=repositories';
 export default async function SideBar() {
 	const profileData = await getUserProfile();
 	return (
-		<aside className="section-sidebar flex flex-col justify-center sticky top-24 self-start">
+		<aside className="section-sidebar flex flex-col justify-center sticky top-24 self-start tracking-wide">
 			<section className="flex items-center justify-center">
 				<Image src={selfieRounded} alt="selfie emoji photo" width={160} priority />
 			</section>

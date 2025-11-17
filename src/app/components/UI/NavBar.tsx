@@ -7,9 +7,11 @@ import { usePathname } from 'next/navigation';
 import moonIcon from 'src/assets/icons/moon.svg';
 import sunIcon from 'src/assets/icons/sun.svg';
 import Image from 'next/image';
+import { useState } from 'react';
 
 export default function NavBar() {
 	const pathname = usePathname();
+	const [theme, setTheme] = useState('light');
 
 	return (
 		<div className="flex justify-around items-center my-8">
@@ -42,13 +44,34 @@ export default function NavBar() {
 					})}
 				</nav>
 			</div>
-			<div className="flex justify-center items-center gap-2 me-4">
-				<button>
-					<Image src={sunIcon} alt="Light Mode Icon" width={25} height={25} />
-				</button>
-				<button>
-					<Image src={moonIcon} alt="Dark Mode Icon" width={25} height={25} />
-				</button>
+			<div className="flex justify-center items-center gap-2 me-3">
+				<div className="group relative flex items-center justify-center w-10 h-10">
+					<button
+						onClick={() => setTheme('light')}
+						className={`
+              absolute p-2 rounded-full
+              transition-all duration-300 ease-out hover:bg-neutral-200 cursor-pointer
+              ${theme === 'light' ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}
+              group-hover:translate-x-[-60%] group-hover:opacity-100 group-hover:scale-100
+              group-hover:bg-neutral-100
+            `}
+					>
+						<Image src={sunIcon} alt="Light Mode Icon" width={25} height={25} />
+					</button>
+
+					<button
+						onClick={() => setTheme('dark')}
+						className={`
+              absolute p-2 rounded-full
+              transition-all duration-300 ease-out hover:bg-neutral-200 cursor-pointer
+              ${theme === 'dark' ? 'opacity-100 scale-100' : 'opacity-0 scale-0'}
+              group-hover:translate-x-[50%] group-hover:opacity-100 group-hover:scale-100
+              group-hover:bg-neutral-100
+            `}
+					>
+						<Image src={moonIcon} alt="Dark Mode Icon" width={25} height={25} />
+					</button>
+				</div>
 			</div>
 		</div>
 	);
