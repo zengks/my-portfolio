@@ -12,7 +12,7 @@ export default async function WorkExpSection() {
 		  })
 		: null;
 	return (
-		<section className="section-container">
+		<section className="section-container section-card">
 			<p className="section-title">Recent Work Experience</p>
 			<div>
 				{sortedWorkData && sortedWorkData.length > 0 ? (

@@ -7,7 +7,7 @@ export default async function About() {
 	const userAboutContent = await getUserAbout('zengks');
 	return (
 		<section>
-			<section className="section-container text-wrap">
+			<section className="section-container section-card text-wrap">
 				<p className="section-title">Hi, I&apos;m Steven</p>
 				<div className="flex justify-between gap-8">
 					{userAboutContent && userAboutContent.aboutUser !== null ? (
@@ -16,10 +16,10 @@ export default async function About() {
 						<p>Nothing retrieved</p>
 					)}
 
-					<Image src={selfiePhoto} alt="selfie photo" width={132} />
+					<Image src={selfiePhoto} alt="selfie photo" width={210} />
 				</div>
 			</section>
-			<section className="section-container text-wrap">
+			<section className="section-container section-card text-wrap">
 				<p className="section-title">Why Me?</p>
 				<p>
 					My philosophy is that performance and experience are two sides of the same coin. I&apos;m
@@ -37,7 +37,7 @@ export default async function About() {
 					experience.
 				</p>
 			</section>
-			<section className="section-container text-wrap">
+			<section className="section-container section-card text-wrap">
 				<p className="section-title">When I&apos;m not Coding</p>
 				<p>
 					Away from the keyboard, I&apos;m always looking for a new challenge. You&apos;ll usually
@@ -59,7 +59,7 @@ export default async function About() {
 					</li>
 				</ul>
 			</section>
-			<section className="section-container text-wrap">
+			<section className="section-container section-card text-wrap">
 				<p className="section-title">Call to Action</p>
 				<p>
 					My work is just one part of my story. If you&apos;re interested in learning more, you can

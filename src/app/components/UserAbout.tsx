@@ -3,7 +3,7 @@ import { getUserAbout } from '@/controllers/userAboutController';
 export default async function AboutSection() {
 	const userAboutContent = await getUserAbout();
 	return (
-		<section className="section-container">
+		<section className="section-container section-card">
 			<p className="section-title">About Myself</p>
 			<p className="text-wrap">
 				{userAboutContent && userAboutContent.aboutUser !== null

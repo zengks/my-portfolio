@@ -10,7 +10,7 @@ const iconWidth = 25;
 
 export default async function SkillSection() {
 	return (
-		<section className="section-container">
+		<section className="section-container section-card">
 			<p className="section-title">Core Technical Skills</p>
 			<section>
 				<div>

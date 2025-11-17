@@ -13,7 +13,7 @@ export default async function CertificateSection() {
 		  })
 		: null;
 	return (
-		<section className="section-container">
+		<section className="section-container section-card">
 			<p className="section-title">Certificates</p>
 			{sortedCertData && sortedCertData.length > 0 ? (
 				<section className="flex flex-col gap-2">

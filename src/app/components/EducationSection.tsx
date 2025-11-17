@@ -11,7 +11,7 @@ export default async function EducationSection() {
 		: null;
 
 	return (
-		<section className="section-container">
+		<section className="section-container section-card">
 			<p className="section-title">Education</p>
 			{sortedEduData && sortedEduData.length > 0 ? (
 				<section className="flex flex-col gap-2">
