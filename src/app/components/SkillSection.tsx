@@ -5,6 +5,7 @@ import {
 	NEXT_STACK,
 } from '@/lib/constant';
 import SkillRow from './SkillRow';
+import ViewMore from './ViewMoreLink';
 
 const iconWidth = 25;
 
@@ -30,6 +31,7 @@ export default async function SkillSection() {
 					<SkillRow skillsArray={PROJECT_MANAGEMENT_TOOLS} iconWidth={iconWidth} />
 				</div>
 			</section>
+			<ViewMore target_url="/skills" />
 		</section>
 	);
 }
