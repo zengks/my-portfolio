@@ -7,12 +7,38 @@ export default function ContactForm() {
 	const [email, setEmail] = useState('');
 	const [message, setMessage] = useState('');
 
-	const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		console.log({ name, email, message });
-		setName('');
-		setEmail('');
-		setMessage('');
+
+		const formData = {
+			name,
+			email,
+			message,
+		};
+
+		try {
+			const response = await fetch('api/email', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(formData),
+			});
+
+			const data = await response.json();
+
+			if (response.ok) {
+				// setStatus({ success: true, message: data.message });
+				console.log(data.message);
+				// setName('');
+				// setEmail('');
+				// setMessage('');
+			} else {
+				throw new Error(data.message);
+			}
+		} catch (error) {
+			console.error(error);
+		}
 	};
 
 	return (
@@ -20,6 +46,7 @@ export default function ContactForm() {
 			<p className="text-3xl md:text-4xl font-semibold text-center py-8">Get In Touch</p>
 
 			<form
+				id="contactUsForm"
 				onSubmit={handleSubmit}
 				className="w-full max-w-4xl mx-auto bg-white border border-gray-200 rounded-lg shadow-sm p-6 md:p-10"
 			>
@@ -72,7 +99,7 @@ export default function ContactForm() {
 				<section className="mt-8 flex justify-end items-center">
 					<button
 						type="submit"
-						className="py-2 px-6 rounded-md shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
+						className="cursor-pointer py-2 px-6 rounded-md shadow-sm text-sm font-medium text-white bg-gray-900 hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-gray-900"
 					>
 						Send Now
 					</button>

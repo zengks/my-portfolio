@@ -11,7 +11,7 @@ const iconWidth = 30;
 
 export default function Skills() {
 	return (
-		<section className="section-container text-wrap">
+		<section className="section-container section-card text-wrap">
 			<p className="section-title">Skills / Toolkit</p>
 			<section className="section-skill-card ps-[20] py-[10] mb-3">
 				<p className="skill-sort-title">MERN Stack</p>
