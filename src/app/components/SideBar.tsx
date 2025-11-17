@@ -1,7 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 
-import emojiPhoto from 'src/assets/images/emoji.png';
+import selfieRounded from 'src/assets/images/selfie-rounded.png';
 import linkedInIcon from 'src/assets/icons/linkedin.svg';
 import githubIcon from 'src/assets/icons/github.svg';
 import emailIcon from 'src/assets/icons/email.svg';
@@ -14,8 +14,8 @@ import userIcon from 'src/assets/icons/user.svg';
 import { getUserProfile } from '@/controllers/userProfileController';
 
 const socialIconSize = {
-	width: 30,
-	height: 30,
+	width: 25,
+	height: 25,
 };
 
 const infoIconSize = {
@@ -23,14 +23,19 @@ const infoIconSize = {
 	height: 22,
 };
 
+const LINKEDIN_URL = 'https://www.linkedin.com/in/chenzeng91/';
+const GITHUB_REPO_URL = 'https://github.com/zengks?tab=repositories';
+
 export default async function SideBar() {
 	const profileData = await getUserProfile();
 	return (
-		<aside className="section-sidebar flex flex-col justify-center items-center gap-8 sticky top-30 self-start">
-			<Image src={emojiPhoto} alt="selfie emoji photo" width={120} priority />
+		<aside className="section-sidebar flex flex-col justify-center sticky top-24 self-start">
+			<section className="flex items-center justify-center">
+				<Image src={selfieRounded} alt="selfie emoji photo" width={160} priority />
+			</section>
 
-			<section className="mt-3">
-				<div className="flex justify-start items-center gap-2">
+			<section className="section-sidebar-row">
+				<div className="section-sidebar-row-item">
 					<Image
 						src={userIcon}
 						alt="User Icon"
@@ -42,7 +47,7 @@ export default async function SideBar() {
 					</p>
 				</div>
 
-				<div className="flex justify-start items-center gap-2">
+				<div className="section-sidebar-row-item">
 					<Image
 						src={jobIcon}
 						alt="Job Icon"
@@ -53,23 +58,8 @@ export default async function SideBar() {
 				</div>
 			</section>
 
-			<section className="flex justify-center items-center gap-5">
-				<Image
-					src={linkedInIcon}
-					alt="LinkedIn Icon"
-					width={socialIconSize.width}
-					height={socialIconSize.height}
-				/>
-				<Image
-					src={githubIcon}
-					alt="GitHub Icon"
-					width={socialIconSize.width}
-					height={socialIconSize.height}
-				/>
-			</section>
-
-			<section>
-				<div className="flex justify-start items-center gap-2">
+			<section className="section-sidebar-row">
+				<div className="section-sidebar-row-item">
 					<Image
 						src={emailIcon}
 						alt="Email Icon"
@@ -78,7 +68,7 @@ export default async function SideBar() {
 					/>
 					<p>{profileData ? profileData.email : 'Loading...'}</p>
 				</div>
-				<div className="flex justify-start items-center gap-2">
+				<div className="section-sidebar-row-item">
 					<Image
 						src={locationIcon}
 						alt="Location Icon"
@@ -89,8 +79,8 @@ export default async function SideBar() {
 				</div>
 			</section>
 
-			<section>
-				<div className="flex justify-start items-center gap-2 mb-2">
+			<section className="section-sidebar-row">
+				<div className="section-sidebar-row-item">
 					<Image
 						src={contactMeIcon}
 						alt="Contact Me Icon"
@@ -99,7 +89,7 @@ export default async function SideBar() {
 					/>
 					<Link href="/contact">Contact Me</Link>
 				</div>
-				<div className="flex justify-start items-center gap-2">
+				<div className="section-sidebar-row-item">
 					<Image
 						src={resumeIcon}
 						alt="Resume Icon"
@@ -107,15 +97,31 @@ export default async function SideBar() {
 						height={infoIconSize.height}
 					/>
 
-					<p className="inline-block hover:bg-emerald-100 transition">
-						<a
-							href="/zoho.pdf"
-							download
-							// className="inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-						>
+					<p>
+						<a href="/zoho.pdf" download>
 							Download Resume
 						</a>
 					</p>
+				</div>
+			</section>
+			<section className="section-sidebar-row">
+				<div className="section-sidebar-row-item">
+					<Image
+						src={linkedInIcon}
+						alt="LinkedIn Icon"
+						width={socialIconSize.width}
+						height={socialIconSize.height}
+					/>
+					<Link href={LINKEDIN_URL}>LinkedIn</Link>
+				</div>
+				<div className="section-sidebar-row-item">
+					<Image
+						src={githubIcon}
+						alt="GitHub Icon"
+						width={socialIconSize.width}
+						height={socialIconSize.height}
+					/>
+					<Link href={GITHUB_REPO_URL}>GitHub</Link>
 				</div>
 			</section>
 		</aside>

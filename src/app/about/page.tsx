@@ -1,23 +1,16 @@
 import { getUserAbout } from '@/controllers/userAboutController';
 
-import selfiePhoto from 'src/assets/images/selfie-portrait.jpg';
-import Image from 'next/image';
-
 export default async function About() {
 	const userAboutContent = await getUserAbout('zengks');
 	return (
 		<section>
 			<section className="section-container section-card text-wrap">
 				<p className="section-title">Hi, I&apos;m Steven</p>
-				<div className="flex justify-between gap-8">
-					{userAboutContent && userAboutContent.aboutUser !== null ? (
-						<p>{userAboutContent?.aboutUser ? userAboutContent?.aboutUser : 'Loading...'}</p>
-					) : (
-						<p>Nothing retrieved</p>
-					)}
-
-					<Image src={selfiePhoto} alt="selfie photo" width={210} />
-				</div>
+				{userAboutContent && userAboutContent.aboutUser !== null ? (
+					<p>{userAboutContent?.aboutUser ? userAboutContent?.aboutUser : 'Loading...'}</p>
+				) : (
+					<p>Nothing retrieved</p>
+				)}
 			</section>
 			<section className="section-container section-card text-wrap">
 				<p className="section-title">Why Me?</p>
