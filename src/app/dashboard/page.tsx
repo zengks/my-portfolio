@@ -2,24 +2,12 @@
 import { useEffect, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 import { SignOutButton } from '@/app/components/UI/AuthButtons';
-
-import { fetchUserProfile } from '@/controllers/userProfileController';
-import { fetchAllUserProjects } from '@/controllers/userProjectController';
-import { fetchAllUserCertificate } from '@/controllers/userCertificateController';
-import { fetchAllUserWorkExperience } from '@/controllers/userWorkExpController';
-import { fetchAllUserEducation } from '@/controllers/userEducationController';
-import { fetchAllUserBlogPosts } from '@/controllers/userBlogPostController';
-import { fetchAllUserSocialMedia } from '@/controllers/userSocialMedia';
-
-// import { Profile } from 'types/profileType';
-// import { Project } from 'types/projectType';
-// import { Certificate } from 'types/certificateType';
-// import { WorkExperience } from 'types/workExpType';
-// import { Education } from 'types/educationType';
-// import { BlogPost } from 'types/blogPostType';
-// import { SocialMedia } from 'types/socialMediaType';
+import { fetchUserByUsername } from '@/controllers/userController';
+import { User } from 'types/userType';
+import { SKILLS_MAP } from '@/lib/constant';
 
 export default function UsersPage() {
 	const { data: session, status } = useSession();
@@ -27,13 +15,7 @@ export default function UsersPage() {
 	const router = useRouter();
 
 	const [loading, setLoading] = useState<boolean>(false);
-	// const [profile, setProfile] = useState<Profile | undefined>();
-	// const [projects, setProjects] = useState<Project[] | undefined>();
-	// const [certificate, setCertificate] = useState<Certificate[] | undefined>();
-	// const [workExperience, setWorkExperience] = useState<WorkExperience[] | undefined>();
-	// const [education, setEducation] = useState<Education[] | undefined>();
-	// const [blogPosts, setBlogPosts] = useState<BlogPost[] | undefined>();
-	// const [socialMedia, setSocialMedia] = useState<SocialMedia[] | undefined>();
+	const [currentUserData, setCurrentUserData] = useState<User | undefined>();
 
 	const username = session?.user?.username;
 
@@ -48,58 +30,123 @@ export default function UsersPage() {
 			setLoading(false);
 		}
 
-		const loadUserData = async () => {
+		const currentUserData = async (username: string) => {
 			try {
-				const [
-					// profileData,
-					// projectsData,
-					// certificateData,
-					// workExpData,
-					// educationData,
-					// blogPostsData,
-					// socialMediaData,
-				] = await Promise.all([
-					fetchUserProfile(),
-					fetchAllUserProjects(),
-					fetchAllUserCertificate(),
-					fetchAllUserWorkExperience(),
-					fetchAllUserEducation(),
-					fetchAllUserBlogPosts(),
-					fetchAllUserSocialMedia(),
-				]);
-				// setProfile(profileData);
-				// setProjects(projectsData);
-				// setCertificate(certificateData);
-				// setWorkExperience(workExpData);
-				// setEducation(educationData);
-				// setBlogPosts(blogPostsData);
-				// setSocialMedia(socialMediaData);
+				const res = await fetchUserByUsername(username);
+				setCurrentUserData(res);
 			} catch (error) {
-				console.log('Failed to load user data, ', error);
+				console.log(error);
 			}
 		};
 
 		if (status === 'authenticated' && username) {
-			loadUserData();
+			currentUserData(username);
 		}
 	}, [router, status, username]);
 
 	return (
 		<>
-			{loading && <div>Loading current user...</div>}
-			{status === 'authenticated' && (
-				<div>
-					<h1>Current Logged In Users</h1>
-					<p>-----------------------------------------------</p>
-					<ul>
-						<li>User ID: {session?.user?.id}</li>
-						<li>Username: {session?.user?.username}</li>
-						<li>User Role: {session?.user?.role}</li>
-					</ul>
+			{loading && (
+				<section className="section-container section-card">Loading current user...</section>
+			)}
+			{status === 'authenticated' && currentUserData && (
+				<>
+					<section className="section-container section-card">
+						<div className="flex justify-between items-center">
+							<p className="text-2xl">
+								Welcome,{' '}
+								{`${currentUserData.profile?.firstName} ${currentUserData.profile?.lastName}`}
+							</p>
+							<SignOutButton />
+						</div>
+						<p>ID: {session?.user?.id}</p>
+						<p>Username: {session.user.username}</p>
+						<p>Role: {session?.user?.role}</p>
+					</section>
 
-					<br />
-					<SignOutButton />
-				</div>
+					<section className="section-container section-card">
+						<p className="section-title">Education</p>
+						{currentUserData.education.length > 0 ? (
+							<>
+								{currentUserData.education.map((edu) => (
+									<div key={edu.id} className="border-b-1 mb-5">
+										<p>{edu.school}</p>
+										<p>{edu.degree}</p>
+										<p>{edu.fieldOfStudy}</p>
+										<p>{edu.startDate.toString()}</p>
+										<p>{edu.endDate?.toString() ?? 'Present'}</p>
+										<br />
+									</div>
+								))}
+							</>
+						) : (
+							'No Education History'
+						)}
+					</section>
+
+					<section className="section-container section-card">
+						<p className="section-title">Work</p>
+						{currentUserData.workExperience.length > 0 ? (
+							<>
+								{currentUserData.workExperience.map((work) => (
+									<div key={work.id} className="border-b-1 mb-5">
+										<p>{work.jobTitle}</p>
+										<p>{work.company}</p>
+										<p>{work.startDate.toString()}</p>
+										<p>{work.endDate?.toString() ?? 'Present'}</p>
+										<p>{work.description}</p>
+									</div>
+								))}
+							</>
+						) : (
+							'No Job History'
+						)}
+					</section>
+
+					<section className="section-container section-card">
+						<p className="section-title">Projects</p>
+						{currentUserData.project.length > 0 ? (
+							<>
+								{currentUserData.project.map((each) => (
+									<div key={each.id} className="border-b-1 mb-5">
+										<p>{each.title}</p>
+										<p>{each.repo_link}</p>
+
+										{/* Needs to add starting date to the schema */}
+										{/* <p>{each.startedAt.toString()}</p> */}
+
+										<p>{each.preview_image_link}</p>
+										<p>
+											{each.tech_stack.length > 0 ? (
+												<span className="flex items-center gap-3">
+													{each.tech_stack.map((each, index: number) => (
+														<Image
+															key={index}
+															src={SKILLS_MAP[each as keyof typeof SKILLS_MAP]}
+															alt={`${each} icon`}
+															height={32}
+															className="size-6 md:size-8"
+														/>
+													))}
+												</span>
+											) : (
+												''
+											)}
+										</p>
+										<p>{each.description}</p>
+										<br />
+									</div>
+								))}
+							</>
+						) : (
+							'No Projects'
+						)}
+					</section>
+
+					<section className="section-container section-card">
+						<p className="section-title">Skills</p>
+					</section>
+				</>
 			)}
 		</>
 	);
