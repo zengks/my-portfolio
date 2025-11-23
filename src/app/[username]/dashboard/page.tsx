@@ -67,6 +67,26 @@ export default function UsersPage() {
 		fetchCurrentUserData();
 	};
 
+	const handleDeleteEducation = async (educationId: number) => {
+		try {
+			const response = await fetch(`/api/auth/users/${username}/education`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(educationId),
+			});
+
+			if (!response.ok) {
+				throw new Error('Operation Failed!');
+			}
+		} catch (error) {
+			console.log(error);
+		} finally {
+			fetchCurrentUserData();
+		}
+	};
+
 	return (
 		<>
 			{loading && (
@@ -121,6 +141,7 @@ export default function UsersPage() {
 										>
 											Edit
 										</button>
+										<button onClick={() => handleDeleteEducation(edu.id)}>Delete</button>
 										<br />
 									</div>
 								))}

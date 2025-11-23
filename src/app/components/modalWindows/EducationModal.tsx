@@ -48,8 +48,6 @@ export default function EducationModal({
 			endYear: Number(formData.get('endYear')),
 		};
 
-		console.log('payload year: ', typeof payload.startYear, typeof payload.endYear);
-
 		try {
 			const response = await fetch(`/api/auth/users/${username}/education`, {
 				method: method,

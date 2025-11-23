@@ -1,6 +1,5 @@
 import prisma from '@/lib/prisma';
 import { Education } from 'types/educationType';
-import { apiPaths } from '@/lib/apiPaths';
 
 export async function getAllUserEducation(username: string) {
 	return await prisma.education.findMany({
@@ -49,8 +48,6 @@ export async function updateUserEducation(username: string, selectedEducationDat
 		select: { id: true },
 	});
 
-	console.log('Selected Education: ', selectedEducationData, 'Username: ', username);
-
 	if (!user) throw new Error(`User @${username} not found`);
 
 	const updatedEducation = await prisma.education.update({
@@ -69,14 +66,10 @@ export async function updateUserEducation(username: string, selectedEducationDat
 	return updatedEducation;
 }
 
-// client-side api call
-export async function fetchAllUserEducation(username: string): Promise<Education[] | undefined> {
-	try {
-		const res = await fetch(apiPaths.userEducation(username));
-		const data = await res.json();
-		return data.education;
-	} catch (error) {
-		console.error('Error fetching user education data, ', error);
-		return undefined;
-	}
+export async function deleteUserEducation(educationId: number) {
+	return await prisma.education.delete({
+		where: {
+			id: educationId,
+		},
+	});
 }
