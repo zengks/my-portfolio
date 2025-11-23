@@ -8,7 +8,7 @@ export async function SignInButton(provider: string, signInOptions: SignInOption
 
 export function SignOutButton() {
 	return (
-		<button className="cursor-pointer" onClick={() => signOut({ callbackUrl: '/' })}>
+		<button className="cursor-pointer italic" onClick={() => signOut({ callbackUrl: '/' })}>
 			Sign Out
 		</button>
 	);

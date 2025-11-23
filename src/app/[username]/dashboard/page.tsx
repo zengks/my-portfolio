@@ -5,19 +5,45 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 import { SignOutButton } from '@/app/components/UI/AuthButtons';
-import { fetchUserByUsername } from '@/controllers/userController';
 import { User } from 'types/userType';
 import { SKILLS_MAP } from '@/lib/constant';
+
+import EducationModal from '@/app/components/modalWindows/EducationModal';
+import { Education } from 'types/educationType';
 
 export default function UsersPage() {
 	const { data: session, status } = useSession();
 
+	const [activeModal, setActiveModal] = useState<string | null>(null); // 'addEducation', 'updateEducation', "edit"
+
 	const router = useRouter();
 
 	const [loading, setLoading] = useState<boolean>(false);
-	const [currentUserData, setCurrentUserData] = useState<User | undefined>();
+	const [currentUserData, setCurrentUserData] = useState<User | null>(null);
+	const [selectedEducation, setSelectedEducation] = useState<Education | null>(null);
 
 	const username = session?.user?.username;
+
+	const fetchCurrentUserData = async () => {
+		try {
+			const res = await fetch(`/api/auth/users/${username}/dashboard`, {
+				method: 'GET',
+				headers: {
+					'Content-Type': 'application/json',
+					'Cache-Control': 'no-cache, no-store, must-revalidate',
+				},
+				cache: 'no-store',
+			});
+
+			if (res.ok) {
+				const data = await res.json();
+				console.log('dashboard received data', data);
+				setCurrentUserData(data.user);
+			}
+		} catch (error) {
+			console.log(error);
+		}
+	};
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
@@ -30,19 +56,16 @@ export default function UsersPage() {
 			setLoading(false);
 		}
 
-		const currentUserData = async (username: string) => {
-			try {
-				const res = await fetchUserByUsername(username);
-				setCurrentUserData(res);
-			} catch (error) {
-				console.log(error);
-			}
-		};
-
-		if (status === 'authenticated' && username) {
-			currentUserData(username);
+		if (status === 'authenticated') {
+			fetchCurrentUserData();
 		}
 	}, [router, status, username]);
+
+	const closeModal = () => {
+		setActiveModal(null);
+		setSelectedEducation(null);
+		fetchCurrentUserData();
+	};
 
 	return (
 		<>
@@ -52,8 +75,8 @@ export default function UsersPage() {
 			{status === 'authenticated' && currentUserData && (
 				<>
 					<section className="section-container section-card">
-						<div className="flex justify-between items-center">
-							<p className="text-2xl">
+						<div className="flex justify-between items-center section-title">
+							<p>
 								Welcome,{' '}
 								{`${currentUserData.profile?.firstName} ${currentUserData.profile?.lastName}`}
 							</p>
@@ -65,16 +88,39 @@ export default function UsersPage() {
 					</section>
 
 					<section className="section-container section-card">
-						<p className="section-title">Education</p>
-						{currentUserData.education.length > 0 ? (
+						<div className="section-title flex justify-between items-center">
+							<div>Education</div>
+							<div>
+								<button onClick={() => setActiveModal('education')}>Add</button>
+							</div>
+						</div>
+						{currentUserData.education && currentUserData.education.length > 0 ? (
 							<>
 								{currentUserData.education.map((edu) => (
-									<div key={edu.id} className="border-b-1 mb-5">
+									<div key={edu.id} className="border-b mb-5">
 										<p>{edu.school}</p>
 										<p>{edu.degree}</p>
 										<p>{edu.fieldOfStudy}</p>
-										<p>{edu.startDate.toString()}</p>
-										<p>{edu.endDate?.toString() ?? 'Present'}</p>
+										<p>{edu.startYear}</p>
+										<p>{edu.endYear ? edu.endYear : 'Present'}</p>
+										<button
+											onClick={() => {
+												setActiveModal('education');
+												const educationToEdit: Education = {
+													id: edu.id,
+													school: edu.school,
+													degree: edu.degree,
+													fieldOfStudy: edu.fieldOfStudy,
+													startYear: edu.startYear,
+													endYear: edu.endYear ?? null,
+													gpa: edu.gpa,
+													description: edu.description,
+												};
+												setSelectedEducation(educationToEdit);
+											}}
+										>
+											Edit
+										</button>
 										<br />
 									</div>
 								))}
@@ -84,12 +130,19 @@ export default function UsersPage() {
 						)}
 					</section>
 
+					<EducationModal
+						isOpen={activeModal === 'education'}
+						closeModal={closeModal}
+						username={username!}
+						selectedEducation={selectedEducation}
+					/>
+
 					<section className="section-container section-card">
 						<p className="section-title">Work</p>
-						{currentUserData.workExperience.length > 0 ? (
+						{currentUserData.workExperience && currentUserData.workExperience.length > 0 ? (
 							<>
 								{currentUserData.workExperience.map((work) => (
-									<div key={work.id} className="border-b-1 mb-5">
+									<div key={work.id} className="border-b mb-5">
 										<p>{work.jobTitle}</p>
 										<p>{work.company}</p>
 										<p>{work.startDate.toString()}</p>
@@ -105,10 +158,10 @@ export default function UsersPage() {
 
 					<section className="section-container section-card">
 						<p className="section-title">Projects</p>
-						{currentUserData.project.length > 0 ? (
+						{currentUserData.project && currentUserData.project.length > 0 ? (
 							<>
 								{currentUserData.project.map((each) => (
-									<div key={each.id} className="border-b-1 mb-5">
+									<div key={each.id} className="border-b mb-5">
 										<p>{each.title}</p>
 										<p>{each.repo_link}</p>
 

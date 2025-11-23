@@ -1,4 +1,4 @@
-import WorkAccordion from '../components/WorkAccordion';
+import WorkAccordion from '../../components/WorkAccordion';
 
 export default function Work() {
 	return (

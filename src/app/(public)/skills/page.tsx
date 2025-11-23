@@ -1,4 +1,4 @@
-import SkillRow from '../components/SkillRow';
+import SkillRow from '../../components/SkillRow';
 
 import {
 	MERN_STACK,

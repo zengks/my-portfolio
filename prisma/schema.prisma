@@ -25,12 +25,14 @@ model User {
   socialMedia    SocialMedia[]
   workExperience WorkExperience[]
 
+  @@unique([id, username])
   @@map("users")
 }
 
 model Profile {
   id          Int      @id @default(autoincrement())
   userId      String   @unique
+  username    String   @unique
   firstName   String
   lastName    String?
   email       String   @unique
@@ -44,9 +46,10 @@ model Profile {
   githubUrl   String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @default(now())
-  user        User     @relation(fields: [userId], references: [id])
+  user        User     @relation(fields: [userId, username], references: [id, username])
 
-  @@index([userId])
+  @@unique([userId, username])
+  @@index([username])
 }
 
 model Account {
@@ -88,6 +91,7 @@ model VerificationToken {
 
 model Certificate {
   id          Int       @id @default(autoincrement())
+  username    String
   userId      String
   name        String?
   dateIssued  DateTime?
@@ -95,13 +99,14 @@ model Certificate {
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now())
   certNumber  String?
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
 
-  @@index([userId])
+  @@index([userId, username])
 }
 
 model Project {
   id                 Int      @id @default(autoincrement())
+  username           String
   userId             String
   title              String
   repo_link          String?
@@ -111,13 +116,14 @@ model Project {
   createdAt          DateTime @default(now())
   updatedAt          DateTime @default(now())
   tech_stack         String[]
-  user               User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user               User     @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
 
-  @@index([userId])
+  @@index([userId, username])
 }
 
 model WorkExperience {
   id          Int       @id @default(autoincrement())
+  username    String
   userId      String
   jobTitle    String
   company     String
@@ -126,50 +132,53 @@ model WorkExperience {
   description String?
   createdAt   DateTime  @default(now())
   updatedAt   DateTime  @default(now())
-  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user        User      @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
 
-  @@index([userId])
+  @@index([userId, username])
 }
 
 model Education {
-  id           Int       @id @default(autoincrement())
+  id           Int      @id @default(autoincrement())
+  username     String
   userId       String
   school       String
   degree       String
   fieldOfStudy String?
-  startDate    DateTime
-  endDate      DateTime?
+  startYear    Int
+  endYear      Int?
   gpa          Float?
   description  String?
-  createdAt    DateTime  @default(now())
-  updatedAt    DateTime  @default(now())
-  user         User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+  user         User     @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
 
-  @@index([userId])
+  @@index([userId, username])
 }
 
 model SocialMedia {
   id              Int      @id @default(autoincrement())
+  username        String
   userId          String
   logoLink        String?
   socialMediaLink String
   createdAt       DateTime @default(now())
   updatedAt       DateTime @default(now())
-  user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user            User     @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
 
-  @@index([userId])
+  @@index([userId, username])
 }
 
 model BlogPost {
   id         Int      @id @default(autoincrement())
-  authorId   String
+  username   String
+  userId     String
   title      String   @db.VarChar(255)
   content    String?
   published  Boolean? @default(false)
   createdAt  DateTime @default(now())
   updatedAt  DateTime @default(now())
   viewsCount Int      @default(0)
-  author     User     @relation(fields: [authorId], references: [id], onDelete: Cascade)
+  author     User     @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
 
-  @@index([authorId])
+  @@index([userId, username])
 }

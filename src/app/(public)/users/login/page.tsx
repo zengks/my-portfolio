@@ -16,11 +16,17 @@ export default function LoginPage() {
 	const [error, setError] = useState('');
 
 	const router = useRouter();
-	const { status } = useSession();
+	const { status, data: session } = useSession();
+	const currentUsername = session?.user?.username;
 
 	useEffect(() => {
 		if (status === 'authenticated') {
-			router.replace('/dashboard');
+			// router.replace('/dashboard');
+			if (currentUsername) {
+				router.replace(`/${currentUsername}/dashboard`);
+			}
+		} else {
+			router.replace('/users/login');
 		}
 	}, [router, status]);
 
@@ -40,7 +46,7 @@ export default function LoginPage() {
 		if (result?.error) {
 			setError(result.error);
 		} else if (result?.ok) {
-			router.replace('/dashboard');
+			router.replace(`/${currentUsername}/dashboard`);
 		}
 	};
 	return (

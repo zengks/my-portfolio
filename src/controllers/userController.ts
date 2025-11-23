@@ -35,8 +35,8 @@ export async function getUserByUsername(username: string) {
 					school: true,
 					degree: true,
 					fieldOfStudy: true,
-					startDate: true,
-					endDate: true,
+					startYear: true,
+					endYear: true,
 					gpa: true,
 					description: true,
 				},
@@ -44,7 +44,6 @@ export async function getUserByUsername(username: string) {
 			profile: {
 				select: {
 					id: true,
-					userId: true,
 					firstName: true,
 					lastName: true,
 					email: true,

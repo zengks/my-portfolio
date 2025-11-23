@@ -16,7 +16,7 @@ export default function NavBar() {
 	return (
 		<div className="flex justify-around items-center my-8">
 			<Link href="/" className="tracking-[16]">
-				<p className="logo logo-creative ps-[40]">steven</p>
+				<p className="logo logo-creative ps-[35]">steven</p>
 			</Link>
 			<div className="flex justify-between items-center gap-10">
 				<nav className="flex justify-center gap-9 text-[15px] items-center">
