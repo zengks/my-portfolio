@@ -24,9 +24,11 @@ export async function getUserByUsername(username: string) {
 				select: {
 					id: true,
 					name: true,
+					issuingOrg: true,
+					credentialId: true,
+					credentialUrl: true,
 					dateIssued: true,
 					dateExpired: true,
-					certNumber: true,
 				},
 			},
 			education: {

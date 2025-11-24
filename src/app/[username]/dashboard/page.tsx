@@ -12,11 +12,13 @@ import EducationModal from '@/app/components/modalWindows/EducationModal';
 import WorkExpModal from '@/app/components/modalWindows/WorkExpModal';
 import ProjectModal from '@/app/components/modalWindows/ProjectModal';
 import ProfileModal from '@/app/components/modalWindows/ProfileModal';
+import CertificateModal from '@/app/components/modalWindows/CertificateModal';
 
 import type { Education } from 'types/educationType';
 import type { WorkExperience } from 'types/workExpType';
 import type { Project } from 'types/projectType';
 import type { Profile } from 'types/profileType';
+import type { Certificate } from 'types/certificateType';
 
 export default function UsersPage() {
 	const { data: session, status } = useSession();
@@ -31,6 +33,7 @@ export default function UsersPage() {
 	const [selectedWorkExp, setSelectedWorkExp] = useState<WorkExperience | null>(null);
 	const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 	const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
+	const [selectedCertificate, setSelectedCertificate] = useState<Certificate | null>(null);
 
 	const username = session?.user?.username;
 
@@ -77,6 +80,7 @@ export default function UsersPage() {
 		setSelectedEducation(null);
 		setSelectedWorkExp(null);
 		setSelectedProject(null);
+		setSelectedCertificate(null);
 		fetchCurrentUserData();
 	};
 
@@ -128,6 +132,26 @@ export default function UsersPage() {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify(projectId),
+			});
+
+			if (!response.ok) {
+				throw new Error('Operation Failed!');
+			}
+		} catch (error) {
+			console.log(error);
+		} finally {
+			fetchCurrentUserData();
+		}
+	};
+
+	const handleDeleteCertificate = async (certificateId: number) => {
+		try {
+			const response = await fetch(`/api/users/${username}/certificate`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(certificateId),
 			});
 
 			if (!response.ok) {
@@ -312,10 +336,6 @@ export default function UsersPage() {
 									<div key={each.id} className="border-b mb-5">
 										<p>{each.title}</p>
 										<p>{each.repo_link}</p>
-
-										{/* Needs to add starting date to the schema */}
-										{/* <p>{each.startedAt.toString()}</p> */}
-
 										<p>{each.preview_image_link}</p>
 										<p>
 											{each.tech_stack.length > 0 ? (
@@ -369,6 +389,67 @@ export default function UsersPage() {
 						closeModal={closeModal}
 						username={username!}
 						selectedProject={selectedProject}
+					/>
+
+					<section className="section-container section-card">
+						<div className="section-title flex justify-between items-center">
+							<div>Licenses & Certifications</div>
+							<button onClick={() => setActiveModal('certificate')}>Add</button>
+						</div>
+						{currentUserData.certificate && currentUserData.certificate.length > 0 ? (
+							<>
+								{currentUserData.certificate.map((each) => (
+									<div key={each.id} className="border-b mb-5">
+										<p>{each.name}</p>
+										<p>{each.issuingOrg}</p>
+										<p>{`Issued ${new Date(each.dateIssued).getMonth()} ${new Date(
+											each.dateIssued
+										).getFullYear()}`}</p>
+										<p>
+											{each.dateExpired
+												? `Expire in ${each.dateExpired.getMonth()} ${each.dateExpired.getFullYear()}`
+												: 'No expiration date'}
+										</p>
+										<p>
+											Credential ID:{' '}
+											{each.credentialId ? each.credentialId : 'No Credential ID found'}
+										</p>
+										<p>
+											<a target="_blank" href={each.credentialUrl ? each.credentialUrl : '/'}>
+												Show credential
+											</a>
+										</p>
+										<button
+											onClick={() => {
+												setActiveModal('certificate');
+												const certificateToEdit: Certificate = {
+													id: each.id,
+													name: each.name,
+													issuingOrg: each.issuingOrg,
+													dateIssued: each.dateIssued,
+													dateExpired: each.dateExpired ?? null,
+													credentialId: each.credentialId ?? null,
+													credentialUrl: each.credentialUrl ?? null,
+												};
+												setSelectedCertificate(certificateToEdit);
+											}}
+										>
+											Edit
+										</button>
+										<button onClick={() => handleDeleteCertificate(each.id)}>Delete</button>
+									</div>
+								))}
+							</>
+						) : (
+							<p>No Licenses & Certifications found</p>
+						)}
+					</section>
+
+					<CertificateModal
+						isOpen={activeModal === 'certificate'}
+						closeModal={closeModal}
+						username={username!}
+						selectedCertificate={selectedCertificate}
 					/>
 
 					<section className="section-container section-card">
