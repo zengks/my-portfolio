@@ -34,29 +34,12 @@ export default function ProfileModal({
 
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		const formData = new FormData(e.currentTarget);
-
-		const payload = {
-			id: selectedProfile?.id,
-			username: selectedProfile?.username,
-			firstName: formData.get('firstName'),
-			lastName: formData.get('lastName'),
-			email: formData.get('email'),
-			city: formData.get('city'),
-			province: formData.get('province'),
-			country: formData.get('country'),
-			linkedInUrl: formData.get('linkedInUrl'),
-			githubUrl: formData.get('githubUrl'),
-			jobTitle: formData.get('jobTitle'),
-		};
 
 		try {
+			const formData = new FormData(e.currentTarget);
 			const response = await fetch(`/api/users/${username}/profile`, {
 				method: 'PUT',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(payload),
+				body: formData,
 			});
 
 			if (!response.ok) {
@@ -167,6 +150,11 @@ export default function ProfileModal({
 							defaultValue={selectedProfile?.bioLink ?? ''}
 						></textarea>
 					</div>
+					<div>
+						<label htmlFor="resume">Resume (PDF): </label>
+						<input type="file" accept=".pdf" id="resume" name="resume" />
+					</div>
+					{selectedProfile?.resumeUrl && <p>{`Existing Resume: ${selectedProfile?.resumeUrl}`}</p>}
 					<button type="submit">Save</button>
 					<button type="button" onClick={closeModal}>
 						Cancel

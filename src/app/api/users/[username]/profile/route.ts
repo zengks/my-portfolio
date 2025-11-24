@@ -9,7 +9,7 @@ export async function PUT(request: NextRequest, { params }: { params: { username
 			return NextResponse.json({ error: 'Username is required' }, { status: 400 });
 		}
 
-		const body = await request.json();
+		const body = await request.formData();
 		const updatedProfile = await updateUserProfile(username, body);
 		return NextResponse.json({ updatedProfile }, { status: 200 });
 	} catch (error) {

@@ -168,6 +168,7 @@ export default function UsersPage() {
 								<p>LinkedIn Link: {currentUserData.profile.linkedInUrl}</p>
 								<p>GitHub Link: {currentUserData.profile.githubUrl}</p>
 								<p>Bio: {currentUserData.profile.bioLink}</p>
+								<p>Resume: {currentUserData.profile.resumeUrl}</p>
 								<button
 									onClick={() => {
 										if (!currentUserData.profile) return;
@@ -178,15 +179,16 @@ export default function UsersPage() {
 											username: currentUserData.profile.username,
 											firstName: currentUserData.profile.firstName,
 											lastName: currentUserData.profile.lastName ?? '',
-											email: currentUserData.profile?.email ?? '',
-											jobTitle: currentUserData.profile?.jobTitle ?? '',
-											bioLink: currentUserData.profile?.bioLink ?? '',
-											imageLink: currentUserData.profile?.imageLink ?? '',
-											city: currentUserData.profile?.city ?? '',
-											province: currentUserData.profile?.province ?? '',
-											country: currentUserData.profile?.country ?? '',
-											linkedInUrl: currentUserData.profile?.linkedInUrl ?? '',
-											githubUrl: currentUserData.profile?.githubUrl ?? '',
+											email: currentUserData.profile.email ?? '',
+											jobTitle: currentUserData.profile.jobTitle ?? '',
+											bioLink: currentUserData.profile.bioLink ?? '',
+											imageLink: currentUserData.profile.imageLink ?? '',
+											city: currentUserData.profile.city ?? '',
+											province: currentUserData.profile.province ?? '',
+											country: currentUserData.profile.country ?? '',
+											resumeUrl: currentUserData.profile.resumeUrl ?? '',
+											linkedInUrl: currentUserData.profile.linkedInUrl ?? '',
+											githubUrl: currentUserData.profile.githubUrl ?? '',
 										};
 										setSelectedProfile(profileToEdit);
 									}}

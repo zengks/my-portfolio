@@ -1,6 +1,8 @@
 import prisma from 'src/lib/prisma';
 import { Profile } from 'types/profileType';
 import { apiPaths } from '@/lib/apiPaths';
+import { writeFile } from 'fs/promises';
+import path from 'path';
 
 export async function getUserProfile(username: string = 'zengks') {
 	const profile = await prisma.profile.findUnique({
@@ -21,13 +23,13 @@ export async function getUserProfile(username: string = 'zengks') {
 			country: true,
 			linkedInUrl: true,
 			githubUrl: true,
+			resumeUrl: true,
 		},
 	});
 	return profile;
 }
 
-export async function updateUserProfile(username: string, selectedProfile: Profile) {
-	console.log('selected profile', selectedProfile);
+export async function updateUserProfile(username: string, formData: FormData) {
 	const user = await prisma.user.findUnique({
 		where: { username },
 		select: { id: true },
@@ -35,20 +37,36 @@ export async function updateUserProfile(username: string, selectedProfile: Profi
 
 	if (!user) throw new Error(`User @${username} not found`);
 
+	const resumeFile = formData.get('resume') as File | null;
+	let resumeUrl = undefined;
+
+	if (resumeFile && typeof resumeFile.arrayBuffer === 'function') {
+		const bytes = await resumeFile.arrayBuffer();
+		const buffer = Buffer.from(bytes);
+		const filename = `${resumeFile.name}`;
+		const uploadDir = path.join(process.cwd(), 'public/uploads');
+
+		await writeFile(path.join(uploadDir, filename), buffer);
+		resumeUrl = `${filename}`;
+	}
+
 	const updatedUserProfile = await prisma.profile.update({
 		where: {
-			id: selectedProfile.id,
+			username,
 		},
 		data: {
-			firstName: selectedProfile.firstName,
-			lastName: selectedProfile.lastName,
-			email: selectedProfile.email,
-			city: selectedProfile.city,
-			province: selectedProfile.province,
-			country: selectedProfile.country,
-			linkedInUrl: selectedProfile.linkedInUrl,
-			githubUrl: selectedProfile.githubUrl,
-			jobTitle: selectedProfile.jobTitle,
+			username: username,
+			firstName: formData.get('firstName') as string,
+			lastName: formData.get('lastName') as string,
+			jobTitle: formData.get('jobTitle') as string,
+			email: formData.get('email') as string,
+			city: formData.get('city') as string,
+			province: formData.get('province') as string,
+			country: formData.get('country') as string,
+			linkedInUrl: formData.get('linkedInUrl') as string,
+			githubUrl: formData.get('githubUrl') as string,
+			bioLink: formData.get('bio') as string,
+			resumeUrl: resumeUrl,
 		},
 	});
 	return updatedUserProfile;

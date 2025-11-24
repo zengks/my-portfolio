@@ -11,6 +11,7 @@ export interface Profile {
 	city: string | null;
 	province: string | null;
 	country: string | null;
+	resumeUrl: string | null;
 	linkedInUrl: string | null;
 	githubUrl: string | null;
 }

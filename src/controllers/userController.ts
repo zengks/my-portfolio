@@ -57,6 +57,7 @@ export async function getUserByUsername(username: string) {
 					githubUrl: true,
 					linkedInUrl: true,
 					jobTitle: true,
+					resumeUrl: true,
 				},
 			},
 			workExperience: {
