@@ -16,6 +16,7 @@ export async function getUserProjectByUsername(username: string = 'zengks') {
 			description: true,
 			preview_image_link: true,
 			tech_stack: true,
+			projectYear: true,
 		},
 	});
 }

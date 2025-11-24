@@ -12,8 +12,8 @@ export async function getUserWorkExpByUsername(username: string = 'zengks') {
 			id: true,
 			jobTitle: true,
 			company: true,
-			startDate: true,
-			endDate: true,
+			startYear: true,
+			endYear: true,
 			description: true,
 		},
 	});
@@ -26,30 +26,62 @@ export async function getUserWorkExp(userId: string) {
 			id: true,
 			jobTitle: true,
 			company: true,
-			startDate: true,
-			endDate: true,
+			startYear: true,
+			endYear: true,
 			description: true,
 		},
 	});
 }
 
-async function updateOneWorkExp(workExpId: number, workExpData: WorkExperience) {
-	return await prisma.workExperience.update({
-		where: { id: workExpId },
-		data: workExpData,
+export async function addWorkExperience(username: string, workExpData: WorkExperience) {
+	const user = await prisma.user.findUnique({
+		where: { username },
+		select: { id: true },
 	});
+
+	if (!user) throw new Error(`User @${username} not found`);
+
+	const newWorkExp = await prisma.workExperience.create({
+		data: {
+			userId: user.id,
+			username: username,
+			jobTitle: workExpData.jobTitle,
+			company: workExpData.company,
+			startYear: workExpData.startYear,
+			endYear: workExpData.endYear ?? null,
+			description: workExpData.description ?? null,
+		},
+	});
+	return newWorkExp;
 }
 
-export async function updateUserWorkExp(newWorkExpData: WorkExperience[]) {
-	if (newWorkExpData.length === 0) {
-		throw new Error('No new work experience data provided for update.');
-	}
+export async function updateWorkExperience(username: string, newWorkExpData: WorkExperience) {
+	const user = await prisma.user.findUnique({
+		where: { username },
+		select: { id: true },
+	});
 
-	const updatedWorkExperience = await Promise.all(
-		newWorkExpData.map((each) => updateOneWorkExp(each.id, each))
-	);
+	if (!user) throw new Error(`User @${username} not found`);
 
-	return updatedWorkExperience;
+	const updatedWorkExp = await prisma.workExperience.update({
+		where: {
+			id: newWorkExpData.id,
+		},
+		data: {
+			jobTitle: newWorkExpData.jobTitle,
+			company: newWorkExpData.company,
+			startYear: newWorkExpData.startYear,
+			endYear: newWorkExpData.endYear ?? null,
+			description: newWorkExpData.description ?? null,
+		},
+	});
+	return updatedWorkExp;
+}
+
+export async function deleteWorkExperience(workExpId: number) {
+	return await prisma.workExperience.delete({
+		where: { id: workExpId },
+	});
 }
 
 // client-side api call

@@ -6,4 +6,5 @@ export interface Project {
 	description: string | null;
 	preview_image_link: string | null;
 	tech_stack: Array<string>;
+	projectYear: number;
 }

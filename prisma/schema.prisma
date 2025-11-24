@@ -116,23 +116,24 @@ model Project {
   createdAt          DateTime @default(now())
   updatedAt          DateTime @default(now())
   tech_stack         String[]
+  projectYear        Int
   user               User     @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
 
   @@index([userId, username])
 }
 
 model WorkExperience {
-  id          Int       @id @default(autoincrement())
+  id          Int      @id @default(autoincrement())
   username    String
   userId      String
   jobTitle    String
   company     String
-  startDate   DateTime
-  endDate     DateTime?
+  startYear   Int
+  endYear     Int?
   description String?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @default(now())
-  user        User      @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @default(now())
+  user        User     @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
 
   @@index([userId, username])
 }

@@ -1,18 +1,18 @@
 'use client';
 
 import { useEffect, type FormEvent } from 'react';
-import type { Education } from 'types/educationType';
+import type { WorkExperience } from 'types/workExpType';
 
-export default function EducationModal({
+export default function WorkExpModal({
 	isOpen,
 	closeModal,
 	username,
-	selectedEducation,
+	selectedWorkExp,
 }: {
 	isOpen: boolean;
 	closeModal: () => void;
 	username: string;
-	selectedEducation: Education | null;
+	selectedWorkExp: WorkExperience | null;
 }) {
 	useEffect(() => {
 		const handleEscape = (e: KeyboardEvent) => {
@@ -36,20 +36,19 @@ export default function EducationModal({
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
 
-		const isEditing = !!selectedEducation;
+		const isEditing = !!selectedWorkExp;
 		const method = isEditing ? 'PUT' : 'POST';
 
 		const payload = {
-			id: selectedEducation?.id,
-			school: formData.get('school'),
-			degree: formData.get('degree'),
-			fieldOfStudy: formData.get('fieldOfStudy'),
+			id: selectedWorkExp?.id,
+			jobTitle: formData.get('jobTitle'),
+			company: formData.get('company'),
 			startYear: Number(formData.get('startYear')),
 			endYear: Number(formData.get('endYear')),
 		};
 
 		try {
-			const response = await fetch(`/api/users/${username}/education`, {
+			const response = await fetch(`/api/users/${username}/work`, {
 				method: method,
 				headers: {
 					'Content-Type': 'application/json',
@@ -78,42 +77,33 @@ export default function EducationModal({
 			>
 				<form onSubmit={handleSubmit}>
 					<div>
-						<label htmlFor="school">School: </label>
+						<label htmlFor="jobTitle">Job Title: </label>
 						<input
 							type="text"
-							id="school"
-							name="school"
-							defaultValue={selectedEducation?.school}
+							id="jobTitle"
+							name="jobTitle"
+							defaultValue={selectedWorkExp?.jobTitle}
 							required
 						/>
 					</div>
 					<div>
-						<label htmlFor="degree">Degree: </label>
+						<label htmlFor="company">Company: </label>
 						<input
 							type="text"
-							id="degree"
-							name="degree"
-							defaultValue={selectedEducation?.degree}
+							id="company"
+							name="company"
+							defaultValue={selectedWorkExp?.company}
 							required
 						/>
 					</div>
-					<div>
-						<label htmlFor="fieldOfStudy">Field of Study: </label>
-						<input
-							type="text"
-							id="fieldOfStudy"
-							name="fieldOfStudy"
-							defaultValue={selectedEducation?.fieldOfStudy ?? ''}
-							required
-						/>
-					</div>
+
 					<div>
 						<label htmlFor="startYear">Start Year: </label>
 						<input
 							type="number"
 							id="startYear"
 							name="startYear"
-							defaultValue={selectedEducation?.startYear}
+							defaultValue={selectedWorkExp?.startYear}
 							required
 						/>
 					</div>
@@ -123,10 +113,10 @@ export default function EducationModal({
 							type="number"
 							id="endYear"
 							name="endYear"
-							defaultValue={selectedEducation?.endYear ?? ''}
+							defaultValue={selectedWorkExp?.endYear ?? ''}
 						/>
 					</div>
-					<button type="submit">{selectedEducation ? 'Update' : 'Add'}</button>
+					<button type="submit">{selectedWorkExp ? 'Update' : 'Add'}</button>
 					<button type="button" onClick={closeModal}>
 						Cancel
 					</button>

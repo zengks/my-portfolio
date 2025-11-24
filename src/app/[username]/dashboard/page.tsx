@@ -9,7 +9,9 @@ import { User } from 'types/userType';
 import { SKILLS_MAP } from '@/lib/constant';
 
 import EducationModal from '@/app/components/modalWindows/EducationModal';
-import { Education } from 'types/educationType';
+import WorkExpModal from '@/app/components/modalWindows/WorkExpModal';
+import type { Education } from 'types/educationType';
+import type { WorkExperience } from 'types/workExpType';
 
 export default function UsersPage() {
 	const { data: session, status } = useSession();
@@ -21,27 +23,31 @@ export default function UsersPage() {
 	const [loading, setLoading] = useState<boolean>(false);
 	const [currentUserData, setCurrentUserData] = useState<User | null>(null);
 	const [selectedEducation, setSelectedEducation] = useState<Education | null>(null);
+	const [selectedWorkExp, setSelectedWorkExp] = useState<WorkExperience | null>(null);
 
 	const username = session?.user?.username;
 
 	const fetchCurrentUserData = async () => {
 		try {
-			const res = await fetch(`/api/auth/users/${username}/dashboard`, {
+			console.log('fetching inside');
+			const res = await fetch(`/api/users/${username}/dashboard`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
-					'Cache-Control': 'no-cache, no-store, must-revalidate',
 				},
-				cache: 'no-store',
 			});
+
+			console.log('res data fetched: ', res);
 
 			if (res.ok) {
 				const data = await res.json();
 				console.log('dashboard received data', data);
 				setCurrentUserData(data.user);
+			} else {
+				console.log('failed to get user');
 			}
 		} catch (error) {
-			console.log(error);
+			console.log('Failed to fetch:', error);
 		}
 	};
 
@@ -57,6 +63,7 @@ export default function UsersPage() {
 		}
 
 		if (status === 'authenticated') {
+			console.log('fetching now...');
 			fetchCurrentUserData();
 		}
 	}, [router, status, username]);
@@ -64,17 +71,38 @@ export default function UsersPage() {
 	const closeModal = () => {
 		setActiveModal(null);
 		setSelectedEducation(null);
+		setSelectedWorkExp(null);
 		fetchCurrentUserData();
 	};
 
 	const handleDeleteEducation = async (educationId: number) => {
 		try {
-			const response = await fetch(`/api/auth/users/${username}/education`, {
+			const response = await fetch(`/api/users/${username}/education`, {
 				method: 'DELETE',
 				headers: {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify(educationId),
+			});
+
+			if (!response.ok) {
+				throw new Error('Operation Failed!');
+			}
+		} catch (error) {
+			console.log(error);
+		} finally {
+			fetchCurrentUserData();
+		}
+	};
+
+	const handleDeleteWorkExp = async (workExpId: number) => {
+		try {
+			const response = await fetch(`/api/users/${username}/work`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(workExpId),
 			});
 
 			if (!response.ok) {
@@ -110,9 +138,7 @@ export default function UsersPage() {
 					<section className="section-container section-card">
 						<div className="section-title flex justify-between items-center">
 							<div>Education</div>
-							<div>
-								<button onClick={() => setActiveModal('education')}>Add</button>
-							</div>
+							<button onClick={() => setActiveModal('education')}>Add</button>
 						</div>
 						{currentUserData.education && currentUserData.education.length > 0 ? (
 							<>
@@ -122,7 +148,7 @@ export default function UsersPage() {
 										<p>{edu.degree}</p>
 										<p>{edu.fieldOfStudy}</p>
 										<p>{edu.startYear}</p>
-										<p>{edu.endYear ? edu.endYear : 'Present'}</p>
+										<p>{edu.endYear === 0 ? edu.endYear : 'Present'}</p>
 										<button
 											onClick={() => {
 												setActiveModal('education');
@@ -159,16 +185,36 @@ export default function UsersPage() {
 					/>
 
 					<section className="section-container section-card">
-						<p className="section-title">Work</p>
+						<div className="section-title flex justify-between items-center">
+							<div>Work</div>
+							<button onClick={() => setActiveModal('workExperience')}>Add</button>
+						</div>
 						{currentUserData.workExperience && currentUserData.workExperience.length > 0 ? (
 							<>
 								{currentUserData.workExperience.map((work) => (
 									<div key={work.id} className="border-b mb-5">
 										<p>{work.jobTitle}</p>
 										<p>{work.company}</p>
-										<p>{work.startDate.toString()}</p>
-										<p>{work.endDate?.toString() ?? 'Present'}</p>
-										<p>{work.description}</p>
+										<p>{work.startYear}</p>
+										<p>{work.endYear === 0 ? 'Present' : work.endYear}</p>
+										<button
+											onClick={() => {
+												setActiveModal('workExperience');
+												const workExpToEdit: WorkExperience = {
+													id: work.id,
+													jobTitle: work.jobTitle,
+													company: work.company,
+													startYear: work.startYear,
+													endYear: work.endYear ?? null,
+													description: work.description ?? null,
+												};
+												setSelectedWorkExp(workExpToEdit);
+											}}
+										>
+											Edit
+										</button>
+										<button onClick={() => handleDeleteWorkExp(work.id)}>Delete</button>
+										<br />
 									</div>
 								))}
 							</>
@@ -176,6 +222,13 @@ export default function UsersPage() {
 							'No Job History'
 						)}
 					</section>
+
+					<WorkExpModal
+						isOpen={activeModal === 'workExperience'}
+						closeModal={closeModal}
+						username={username!}
+						selectedWorkExp={selectedWorkExp}
+					/>
 
 					<section className="section-container section-card">
 						<p className="section-title">Projects</p>
