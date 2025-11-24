@@ -16,7 +16,6 @@ export async function GET(request: NextRequest, { params }: { params: { username
 		}
 		return NextResponse.json({ user }, { status: 200 });
 	} catch (error) {
-		console.error('Dashboard API Error:', error);
 		return NextResponse.json(
 			{ message: 'Internal Server Error.', details: String(error) },
 			{ status: 500 }

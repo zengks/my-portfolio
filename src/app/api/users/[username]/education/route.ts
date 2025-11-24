@@ -8,6 +8,9 @@ import {
 export async function POST(request: NextRequest, { params }: { params: { username: string } }) {
 	try {
 		const { username } = await params;
+		if (!username) {
+			return NextResponse.json({ error: 'Username is required' }, { status: 400 });
+		}
 		const body = await request.json();
 		const addedEducation = await addEducation(username, body);
 		return NextResponse.json({ addedEducation }, { status: 201 });
@@ -20,6 +23,9 @@ export async function POST(request: NextRequest, { params }: { params: { usernam
 export async function PUT(request: NextRequest, { params }: { params: { username: string } }) {
 	try {
 		const { username } = await params;
+		if (!username) {
+			return NextResponse.json({ error: 'Username is required' }, { status: 400 });
+		}
 		const body = await request.json();
 		const updatedEducation = await updateUserEducation(username, body);
 		return NextResponse.json({ updatedEducation }, { status: 200 });
