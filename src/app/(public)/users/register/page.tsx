@@ -21,7 +21,7 @@ export default function RegisterPage() {
 		}
 
 		try {
-			const response = await fetch('/api/register', {
+			const response = await fetch('/api/users/register', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
@@ -45,7 +45,7 @@ export default function RegisterPage() {
 				setPassword('');
 				// Optional: redirect to login after a delay
 				setTimeout(() => {
-					router.push('/login'); // Redirect to your login page
+					router.push('/users/login'); // Redirect to your login page
 				}, 2000); // 2-second delay
 			}
 		} catch (err) {

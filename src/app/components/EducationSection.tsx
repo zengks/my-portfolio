@@ -1,5 +1,4 @@
 import { Education } from 'types/educationType';
-import { getYear } from '@/utility';
 import { getAllUserEducation } from '@/controllers/userEducationController';
 
 export default async function EducationSection() {
@@ -15,13 +14,13 @@ export default async function EducationSection() {
 			<p className="section-title">Education</p>
 			{sortedEduData && sortedEduData.length > 0 ? (
 				<section className="flex flex-col gap-2">
-					{/* {sortedEduData.map((data: Education, index: number) => (
+					{sortedEduData.map((data: Education, index: number) => (
 						<div className="columns-3" key={index}>
 							<p>{`${data.degree} in ${data.fieldOfStudy}`}</p>
 							<p>{data.school}</p>
-							<p>{`${data.startYear)} - ${data.endYear)}`}</p>
+							<p>{`${data.startYear} - ${data.endYear}`}</p>
 						</div>
-					))} */}
+					))}
 				</section>
 			) : (
 				<section>No eduction history found.</section>

@@ -23,7 +23,7 @@ import type { Certificate } from 'types/certificateType';
 export default function UsersPage() {
 	const { data: session, status } = useSession();
 
-	const [activeModal, setActiveModal] = useState<string | null>(null); // 'addEducation', 'updateEducation', "edit"
+	const [activeModal, setActiveModal] = useState<string | null>(null);
 
 	const router = useRouter();
 
