@@ -44,6 +44,8 @@ export async function getUserByUsername(username: string) {
 			profile: {
 				select: {
 					id: true,
+					username: true,
+					userId: true,
 					firstName: true,
 					lastName: true,
 					email: true,
@@ -52,6 +54,9 @@ export async function getUserByUsername(username: string) {
 					city: true,
 					province: true,
 					country: true,
+					githubUrl: true,
+					linkedInUrl: true,
+					jobTitle: true,
 				},
 			},
 			workExperience: {

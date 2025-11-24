@@ -11,10 +11,12 @@ import { SKILLS_MAP } from '@/lib/constant';
 import EducationModal from '@/app/components/modalWindows/EducationModal';
 import WorkExpModal from '@/app/components/modalWindows/WorkExpModal';
 import ProjectModal from '@/app/components/modalWindows/ProjectModal';
+import ProfileModal from '@/app/components/modalWindows/ProfileModal';
 
 import type { Education } from 'types/educationType';
 import type { WorkExperience } from 'types/workExpType';
 import type { Project } from 'types/projectType';
+import type { Profile } from 'types/profileType';
 
 export default function UsersPage() {
 	const { data: session, status } = useSession();
@@ -28,6 +30,7 @@ export default function UsersPage() {
 	const [selectedEducation, setSelectedEducation] = useState<Education | null>(null);
 	const [selectedWorkExp, setSelectedWorkExp] = useState<WorkExperience | null>(null);
 	const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+	const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
 
 	const username = session?.user?.username;
 
@@ -70,6 +73,7 @@ export default function UsersPage() {
 
 	const closeModal = () => {
 		setActiveModal(null);
+		setSelectedProfile(null);
 		setSelectedEducation(null);
 		setSelectedWorkExp(null);
 		setSelectedProject(null);
@@ -151,10 +155,54 @@ export default function UsersPage() {
 							</p>
 							<SignOutButton />
 						</div>
-						<p>ID: {session?.user?.id}</p>
-						<p>Username: {session.user.username}</p>
-						<p>Role: {session?.user?.role}</p>
+						{currentUserData.profile && (
+							<>
+								<p>ID: {currentUserData.profile.userId}</p>
+								<p>Username: {currentUserData.profile.username}</p>
+								<p>Role: {session.user.role}</p>
+								<p>Email: {currentUserData.profile.email}</p>
+								<p>Job Title: {currentUserData.profile.jobTitle}</p>
+								<p>City: {currentUserData.profile.city}</p>
+								<p>Province: {currentUserData.profile.province}</p>
+								<p>Country: {currentUserData.profile.country}</p>
+								<p>LinkedIn Link: {currentUserData.profile.linkedInUrl}</p>
+								<p>GitHub Link: {currentUserData.profile.githubUrl}</p>
+								<p>Bio: {currentUserData.profile.bioLink}</p>
+								<button
+									onClick={() => {
+										if (!currentUserData.profile) return;
+										setActiveModal('profile');
+										const profileToEdit: Profile = {
+											id: currentUserData.profile.id,
+											userId: currentUserData.profile.userId,
+											username: currentUserData.profile.username,
+											firstName: currentUserData.profile.firstName,
+											lastName: currentUserData.profile.lastName ?? '',
+											email: currentUserData.profile?.email ?? '',
+											jobTitle: currentUserData.profile?.jobTitle ?? '',
+											bioLink: currentUserData.profile?.bioLink ?? '',
+											imageLink: currentUserData.profile?.imageLink ?? '',
+											city: currentUserData.profile?.city ?? '',
+											province: currentUserData.profile?.province ?? '',
+											country: currentUserData.profile?.country ?? '',
+											linkedInUrl: currentUserData.profile?.linkedInUrl ?? '',
+											githubUrl: currentUserData.profile?.githubUrl ?? '',
+										};
+										setSelectedProfile(profileToEdit);
+									}}
+								>
+									Edit
+								</button>
+							</>
+						)}
 					</section>
+
+					<ProfileModal
+						isOpen={activeModal === 'profile'}
+						closeModal={closeModal}
+						username={username!}
+						selectedProfile={selectedProfile}
+					/>
 
 					<section className="section-container section-card">
 						<div className="section-title flex justify-between items-center">

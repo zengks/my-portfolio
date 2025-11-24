@@ -1,17 +1,15 @@
 import prisma from 'src/lib/prisma';
 import { Profile } from 'types/profileType';
 import { apiPaths } from '@/lib/apiPaths';
-import { getUserIdByUsername } from './userController';
 
 export async function getUserProfile(username: string = 'zengks') {
-	const user = await getUserIdByUsername(username);
-	if (!user) return null;
-
 	const profile = await prisma.profile.findUnique({
 		where: {
-			userId: user.id,
+			username: username,
 		},
 		select: {
+			userId: true,
+			username: true,
 			firstName: true,
 			lastName: true,
 			email: true,
@@ -28,13 +26,32 @@ export async function getUserProfile(username: string = 'zengks') {
 	return profile;
 }
 
-export async function updateUserProfile(userId: string, newProfileData: Profile) {
-	return await prisma.profile.update({
-		where: {
-			userId,
-		},
-		data: newProfileData,
+export async function updateUserProfile(username: string, selectedProfile: Profile) {
+	console.log('selected profile', selectedProfile);
+	const user = await prisma.user.findUnique({
+		where: { username },
+		select: { id: true },
 	});
+
+	if (!user) throw new Error(`User @${username} not found`);
+
+	const updatedUserProfile = await prisma.profile.update({
+		where: {
+			id: selectedProfile.id,
+		},
+		data: {
+			firstName: selectedProfile.firstName,
+			lastName: selectedProfile.lastName,
+			email: selectedProfile.email,
+			city: selectedProfile.city,
+			province: selectedProfile.province,
+			country: selectedProfile.country,
+			linkedInUrl: selectedProfile.linkedInUrl,
+			githubUrl: selectedProfile.githubUrl,
+			jobTitle: selectedProfile.jobTitle,
+		},
+	});
+	return updatedUserProfile;
 }
 
 // client-side fetch user profile
