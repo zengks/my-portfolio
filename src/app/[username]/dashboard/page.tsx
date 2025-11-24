@@ -10,8 +10,11 @@ import { SKILLS_MAP } from '@/lib/constant';
 
 import EducationModal from '@/app/components/modalWindows/EducationModal';
 import WorkExpModal from '@/app/components/modalWindows/WorkExpModal';
+import ProjectModal from '@/app/components/modalWindows/ProjectModal';
+
 import type { Education } from 'types/educationType';
 import type { WorkExperience } from 'types/workExpType';
+import type { Project } from 'types/projectType';
 
 export default function UsersPage() {
 	const { data: session, status } = useSession();
@@ -24,6 +27,7 @@ export default function UsersPage() {
 	const [currentUserData, setCurrentUserData] = useState<User | null>(null);
 	const [selectedEducation, setSelectedEducation] = useState<Education | null>(null);
 	const [selectedWorkExp, setSelectedWorkExp] = useState<WorkExperience | null>(null);
+	const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 
 	const username = session?.user?.username;
 
@@ -72,6 +76,7 @@ export default function UsersPage() {
 		setActiveModal(null);
 		setSelectedEducation(null);
 		setSelectedWorkExp(null);
+		setSelectedProject(null);
 		fetchCurrentUserData();
 	};
 
@@ -103,6 +108,26 @@ export default function UsersPage() {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify(workExpId),
+			});
+
+			if (!response.ok) {
+				throw new Error('Operation Failed!');
+			}
+		} catch (error) {
+			console.log(error);
+		} finally {
+			fetchCurrentUserData();
+		}
+	};
+
+	const handleDeleteProject = async (projectId: number) => {
+		try {
+			const response = await fetch(`/api/users/${username}/project`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(projectId),
 			});
 
 			if (!response.ok) {
@@ -231,7 +256,10 @@ export default function UsersPage() {
 					/>
 
 					<section className="section-container section-card">
-						<p className="section-title">Projects</p>
+						<div className="section-title flex justify-between items-center">
+							<div>Project</div>
+							<button onClick={() => setActiveModal('project')}>Add</button>
+						</div>
 						{currentUserData.project && currentUserData.project.length > 0 ? (
 							<>
 								{currentUserData.project.map((each) => (
@@ -261,6 +289,26 @@ export default function UsersPage() {
 											)}
 										</p>
 										<p>{each.description}</p>
+										<p>{each.projectYear === 0 ? 'Not Defined' : each.projectYear}</p>
+										<button
+											onClick={() => {
+												setActiveModal('project');
+												const projectToEdit: Project = {
+													id: each.id,
+													title: each.title,
+													repo_link: each.repo_link ?? null,
+													description: each.description ?? null,
+													project_link: each.project_link ?? null,
+													preview_image_link: each.preview_image_link ?? null,
+													tech_stack: each.tech_stack,
+													projectYear: each.projectYear,
+												};
+												setSelectedProject(projectToEdit);
+											}}
+										>
+											Edit
+										</button>
+										<button onClick={() => handleDeleteProject(each.id)}>Delete</button>
 										<br />
 									</div>
 								))}
@@ -269,6 +317,13 @@ export default function UsersPage() {
 							'No Projects'
 						)}
 					</section>
+
+					<ProjectModal
+						isOpen={activeModal === 'project'}
+						closeModal={closeModal}
+						username={username!}
+						selectedProject={selectedProject}
+					/>
 
 					<section className="section-container section-card">
 						<p className="section-title">Skills</p>

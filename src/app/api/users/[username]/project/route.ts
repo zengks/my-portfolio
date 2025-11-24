@@ -1,17 +1,17 @@
 import { NextRequest, NextResponse } from 'next/server';
 
 import {
-	addWorkExperience,
-	updateWorkExperience,
-	deleteWorkExperience,
-} from '@/controllers/userWorkExpController';
+	addProject,
+	updateUserProject,
+	deleteUserProject,
+} from '@/controllers/userProjectController';
 
 export async function POST(request: NextRequest, { params }: { params: { username: string } }) {
 	try {
 		const { username } = await params;
 		const body = await request.json();
-		const addedWorkExp = await addWorkExperience(username, body);
-		return NextResponse.json({ addedWorkExp }, { status: 201 });
+		const addedProject = await addProject(username, body);
+		return NextResponse.json({ addedProject }, { status: 201 });
 	} catch (error) {
 		console.log(error);
 		return NextResponse.json({ Error: 'Internal Server Error' }, { status: 500 });
@@ -22,8 +22,8 @@ export async function PUT(request: NextRequest, { params }: { params: { username
 	try {
 		const { username } = await params;
 		const body = await request.json();
-		const updatedWorkExp = await updateWorkExperience(username, body);
-		return NextResponse.json({ updatedWorkExp }, { status: 200 });
+		const updatedProject = await updateUserProject(username, body);
+		return NextResponse.json({ updatedProject }, { status: 200 });
 	} catch (error) {
 		console.log(error);
 		return NextResponse.json({ Error: 'Internal Server Error' }, { status: 500 });
@@ -33,9 +33,9 @@ export async function PUT(request: NextRequest, { params }: { params: { username
 export async function DELETE(request: NextRequest) {
 	try {
 		const body = await request.json();
-		await deleteWorkExperience(body);
+		await deleteUserProject(body);
 		return NextResponse.json(
-			{ Response: 'Selected Work Experience Deleted Successfully!' },
+			{ Response: 'Selected Project Deleted Successfully!' },
 			{ status: 200 }
 		);
 	} catch (error) {
