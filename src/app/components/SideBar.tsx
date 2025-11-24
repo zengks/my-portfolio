@@ -100,8 +100,8 @@ export default async function SideBar() {
 
 					<p>
 						{profileData?.resumeUrl ? (
-							<a href={profileData.resumeUrl} target="_blank" rel="noopener noreferrer" download>
-								Download Resume
+							<a href={profileData.resumeUrl} target="_blank" rel="noopener noreferrer">
+								View Resume
 							</a>
 						) : (
 							<span>No Resume Available</span>

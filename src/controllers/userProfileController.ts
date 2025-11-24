@@ -1,7 +1,7 @@
 import prisma from 'src/lib/prisma';
 import { Profile } from 'types/profileType';
 import { apiPaths } from '@/lib/apiPaths';
-import { writeFile } from 'fs/promises';
+import { writeFile, unlink } from 'fs/promises';
 import path from 'path';
 
 export async function getUserProfile(username: string = 'zengks') {
@@ -38,16 +38,35 @@ export async function updateUserProfile(username: string, formData: FormData) {
 	if (!user) throw new Error(`User @${username} not found`);
 
 	const resumeFile = formData.get('resume') as File | null;
+
+	if (resumeFile) {
+	}
+
 	let resumeUrl = undefined;
 
 	if (resumeFile && typeof resumeFile.arrayBuffer === 'function') {
+		const currentProfile = await prisma.profile.findUnique({
+			where: { username },
+			select: { resumeUrl: true },
+		});
+
+		if (currentProfile?.resumeUrl) {
+			const oldFilePath = path.join(process.cwd(), 'public', currentProfile.resumeUrl);
+			try {
+				await unlink(oldFilePath);
+				console.log(`Deleted old resume: ${oldFilePath}`);
+			} catch (error) {
+				console.warn('Could not delete old resume file: ', error);
+			}
+		}
+
 		const bytes = await resumeFile.arrayBuffer();
 		const buffer = Buffer.from(bytes);
-		const filename = `${resumeFile.name}`;
+		const filename = `${Date.now()}-${resumeFile.name.replaceAll(' ', '_')}`;
 		const uploadDir = path.join(process.cwd(), 'public/uploads');
 
 		await writeFile(path.join(uploadDir, filename), buffer);
-		resumeUrl = `${filename}`;
+		resumeUrl = `/uploads/${filename}`;
 	}
 
 	const updatedUserProfile = await prisma.profile.update({
