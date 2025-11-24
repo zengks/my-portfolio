@@ -33,15 +33,12 @@ export default function UsersPage() {
 
 	const fetchCurrentUserData = async () => {
 		try {
-			console.log('fetching inside');
 			const res = await fetch(`/api/users/${username}/dashboard`, {
 				method: 'GET',
 				headers: {
 					'Content-Type': 'application/json',
 				},
 			});
-
-			console.log('res data fetched: ', res);
 
 			if (res.ok) {
 				const data = await res.json();
@@ -67,7 +64,6 @@ export default function UsersPage() {
 		}
 
 		if (status === 'authenticated') {
-			console.log('fetching now...');
 			fetchCurrentUserData();
 		}
 	}, [router, status, username]);
