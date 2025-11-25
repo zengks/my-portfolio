@@ -1,6 +1,9 @@
+import type { AboutUser } from './aboutUserType';
+
 export interface Profile {
 	id: number;
 	userId: string;
+	username: string;
 	firstName: string;
 	lastName: string | null;
 	email: string;
@@ -10,6 +13,8 @@ export interface Profile {
 	city: string | null;
 	province: string | null;
 	country: string | null;
+	resumeUrl: string | null;
 	linkedInUrl: string | null;
 	githubUrl: string | null;
+	aboutUser: AboutUser[];
 }

@@ -3,8 +3,8 @@ export interface Education {
 	school: string;
 	degree: string;
 	fieldOfStudy: string | null;
-	startDate: Date;
-	endDate: Date | null;
+	startYear: number;
+	endYear: number | null;
 	gpa: number | null;
 	description: string | null;
 }

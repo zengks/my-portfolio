@@ -14,7 +14,7 @@ async function main() {
 					email: 'zengks@outlook.com',
 					firstName: 'Steven',
 					lastName: 'Zeng',
-					bio: 'my bio description',
+					bioLink: 'my bio description',
 					imageLink: '',
 					createdAt: new Date(),
 					updatedAt: new Date(),
@@ -31,7 +31,7 @@ async function main() {
 		},
 	});
 
-	await prisma.user.upsert({
+	const guestUser = await prisma.user.upsert({
 		where: { username: 'jimmy123' },
 		update: {},
 		create: {
@@ -43,7 +43,7 @@ async function main() {
 					email: 'jimmy@email.com',
 					firstName: 'Jimmy',
 					lastName: 'Bao',
-					bio: 'jimmy bio des',
+					bioLink: 'jimmy bio des',
 					imageLink: '',
 					createdAt: new Date(),
 					updatedAt: new Date(),
@@ -64,16 +64,19 @@ async function main() {
 		data: [
 			{
 				userId: adminUser.id,
+				username: adminUser.username,
 				title: 'BCIT Quiz Page',
 				tech_stack: ['mongodb', 'reactjs', 'expressjs', 'nodejs'],
 			},
 			{
 				userId: adminUser.id,
+				username: adminUser.username,
 				title: 'Personal Portfolio Website',
 				tech_stack: ['nextjs', 'prisma', 'tailwindcss', 'typescript'],
 			},
 			{
 				userId: adminUser.id,
+				username: adminUser.username,
 				title: 'Kombucha Guide',
 				tech_stack: ['reactjs', 'python', 'css'],
 			},

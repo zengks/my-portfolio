@@ -1,12 +1,11 @@
 import { Education } from 'types/educationType';
-import { getYear } from '@/utility';
 import { getAllUserEducation } from '@/controllers/userEducationController';
 
 export default async function EducationSection() {
-	const eduData = await getAllUserEducation();
+	const eduData = await getAllUserEducation('zengks');
 	const sortedEduData = eduData
 		? [...eduData].sort((a: Education, b: Education) => {
-				return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+				return b.startYear - a.startYear;
 		  })
 		: null;
 
@@ -19,7 +18,7 @@ export default async function EducationSection() {
 						<div className="columns-3" key={index}>
 							<p>{`${data.degree} in ${data.fieldOfStudy}`}</p>
 							<p>{data.school}</p>
-							<p>{`${getYear(data.startDate)} - ${getYear(data.endDate)}`}</p>
+							<p>{`${data.startYear} - ${data.endYear}`}</p>
 						</div>
 					))}
 				</section>

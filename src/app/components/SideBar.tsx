@@ -23,9 +23,6 @@ const infoIconSize = {
 	height: 22,
 };
 
-const LINKEDIN_URL = 'https://www.linkedin.com/in/chenzeng91/';
-const GITHUB_REPO_URL = 'https://github.com/zengks?tab=repositories';
-
 export default async function SideBar() {
 	const profileData = await getUserProfile();
 	return (
@@ -54,7 +51,7 @@ export default async function SideBar() {
 						width={infoIconSize.width}
 						height={infoIconSize.height}
 					/>
-					<p>FullStack Developer</p>
+					<p>{profileData ? profileData.jobTitle : 'Loading...'}</p>
 				</div>
 			</section>
 
@@ -75,7 +72,11 @@ export default async function SideBar() {
 						width={infoIconSize.width}
 						height={infoIconSize.height}
 					/>
-					<p>Vancouver, BC</p>
+					<p>
+						{profileData
+							? `${profileData.city}, ${profileData.province}, ${profileData.country}`
+							: 'Loading...'}
+					</p>
 				</div>
 			</section>
 
@@ -98,9 +99,13 @@ export default async function SideBar() {
 					/>
 
 					<p>
-						<a href="/zoho.pdf" download>
-							Download Resume
-						</a>
+						{profileData?.resumeUrl ? (
+							<a href={profileData.resumeUrl} target="_blank" rel="noopener noreferrer">
+								View Resume
+							</a>
+						) : (
+							<span>No Resume Available</span>
+						)}
 					</p>
 				</div>
 			</section>
@@ -112,7 +117,7 @@ export default async function SideBar() {
 						width={socialIconSize.width}
 						height={socialIconSize.height}
 					/>
-					<Link href={LINKEDIN_URL}>LinkedIn</Link>
+					<Link href={profileData?.linkedInUrl ?? '/'}>LinkedIn</Link>
 				</div>
 				<div className="section-sidebar-row-item">
 					<Image
@@ -121,7 +126,7 @@ export default async function SideBar() {
 						width={socialIconSize.width}
 						height={socialIconSize.height}
 					/>
-					<Link href={GITHUB_REPO_URL}>GitHub</Link>
+					<Link href={profileData?.githubUrl ?? '/'}>GitHub</Link>
 				</div>
 			</section>
 		</aside>
