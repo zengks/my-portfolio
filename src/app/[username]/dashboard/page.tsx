@@ -173,10 +173,7 @@ export default function UsersPage() {
 				<>
 					<section className="section-container section-card">
 						<div className="flex justify-between items-center section-title">
-							<p>
-								Welcome,{' '}
-								{`${currentUserData.profile?.firstName} ${currentUserData.profile?.lastName}`}
-							</p>
+							<p>Welcome, {currentUserData.profile?.firstName}</p>
 							<SignOutButton />
 						</div>
 						{currentUserData.profile && (

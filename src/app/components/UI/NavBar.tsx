@@ -3,6 +3,7 @@
 import { MENU_ITEMS } from '@/lib/constant';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useSession } from 'next-auth/react';
 
 import moonIcon from 'src/assets/icons/moon.svg';
 import sunIcon from 'src/assets/icons/sun.svg';
@@ -12,6 +13,7 @@ import { useState } from 'react';
 export default function NavBar() {
 	const pathname = usePathname();
 	const [theme, setTheme] = useState('light');
+	const { data: session, status } = useSession();
 
 	return (
 		<div className="flex justify-around items-center my-8">
@@ -42,6 +44,24 @@ export default function NavBar() {
 							</Link>
 						);
 					})}
+					{status === 'authenticated' && (
+						<Link
+							key="dashboard"
+							href={`/${session.user.username}/dashboard`}
+							className="group relative pb-1 text-neutral-600 hover:text-neutral-900 transition-colors"
+						>
+							ADMIN
+							<span
+								className={`
+                    absolute bottom-0 left-1/2 -translate-x-1/2
+                    h-[2px] bg-neutral-700 rounded-full
+                    transition-all duration-400 ease-out
+                    ${pathname === `/${session.user.username}/dashboard` ? 'w-[8px]' : 'w-0'}
+                    ${'group-hover:w-full'}
+                  `}
+							/>
+						</Link>
+					)}
 				</nav>
 			</div>
 			<div className="flex justify-center items-center gap-2 me-3">

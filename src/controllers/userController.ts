@@ -88,13 +88,26 @@ export async function getUserByUsername(username: string) {
 	});
 }
 
-export async function createUser(username: string, password: string, role?: string) {
+export async function createUser(
+	username: string,
+	password: string,
+	email: string,
+	firstName: string,
+	role?: string
+) {
 	return await prisma.user.create({
 		data: {
 			username,
 			password: await hashPassword(password),
 			role,
+			profile: {
+				create: {
+					firstName: firstName,
+					email: email,
+				},
+			},
 		},
+		include: { profile: true },
 	});
 }
 

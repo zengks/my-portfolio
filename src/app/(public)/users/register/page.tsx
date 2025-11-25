@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 export default function RegisterPage() {
 	const [username, setUsername] = useState('');
 	const [password, setPassword] = useState('');
+	const [email, setEmail] = useState('');
+	const [firstName, setFirstName] = useState('');
 	const [error, setError] = useState<string | null>(null);
 	const [success, setSuccess] = useState<string | null>(null);
 	const router = useRouter();
@@ -15,8 +17,8 @@ export default function RegisterPage() {
 		setSuccess(null);
 
 		// Basic client-side validation
-		if (!username || !password) {
-			setError('Username and password are required.');
+		if (!username || !password || !email || !firstName) {
+			setError('missing required fields.');
 			return;
 		}
 
@@ -29,24 +31,22 @@ export default function RegisterPage() {
 				body: JSON.stringify({
 					username: username,
 					password: password,
+					email: email,
+					firstName: firstName,
 				}),
 			});
 
 			const data = await response.json();
 
 			if (!response.ok) {
-				// If API returns an error message, display it
 				setError(data.message || 'Registration failed.');
 			} else {
-				// Handle successful registration
 				setSuccess(data.message);
-				// Clear form
 				setUsername('');
 				setPassword('');
-				// Optional: redirect to login after a delay
 				setTimeout(() => {
-					router.push('/users/login'); // Redirect to your login page
-				}, 2000); // 2-second delay
+					router.push('/users/login');
+				}, 2000);
 			}
 		} catch (err) {
 			setError('An unexpected error occurred. Please try again.');
@@ -79,13 +79,31 @@ export default function RegisterPage() {
 					/>
 				</div>
 				<div>
+					<label htmlFor="firstName">First Name</label>
+					<input
+						type="text"
+						name="firstName"
+						value={firstName}
+						onChange={(e) => setFirstName(e.target.value)}
+						required
+					/>
+				</div>
+				<div>
+					<label htmlFor="email">Email</label>
+					<input
+						type="email"
+						name="email"
+						value={email}
+						onChange={(e) => setEmail(e.target.value)}
+						required
+					/>
+				</div>
+				<div>
 					<button type="submit">Register</button>
 				</div>
 
-				{/* Error Message */}
 				{error && <div className="p-3 mt-4 rounded bg-red-100 text-red-500 w-100">{error}</div>}
 
-				{/* Success Message */}
 				{success && (
 					<div className="p-3 mt-4 rounded bg-green-100 text-green-600 w-100">
 						{success} Redirecting to login...
