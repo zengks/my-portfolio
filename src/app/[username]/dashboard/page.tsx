@@ -14,6 +14,7 @@ import ProjectModal from '@/app/components/modalWindows/ProjectModal';
 import ProfileModal from '@/app/components/modalWindows/ProfileModal';
 import CertificateModal from '@/app/components/modalWindows/CertificateModal';
 import SkillModal from '@/app/components/modalWindows/SkillModal';
+import AboutUserModal from '@/app/components/modalWindows/AboutUserModal';
 
 import type { Education } from 'types/educationType';
 import type { WorkExperience } from 'types/workExpType';
@@ -21,6 +22,7 @@ import type { Project } from 'types/projectType';
 import type { Profile } from 'types/profileType';
 import type { Certificate } from 'types/certificateType';
 import type { Skill } from 'types/skillType';
+import type { AboutUser } from 'types/aboutUserType';
 
 export default function UsersPage() {
 	const { data: session, status } = useSession();
@@ -36,6 +38,7 @@ export default function UsersPage() {
 	const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
 	const [selectedCertificate, setSelectedCertificate] = useState<Certificate | null>(null);
 	const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
+	const [selectedAboutUserSection, setSelectedAboutUserSection] = useState<AboutUser | null>(null);
 
 	const username = session?.user?.username;
 
@@ -84,6 +87,7 @@ export default function UsersPage() {
 		setSelectedProject(null);
 		setSelectedCertificate(null);
 		setSelectedSkill(null);
+		setSelectedAboutUserSection(null);
 		fetchCurrentUserData();
 	};
 
@@ -187,6 +191,26 @@ export default function UsersPage() {
 		}
 	};
 
+	const handleDeleteAboutUserSection = async (aboutUserId: number) => {
+		try {
+			const response = await fetch(`/api/users/${username}/aboutUser`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(aboutUserId),
+			});
+
+			if (!response.ok) {
+				throw new Error('Operation Failed!');
+			}
+		} catch (error) {
+			console.log(error);
+		} finally {
+			fetchCurrentUserData();
+		}
+	};
+
 	return (
 		<>
 			{loading && (
@@ -233,6 +257,7 @@ export default function UsersPage() {
 											resumeUrl: currentUserData.profile.resumeUrl ?? '',
 											linkedInUrl: currentUserData.profile.linkedInUrl ?? '',
 											githubUrl: currentUserData.profile.githubUrl ?? '',
+											aboutUser: currentUserData.profile.aboutUser ?? null,
 										};
 										setSelectedProfile(profileToEdit);
 									}}
@@ -248,6 +273,45 @@ export default function UsersPage() {
 						closeModal={closeModal}
 						username={username!}
 						selectedProfile={selectedProfile}
+					/>
+
+					<section className="section-container section-card">
+						<div className="section-title flex justify-between items-center">
+							<div>About User</div>
+							<button onClick={() => setActiveModal('aboutUser')}>Add</button>
+						</div>
+						{currentUserData.profile && currentUserData.profile.aboutUser.length > 0 && (
+							<>
+								{currentUserData.profile.aboutUser.map((each) => (
+									<div key={each.id} className="border-b mb-5">
+										<p>{each.header}</p>
+										<p>{each.aboutContent}</p>
+										<button
+											onClick={() => {
+												setActiveModal('aboutUser');
+												const aboutUserSectionToEdit: AboutUser = {
+													id: each.id,
+													header: each.header,
+													aboutContent: each.aboutContent,
+												};
+												setSelectedAboutUserSection(aboutUserSectionToEdit);
+											}}
+										>
+											Edit
+										</button>
+										<button onClick={() => handleDeleteAboutUserSection(each.id)}>Delete</button>
+										<br />
+									</div>
+								))}
+							</>
+						)}
+					</section>
+
+					<AboutUserModal
+						isOpen={activeModal === 'aboutUser'}
+						closeModal={closeModal}
+						username={username!}
+						selectedAboutUserSection={selectedAboutUserSection}
 					/>
 
 					<section className="section-container section-card">

@@ -45,8 +45,8 @@ export const authOptions: AuthOptions = {
 	session: {
 		strategy: 'jwt' as const,
 
-		// Only valid for 5 minutes
-		maxAge: 5 * 60,
+		// Only valid for 10 minutes
+		maxAge: 10 * 60,
 		generateSessionToken: () => {
 			return randomUUID?.() ?? randomBytes(32).toString('hex');
 		},

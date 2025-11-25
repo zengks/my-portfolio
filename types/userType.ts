@@ -11,7 +11,6 @@ export interface User {
 	id: string;
 	username: string;
 	role: string;
-	aboutUser: string | null;
 	updatedAt: Date;
 	createdAt: Date;
 	blogPost: BlogPost[];

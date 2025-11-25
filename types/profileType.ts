@@ -1,3 +1,5 @@
+import type { AboutUser } from './aboutUserType';
+
 export interface Profile {
 	id: number;
 	userId: string;
@@ -14,4 +16,5 @@ export interface Profile {
 	resumeUrl: string | null;
 	linkedInUrl: string | null;
 	githubUrl: string | null;
+	aboutUser: AboutUser[];
 }

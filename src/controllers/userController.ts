@@ -19,7 +19,6 @@ export async function getUserByUsername(username: string) {
 		where: { username },
 		select: {
 			role: true,
-			aboutUser: true,
 			certificate: {
 				select: {
 					id: true,
@@ -60,8 +59,19 @@ export async function getUserByUsername(username: string) {
 					linkedInUrl: true,
 					jobTitle: true,
 					resumeUrl: true,
+					aboutUser: {
+						select: {
+							id: true,
+							username: true,
+							userId: true,
+							profileId: true,
+							header: true,
+							aboutContent: true,
+						},
+					},
 				},
 			},
+
 			workExperience: {
 				select: {
 					id: true,

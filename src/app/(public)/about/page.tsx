@@ -1,13 +1,16 @@
 import { getUserAbout } from '@/controllers/userAboutController';
 
 export default async function About() {
-	const userAboutContent = await getUserAbout('zengks');
+	const userAbout = await getUserAbout('zengks');
 	return (
 		<section>
 			<section className="section-container section-card text-wrap">
 				<p className="section-title">Hi, I&apos;m Steven</p>
-				{userAboutContent && userAboutContent.aboutUser !== null ? (
-					<p>{userAboutContent?.aboutUser ? userAboutContent?.aboutUser : 'Loading...'}</p>
+				{userAbout && userAbout.aboutUser ? (
+					<>
+						<p>{userAbout.aboutUser[0].header}</p>
+						<p>{userAbout.aboutUser[0].aboutContent}</p>
+					</>
 				) : (
 					<p>Nothing retrieved</p>
 				)}

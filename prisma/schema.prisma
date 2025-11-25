@@ -14,7 +14,6 @@ model User {
   role           String?          @default("guest")
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
-  aboutUser      String?
   accounts       Account[]
   blogPost       BlogPost[]
   certificate    Certificate[]
@@ -31,13 +30,14 @@ model User {
 }
 
 model Profile {
-  id          Int      @id @default(autoincrement())
-  userId      String   @unique
-  username    String   @unique
+  id          Int         @id @default(autoincrement())
+  userId      String      @unique
+  username    String      @unique
   firstName   String
   lastName    String?
-  email       String   @unique
+  email       String      @unique
   jobTitle    String?
+  aboutUser   AboutUser[]
   bioLink     String?
   imageLink   String?
   city        String?
@@ -46,11 +46,25 @@ model Profile {
   resumeUrl   String?
   linkedInUrl String?
   githubUrl   String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
-  user        User     @relation(fields: [userId, username], references: [id, username])
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @default(now())
+  user        User        @relation(fields: [userId, username], references: [id, username])
 
   @@unique([userId, username])
+  @@index([username])
+}
+
+model AboutUser {
+  id           Int      @id @default(autoincrement())
+  userId       String
+  username     String
+  profileId    Int
+  header       String
+  aboutContent String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+  profile      Profile? @relation(fields: [profileId], references: [id])
+
   @@index([username])
 }
 
@@ -167,6 +181,7 @@ model Skill {
   userId       String
   categoryName String
   skills       String[]
+  description  String?
   createdAt    DateTime @default(now())
   updatedAt    DateTime @default(now())
   user         User     @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
