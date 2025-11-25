@@ -1,0 +1,28 @@
+import { BlogPost } from './blogPostType';
+import { Certificate } from './certificateType';
+import { Education } from './educationType';
+import { Profile } from './profileType';
+import { Project } from './projectType';
+import { SocialMedia } from './socialMediaType';
+import { WorkExperience } from './workExpType';
+import { Skill } from './skillType';
+
+export interface User {
+	id: string;
+	username: string;
+	role: string;
+	updatedAt: Date;
+	createdAt: Date;
+	blogPost: BlogPost[];
+	certificate: Certificate[];
+	education: Education[];
+	profile: Profile | null;
+	project: Project[];
+	socialMedia: SocialMedia[];
+	workExperience: WorkExperience[];
+	skills: Skill[];
+}
+
+export interface UserUpdateInput {
+	password?: string;
+}

@@ -1,44 +1,75 @@
-import prisma from "@/lib/prisma";
-import { Education } from "types/education";
-import { apiPaths } from "@/lib/apiPaths";
+import prisma from '@/lib/prisma';
+import { Education } from 'types/educationType';
 
-export async function getAllUserEducation(userId: string) {
-  return await prisma.education.findMany({
-    where: { userId },
-  });
+export async function getAllUserEducation(username: string) {
+	return await prisma.education.findMany({
+		where: { username },
+		select: {
+			id: true,
+			school: true,
+			degree: true,
+			fieldOfStudy: true,
+			startYear: true,
+			endYear: true,
+			gpa: true,
+			description: true,
+		},
+		orderBy: { startYear: 'desc' }, // Most recent first
+	});
 }
 
-async function updateOneEducation(
-  educationId: number,
-  educationData: Education
-) {
-  return await prisma.education.update({
-    where: { id: educationId },
-    data: educationData,
-  });
+export async function addEducation(username: string, newEducationData: Education) {
+	const user = await prisma.user.findUnique({
+		where: { username },
+		select: { id: true },
+	});
+
+	if (!user) throw new Error(`User @${username} not found`);
+
+	const newEducation = await prisma.education.create({
+		data: {
+			userId: user.id,
+			username: username,
+			school: newEducationData.school,
+			degree: newEducationData.degree,
+			fieldOfStudy: newEducationData.fieldOfStudy ?? null,
+			startYear: newEducationData.startYear,
+			endYear: newEducationData.endYear ?? null,
+			gpa: newEducationData.gpa ?? null,
+			description: newEducationData.description ?? null,
+		},
+	});
+	return newEducation;
 }
 
-export async function updateUserEducation(newEducationData: Education[]) {
-  if (newEducationData.length === 0) {
-    throw new Error("No education data provided for update");
-  }
-  const updatedEducation = await Promise.all(
-    newEducationData.map((each) => updateOneEducation(each.id, each))
-  );
+export async function updateUserEducation(username: string, selectedEducationData: Education) {
+	const user = await prisma.user.findUnique({
+		where: { username },
+		select: { id: true },
+	});
 
-  return updatedEducation;
+	if (!user) throw new Error(`User @${username} not found`);
+
+	const updatedEducation = await prisma.education.update({
+		where: {
+			id: selectedEducationData.id,
+		},
+		data: {
+			school: selectedEducationData.school,
+			degree: selectedEducationData.degree,
+			fieldOfStudy: selectedEducationData.fieldOfStudy ?? null,
+			startYear: selectedEducationData.startYear,
+			endYear: selectedEducationData.endYear ?? null,
+		},
+	});
+
+	return updatedEducation;
 }
 
-// client-side api call
-export async function fetchAllUserEducation(): Promise<
-  Education[] | undefined
-> {
-  try {
-    const res = await fetch(apiPaths.userEducation());
-    const data = await res.json();
-    return data.education;
-  } catch (error) {
-    console.error("Error fetching user education data, ", error);
-    return undefined;
-  }
+export async function deleteUserEducation(educationId: number) {
+	return await prisma.education.delete({
+		where: {
+			id: educationId,
+		},
+	});
 }
