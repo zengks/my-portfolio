@@ -24,6 +24,7 @@ model User {
   sessions       Session[]
   socialMedia    SocialMedia[]
   workExperience WorkExperience[]
+  skills         Skill[]
 
   @@unique([id, username])
   @@map("users")
@@ -153,6 +154,19 @@ model Education {
   endYear      Int?
   gpa          Float?
   description  String?
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @default(now())
+  user         User     @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
+
+  @@index([userId, username])
+}
+
+model Skill {
+  id           Int      @id @default(autoincrement())
+  username     String
+  userId       String
+  categoryName String
+  skills       String[]
   createdAt    DateTime @default(now())
   updatedAt    DateTime @default(now())
   user         User     @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)

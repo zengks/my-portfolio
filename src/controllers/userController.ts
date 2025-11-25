@@ -84,6 +84,13 @@ export async function getUserByUsername(username: string) {
 					projectYear: true,
 				},
 			},
+			skills: {
+				select: {
+					id: true,
+					categoryName: true,
+					skills: true,
+				},
+			},
 		},
 	});
 }

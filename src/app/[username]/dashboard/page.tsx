@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 
 import { SignOutButton } from '@/app/components/UI/AuthButtons';
-import { User } from 'types/userType';
+import type { User } from 'types/userType';
 import { SKILLS_MAP } from '@/lib/constant';
 
 import EducationModal from '@/app/components/modalWindows/EducationModal';
@@ -13,20 +13,21 @@ import WorkExpModal from '@/app/components/modalWindows/WorkExpModal';
 import ProjectModal from '@/app/components/modalWindows/ProjectModal';
 import ProfileModal from '@/app/components/modalWindows/ProfileModal';
 import CertificateModal from '@/app/components/modalWindows/CertificateModal';
+import SkillModal from '@/app/components/modalWindows/SkillModal';
 
 import type { Education } from 'types/educationType';
 import type { WorkExperience } from 'types/workExpType';
 import type { Project } from 'types/projectType';
 import type { Profile } from 'types/profileType';
 import type { Certificate } from 'types/certificateType';
+import type { Skill } from 'types/skillType';
 
 export default function UsersPage() {
 	const { data: session, status } = useSession();
 
-	const [activeModal, setActiveModal] = useState<string | null>(null);
-
 	const router = useRouter();
 
+	const [activeModal, setActiveModal] = useState<string | null>(null);
 	const [loading, setLoading] = useState<boolean>(false);
 	const [currentUserData, setCurrentUserData] = useState<User | null>(null);
 	const [selectedEducation, setSelectedEducation] = useState<Education | null>(null);
@@ -34,6 +35,7 @@ export default function UsersPage() {
 	const [selectedProject, setSelectedProject] = useState<Project | null>(null);
 	const [selectedProfile, setSelectedProfile] = useState<Profile | null>(null);
 	const [selectedCertificate, setSelectedCertificate] = useState<Certificate | null>(null);
+	const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
 
 	const username = session?.user?.username;
 
@@ -81,6 +83,7 @@ export default function UsersPage() {
 		setSelectedWorkExp(null);
 		setSelectedProject(null);
 		setSelectedCertificate(null);
+		setSelectedSkill(null);
 		fetchCurrentUserData();
 	};
 
@@ -152,6 +155,26 @@ export default function UsersPage() {
 					'Content-Type': 'application/json',
 				},
 				body: JSON.stringify(certificateId),
+			});
+
+			if (!response.ok) {
+				throw new Error('Operation Failed!');
+			}
+		} catch (error) {
+			console.log(error);
+		} finally {
+			fetchCurrentUserData();
+		}
+	};
+
+	const handleDeleteSkill = async (skillId: number) => {
+		try {
+			const response = await fetch(`/api/users/${username}/skill`, {
+				method: 'DELETE',
+				headers: {
+					'Content-Type': 'application/json',
+				},
+				body: JSON.stringify(skillId),
 			});
 
 			if (!response.ok) {
@@ -450,8 +473,60 @@ export default function UsersPage() {
 					/>
 
 					<section className="section-container section-card">
-						<p className="section-title">Skills</p>
+						<div className="section-title flex justify-between items-center">
+							<div>Skills</div>
+							<button onClick={() => setActiveModal('skills')}>Add</button>
+						</div>
+						{currentUserData.skills && currentUserData.skills.length > 0 ? (
+							<>
+								{currentUserData.skills.map((each) => (
+									<div key={each.id} className="border-b mb-5">
+										<p>{each.categoryName}</p>
+										<p>
+											{each.skills.length > 0 ? (
+												<span className="flex items-center gap-3">
+													{each.skills.map((each, index: number) => (
+														<Image
+															key={index}
+															src={SKILLS_MAP[each as keyof typeof SKILLS_MAP]}
+															alt={`${each} icon`}
+															height={32}
+															className="size-6 md:size-8"
+														/>
+													))}
+												</span>
+											) : (
+												''
+											)}
+										</p>
+										<button
+											onClick={() => {
+												setActiveModal('skills');
+												const skillToEdit: Skill = {
+													id: each.id,
+													categoryName: each.categoryName,
+													skills: each.skills,
+												};
+												setSelectedSkill(skillToEdit);
+											}}
+										>
+											Edit
+										</button>
+										<button onClick={() => handleDeleteSkill(each.id)}>Delete</button>
+									</div>
+								))}
+							</>
+						) : (
+							<p>No Skills Found</p>
+						)}
 					</section>
+
+					<SkillModal
+						isOpen={activeModal === 'skills'}
+						closeModal={closeModal}
+						username={username!}
+						selectedSkill={selectedSkill}
+					/>
 				</>
 			)}
 		</>

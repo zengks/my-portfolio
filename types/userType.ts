@@ -5,6 +5,7 @@ import { Profile } from './profileType';
 import { Project } from './projectType';
 import { SocialMedia } from './socialMediaType';
 import { WorkExperience } from './workExpType';
+import { Skill } from './skillType';
 
 export interface User {
 	id: string;
@@ -20,6 +21,7 @@ export interface User {
 	project: Project[];
 	socialMedia: SocialMedia[];
 	workExperience: WorkExperience[];
+	skills: Skill[];
 }
 
 export interface UserUpdateInput {
