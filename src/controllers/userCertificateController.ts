@@ -1,30 +1,9 @@
 import prisma from '@/lib/prisma';
 import type { Certificate } from 'types/certificateType';
-import { apiPaths } from '@/lib/apiPaths';
-import { getUserIdByUsername } from './userController';
 
-export async function getUserCertificateByUsername(username: string = 'zengks') {
-	const user = await getUserIdByUsername(username);
-	if (!user) return null;
+export async function getUserCertificate(username: string) {
 	return await prisma.certificate.findMany({
-		where: { userId: user.id },
-		select: {
-			id: true,
-			name: true,
-			issuingOrg: true,
-			credentialId: true,
-			credentialUrl: true,
-			dateIssued: true,
-			dateExpired: true,
-		},
-	});
-}
-
-export async function getUserCertificate(userId: string) {
-	return await prisma.certificate.findMany({
-		where: {
-			userId,
-		},
+		where: { username },
 	});
 }
 
@@ -86,16 +65,4 @@ export async function deleteUserCertificate(certificateId: number) {
 	return await prisma.certificate.delete({
 		where: { id: certificateId },
 	});
-}
-
-// client-side api call
-export async function fetchAllUserCertificate(): Promise<Certificate[] | undefined> {
-	try {
-		const res = await fetch(apiPaths.userCertificate());
-		const data = await res.json();
-		return data.certificate;
-	} catch (error) {
-		console.error('Error fetching user certificate, ', error);
-		return undefined;
-	}
 }
