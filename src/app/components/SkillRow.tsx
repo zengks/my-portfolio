@@ -1,23 +1,25 @@
 import Image from 'next/image';
+import { SKILLS_MAP } from '@/lib/constant';
 
-type skillItemType = {
-	name: string;
-	src: string;
-	altText: string;
-};
-
-type skillRowProps = {
-	skillsArray: Array<skillItemType>;
+export default function SkillRow({
+	skillsArray,
+	iconWidth,
+}: {
+	skillsArray: string[];
 	iconWidth: number;
-};
-
-export default function SkillRow({ skillsArray, iconWidth }: skillRowProps) {
+}) {
 	return (
 		<div className="skill-row">
-			{skillsArray.map((skill: skillItemType, index: number) => (
+			{skillsArray.map((each, index: number) => (
 				<div key={index} className="skill-item">
-					<Image src={skill.src} alt={skill.altText} width={iconWidth} />
-					<p>{skill.name}</p>
+					<Image
+						src={SKILLS_MAP[each as keyof typeof SKILLS_MAP]}
+						alt={`${each} icon`}
+						height={32}
+						className="size-6 md:size-8"
+						width={iconWidth}
+					/>
+					<p>{each}</p>
 				</div>
 			))}
 		</div>

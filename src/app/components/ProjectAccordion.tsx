@@ -6,7 +6,7 @@ import Image from 'next/image';
 
 import { SKILLS_MAP } from '@/lib/constant';
 
-export default function ProjectAccordion({ project }: { project: Project }) {
+export default function ProjectAccordion({ project, key }: { project: Project; key: number }) {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const toggleAccordion = () => {
@@ -14,12 +14,15 @@ export default function ProjectAccordion({ project }: { project: Project }) {
 	};
 
 	return (
-		<div className="mb-3 rounded-lg border border-gray-200 bg-neutral-50 shadow-sm overflow-hidden">
+		<div
+			key={key}
+			className="mb-3 rounded-lg border border-gray-200 bg-neutral-50 shadow-sm overflow-hidden"
+		>
 			<button
 				onClick={toggleAccordion}
 				className="w-full flex items-center justify-between p-4 hover:bg-gray-100 focus:outline-none focus:ring-gray-900 focus:ring-opacity-50 cursor-pointer"
 			>
-				<div className="flex-1 items-center grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-4 text-left pr-4">
+				<div className="flex-1 items-center grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-4 text-left pr-4">
 					<span className="font-medium text-gray-900">{project.title}</span>
 					<span className="flex items-center gap-3">
 						{project.tech_stack.map((each, index: number) => (
@@ -32,6 +35,7 @@ export default function ProjectAccordion({ project }: { project: Project }) {
 							/>
 						))}
 					</span>
+					<span className="font-medium text-gray-900">{project.projectYear}</span>
 				</div>
 
 				<span
@@ -55,22 +59,7 @@ export default function ProjectAccordion({ project }: { project: Project }) {
 					isOpen ? 'max-h-[1000px]' : 'max-h-0'
 				}`}
 			>
-				<div className="p-5 border-t border-gray-200">
-					<ul className="list-disc list-inside space-y-2 text-sm text-gray-700">
-						<li>
-							Material Tailwind is a framework that enhances Tailwind CSS with additional styles and
-							components.
-						</li>
-						<li>
-							Material Tailwind is a framework that enhances Tailwind CSS with additional styles and
-							components.
-						</li>
-						<li>
-							Material Tailwind is a framework that enhances Tailwind CSS with additional styles and
-							components.
-						</li>
-					</ul>
-				</div>
+				<div className="p-5 border-t border-gray-200 text-gray-700">{project.description}</div>
 			</div>
 		</div>
 	);

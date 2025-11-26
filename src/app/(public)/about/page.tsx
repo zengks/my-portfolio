@@ -3,19 +3,17 @@ import { getUserAbout } from '@/controllers/userAboutController';
 export default async function About() {
 	const userAbout = await getUserAbout('zengks');
 	return (
-		<section>
-			<section className="section-container section-card text-wrap">
-				<p className="section-title">Hi, I&apos;m Steven</p>
-				{userAbout && userAbout.aboutUser ? (
-					<>
-						<p>{userAbout.aboutUser[0].header}</p>
-						<p>{userAbout.aboutUser[0].aboutContent}</p>
-					</>
-				) : (
-					<p>Nothing retrieved</p>
-				)}
-			</section>
-			<section className="section-container section-card text-wrap">
+		<>
+			{userAbout &&
+				userAbout.length > 0 &&
+				userAbout.map((each) => (
+					<section key={each.id} className="section-container section-card text-wrap">
+						<p className="section-title">{each.header}</p>
+						<p>{each.aboutContent}</p>
+					</section>
+				))}
+
+			{/* <section className="section-container section-card text-wrap">
 				<p className="section-title">Why Me?</p>
 				<p>
 					My philosophy is that performance and experience are two sides of the same coin. I&apos;m
@@ -62,7 +60,7 @@ export default async function About() {
 					check out my projects, view my full resume, or connect with me on LinkedIn or via email.
 					I&apos;m open to new opportunities and always happy to chat about technology.
 				</p>
-			</section>
-		</section>
+			</section> */}
+		</>
 	);
 }

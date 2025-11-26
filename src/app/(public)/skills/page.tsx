@@ -1,34 +1,20 @@
 import SkillRow from '../../components/SkillRow';
-
-import {
-	MERN_STACK,
-	MOBILE_DEV_SKILLS,
-	NEXT_STACK,
-	PROJECT_MANAGEMENT_TOOLS,
-} from '@/lib/constant';
+import { getUserSkills } from '@/controllers/userSkillController';
 
 const iconWidth = 30;
 
-export default function Skills() {
+export default async function Skills() {
+	const skillsData = await getUserSkills('zengks');
 	return (
 		<section className="section-container section-card text-wrap">
-			<p className="section-title">Skills / Toolkit</p>
-			<section className="section-skill-card ps-[20] py-[10] mb-3">
-				<p className="skill-sort-title">MERN Stack</p>
-				<SkillRow skillsArray={MERN_STACK} iconWidth={iconWidth} />
-			</section>
-			<section className="section-skill-card ps-[20] py-[10] mb-3">
-				<p className="skill-sort-title">NextJS Stack</p>
-				<SkillRow skillsArray={NEXT_STACK} iconWidth={iconWidth} />
-			</section>
-			<section className="section-skill-card ps-[20] py-[10] mb-3">
-				<p className="skill-sort-title">Mobile App Development</p>
-				<SkillRow skillsArray={MOBILE_DEV_SKILLS} iconWidth={iconWidth} />
-			</section>
-			<section className="section-skill-card ps-[20] py-[10] mb-3">
-				<p className="skill-sort-title">Project Management Tools</p>
-				<SkillRow skillsArray={PROJECT_MANAGEMENT_TOOLS} iconWidth={iconWidth} />
-			</section>
+			{skillsData &&
+				skillsData.length > 0 &&
+				skillsData.map((each) => (
+					<section key={each.id} className="section-skill-card ps-[20] py-[10] mb-3">
+						<p className="skill-sort-title">{each.categoryName}</p>
+						<SkillRow skillsArray={each.skills} iconWidth={iconWidth} />
+					</section>
+				))}
 		</section>
 	);
 }

@@ -1,8 +1,9 @@
 'use client';
 
 import { useState } from 'react';
+import type { WorkExperience } from 'types/workExpType';
 
-export default function WorkAccordion() {
+export default function WorkAccordion({ work, key }: { work: WorkExperience; key: number }) {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const toggleAccordion = () => {
@@ -10,15 +11,20 @@ export default function WorkAccordion() {
 	};
 
 	return (
-		<div className="mb-3 rounded-lg border border-gray-200 bg-neutral-50 shadow-sm overflow-hidden">
+		<div
+			key={key}
+			className="mb-3 rounded-lg border border-gray-200 bg-neutral-50 shadow-sm overflow-hidden"
+		>
 			<button
 				onClick={toggleAccordion}
 				className="flex w-full items-center justify-between p-5 hover:bg-gray-100 focus:outline-none focus:ring-gray-900 focus:ring-opacity-50 cursor-pointer"
 			>
 				<div className="flex-1 items-center grid grid-cols-1 md:grid-cols-3 gap-2 md:gap-4 text-left pr-4 text-sm tracking-wide">
-					<span className="text-gray-900">Multimedia Developer</span>
-					<span className="text-gray-700">BCIT</span>
-					<span className="text-gray-500">July, 2023 - Present</span>
+					<span className="text-gray-900">{work.jobTitle}</span>
+					<span className="text-gray-700">{work.company}</span>
+					<span className="text-gray-500">{`${work.startYear} - ${
+						work.endYear ? work.endYear : 'Present'
+					}`}</span>
 				</div>
 
 				<span
@@ -42,22 +48,7 @@ export default function WorkAccordion() {
 					isOpen ? 'max-h-[1000px]' : 'max-h-0'
 				}`}
 			>
-				<div className="p-5 border-t border-gray-200">
-					<ul className="list-disc list-inside space-y-2 text-sm text-gray-700">
-						<li>
-							Material Tailwind is a framework that enhances Tailwind CSS with additional styles and
-							components.
-						</li>
-						<li>
-							Material Tailwind is a framework that enhances Tailwind CSS with additional styles and
-							components.
-						</li>
-						<li>
-							Material Tailwind is a framework that enhances Tailwind CSS with additional styles and
-							components.
-						</li>
-					</ul>
-				</div>
+				<div className="p-5 border-t border-gray-200 text-gray-700">{work.description}</div>
 			</div>
 		</div>
 	);
