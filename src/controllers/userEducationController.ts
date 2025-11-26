@@ -1,19 +1,9 @@
 import prisma from '@/lib/prisma';
 import { Education } from 'types/educationType';
 
-export async function getAllUserEducation(username: string) {
+export async function getUserEducation(username: string) {
 	return await prisma.education.findMany({
 		where: { username },
-		select: {
-			id: true,
-			school: true,
-			degree: true,
-			fieldOfStudy: true,
-			startYear: true,
-			endYear: true,
-			gpa: true,
-			description: true,
-		},
 		orderBy: { startYear: 'desc' }, // Most recent first
 	});
 }

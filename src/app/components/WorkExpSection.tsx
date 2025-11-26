@@ -1,15 +1,12 @@
 import { WorkExperience } from 'types/workExpType';
-import { getYear } from '@/utility';
-import { getUserWorkExpByUsername } from '@/controllers/userWorkExpController';
+import { getUserWorkExp } from '@/controllers/userWorkExpController';
 import ViewMore from './ViewMoreLink';
 
-// const TABLE_HEADERS = ['Company', 'Job Title', 'Duration'];
-
 export default async function WorkExpSection() {
-	const workData = await getUserWorkExpByUsername();
+	const workData = await getUserWorkExp('zengks');
 	const sortedWorkData = workData
 		? [...workData].sort((a: WorkExperience, b: WorkExperience) => {
-				return new Date(b.startDate).getTime() - new Date(a.startDate).getTime();
+				return Number(b.startYear) - Number(a.startYear);
 		  })
 		: null;
 	return (
@@ -22,7 +19,7 @@ export default async function WorkExpSection() {
 						<div className="columns-3" key={index}>
 							<p>{data.company.toUpperCase()}</p>
 							<p>{data.jobTitle}</p>
-							<p>{`${getYear(data.startDate)} - ${getYear(data.endDate)}`}</p>
+							<p>{`${data.startYear} - ${data.endYear ? data.endYear : 'Present'}`}</p>
 						</div>
 					))}
 					<ViewMore target_url="/work" />

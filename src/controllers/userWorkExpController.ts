@@ -1,35 +1,9 @@
 import prisma from '@/lib/prisma';
 import { WorkExperience } from 'types/workExpType';
-import { apiPaths } from '@/lib/apiPaths';
-import { getUserIdByUsername } from './userController';
 
-export async function getUserWorkExpByUsername(username: string = 'zengks') {
-	const user = await getUserIdByUsername(username);
-	if (!user) return null;
+export async function getUserWorkExp(username: string) {
 	return await prisma.workExperience.findMany({
-		where: { userId: user.id },
-		select: {
-			id: true,
-			jobTitle: true,
-			company: true,
-			startYear: true,
-			endYear: true,
-			description: true,
-		},
-	});
-}
-
-export async function getUserWorkExp(userId: string) {
-	return await prisma.workExperience.findMany({
-		where: { userId },
-		select: {
-			id: true,
-			jobTitle: true,
-			company: true,
-			startYear: true,
-			endYear: true,
-			description: true,
-		},
+		where: { username },
 	});
 }
 
@@ -82,16 +56,4 @@ export async function deleteWorkExperience(workExpId: number) {
 	return await prisma.workExperience.delete({
 		where: { id: workExpId },
 	});
-}
-
-// client-side api call
-export async function fetchAllUserWorkExperience(): Promise<WorkExperience[] | undefined> {
-	try {
-		const res = await fetch(apiPaths.userWorkExperience());
-		const data = await res.json();
-		return data.workExperience;
-	} catch (error) {
-		console.error('Error fetching user work experience, ', error);
-		return undefined;
-	}
 }

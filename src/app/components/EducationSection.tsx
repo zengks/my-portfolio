@@ -1,8 +1,8 @@
 import { Education } from 'types/educationType';
-import { getAllUserEducation } from '@/controllers/userEducationController';
+import { getUserEducation } from '@/controllers/userEducationController';
 
 export default async function EducationSection() {
-	const eduData = await getAllUserEducation('zengks');
+	const eduData = await getUserEducation('zengks');
 	const sortedEduData = eduData
 		? [...eduData].sort((a: Education, b: Education) => {
 				return b.startYear - a.startYear;

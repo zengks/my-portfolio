@@ -1,6 +1,12 @@
 import prisma from '@/lib/prisma';
 import type { Skill } from 'types/skillType';
 
+export async function getUserSkills(username: string) {
+	return await prisma.skill.findMany({
+		where: { username },
+	});
+}
+
 export async function addSkill(username: string, skillData: Skill) {
 	const user = await prisma.user.findUnique({
 		where: { username },
@@ -9,7 +15,6 @@ export async function addSkill(username: string, skillData: Skill) {
 
 	if (!user) throw new Error(`User @${username} not found`);
 
-	console.log(skillData);
 	const newSkill = await prisma.skill.create({
 		data: {
 			userId: user.id,
