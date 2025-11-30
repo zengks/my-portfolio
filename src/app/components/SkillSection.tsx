@@ -9,7 +9,7 @@ export default async function SkillSection() {
 	return (
 		<section className="section-container section-card">
 			<p className="section-title">Core Technical Skills</p>
-			<section className="section-container section-card text-wrap">
+			<section>
 				{skillsData &&
 					skillsData.length > 0 &&
 					skillsData.map((each) => (

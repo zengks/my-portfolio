@@ -24,6 +24,9 @@ import type { Certificate } from 'types/certificateType';
 import type { Skill } from 'types/skillType';
 import type { AboutUser } from 'types/aboutUserType';
 
+import WorkAccordion from '@/app/components/WorkAccordion';
+import EducationAccordion from '@/app/components/EducationAccordion';
+
 export default function UsersPage() {
 	const { data: session, status } = useSession();
 
@@ -323,11 +326,7 @@ export default function UsersPage() {
 							<>
 								{currentUserData.education.map((edu) => (
 									<div key={edu.id} className="border-b mb-5">
-										<p>{edu.school}</p>
-										<p>{edu.degree}</p>
-										<p>{edu.fieldOfStudy}</p>
-										<p>{edu.startYear}</p>
-										<p>{edu.endYear === 0 ? edu.endYear : 'Present'}</p>
+										<EducationAccordion education={edu} />
 										<button
 											onClick={() => {
 												setActiveModal('education');
@@ -336,10 +335,14 @@ export default function UsersPage() {
 													school: edu.school,
 													degree: edu.degree,
 													fieldOfStudy: edu.fieldOfStudy,
+													schoolLogoUrl: edu.schoolLogoUrl ?? '',
+													city: edu.city ?? '',
+													province: edu.province ?? '',
+													country: edu.country ?? '',
 													startYear: edu.startYear,
 													endYear: edu.endYear ?? null,
 													gpa: edu.gpa,
-													description: edu.description,
+													description: edu.description ?? '',
 												};
 												setSelectedEducation(educationToEdit);
 											}}
@@ -372,10 +375,7 @@ export default function UsersPage() {
 							<>
 								{currentUserData.workExperience.map((work) => (
 									<div key={work.id} className="border-b mb-5">
-										<p>{work.jobTitle}</p>
-										<p>{work.company}</p>
-										<p>{work.startYear}</p>
-										<p>{work.endYear === 0 ? 'Present' : work.endYear}</p>
+										<WorkAccordion work={work} />
 										<button
 											onClick={() => {
 												setActiveModal('workExperience');
@@ -383,6 +383,12 @@ export default function UsersPage() {
 													id: work.id,
 													jobTitle: work.jobTitle,
 													company: work.company,
+													companyLogoUrl: work.companyLogoUrl,
+													city: work.city,
+													province: work.province,
+													country: work.country,
+													locationType: work.locationType,
+													employmentType: work.employmentType,
 													startYear: work.startYear,
 													endYear: work.endYear ?? null,
 													description: work.description ?? null,

@@ -22,11 +22,15 @@ export async function addEducation(username: string, newEducationData: Education
 			username: username,
 			school: newEducationData.school,
 			degree: newEducationData.degree,
-			fieldOfStudy: newEducationData.fieldOfStudy ?? null,
+			fieldOfStudy: newEducationData.fieldOfStudy,
+			schoolLogoUrl: newEducationData.schoolLogoUrl,
+			city: newEducationData.city,
+			province: newEducationData.province,
+			country: newEducationData.country,
 			startYear: newEducationData.startYear,
-			endYear: newEducationData.endYear ?? null,
-			gpa: newEducationData.gpa ?? null,
-			description: newEducationData.description ?? null,
+			endYear: newEducationData.endYear,
+			gpa: newEducationData.gpa,
+			description: newEducationData.description,
 		},
 	});
 	return newEducation;
@@ -47,9 +51,15 @@ export async function updateUserEducation(username: string, selectedEducationDat
 		data: {
 			school: selectedEducationData.school,
 			degree: selectedEducationData.degree,
-			fieldOfStudy: selectedEducationData.fieldOfStudy ?? null,
+			fieldOfStudy: selectedEducationData.fieldOfStudy,
+			schoolLogoUrl: selectedEducationData.schoolLogoUrl,
+			city: selectedEducationData.city,
+			province: selectedEducationData.province,
+			country: selectedEducationData.country,
 			startYear: selectedEducationData.startYear,
-			endYear: selectedEducationData.endYear ?? null,
+			endYear: selectedEducationData.endYear,
+			gpa: selectedEducationData.gpa,
+			description: selectedEducationData.description,
 		},
 	});
 

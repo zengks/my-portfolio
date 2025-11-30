@@ -2,10 +2,10 @@
 
 import Image from 'next/image';
 import { useState } from 'react';
-import type { WorkExperience } from 'types/workExpType';
-import DefaultCompanyIcon from '@/assets/icons/defaultCompany.svg';
+import type { Education } from 'types/educationType';
+import DefaultSchoolIcon from '@/assets/icons/defaultSchool.svg';
 
-export default function WorkAccordion({ work }: { work: WorkExperience }) {
+export default function EducationAccordion({ education }: { education: Education }) {
 	const [isOpen, setIsOpen] = useState(false);
 
 	const toggleAccordion = () => {
@@ -19,22 +19,22 @@ export default function WorkAccordion({ work }: { work: WorkExperience }) {
 				className="flex w-full items-center justify-between p-5 hover:bg-gray-100 focus:outline-none focus:ring-gray-900 focus:ring-opacity-50 cursor-pointer"
 			>
 				<div className=" items-center flex justify-start text-left pr-4 text-sm tracking-wide">
-					{work.companyLogoUrl ? (
-						<Image src={work.companyLogoUrl} alt={work.company} width={58} height={58} />
+					{education.schoolLogoUrl ? (
+						<Image src={education.schoolLogoUrl} alt={education.school} width={58} height={58} />
 					) : (
 						<Image
-							src={DefaultCompanyIcon}
-							alt={work.company ?? 'company icon placeholder'}
+							src={DefaultSchoolIcon}
+							alt={education.school ?? 'school icon placeholder'}
 							width={58}
 							height={58}
 						/>
 					)}
 
 					<div className="ms-3">
-						<p className="text-gray-900 text-[16px]">{work.jobTitle}</p>
-						<p className="text-gray-700 text-[14px]">{work.company}</p>
-						<p className="text-gray-500 text-[14px]">{`${work.startYear} - ${
-							work.endYear ? work.endYear : 'Present'
+						<p className="text-gray-900 text-[16px]">{education.school}</p>
+						<p className="text-gray-700 text-[14px]">{`${education.degree}, ${education.fieldOfStudy}`}</p>
+						<p className="text-gray-500 text-[14px]">{`${education.startYear} - ${
+							education.endYear ? education.endYear : 'Present'
 						}`}</p>
 					</div>
 				</div>
@@ -60,7 +60,7 @@ export default function WorkAccordion({ work }: { work: WorkExperience }) {
 					isOpen ? 'max-h-[1000px]' : 'max-h-0'
 				}`}
 			>
-				<div className="p-5 border-t border-gray-200 text-gray-700">{work.description}</div>
+				<div className="p-5 border-t border-gray-200 text-gray-700">{education.description}</div>
 			</div>
 		</div>
 	);

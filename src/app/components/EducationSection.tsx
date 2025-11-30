@@ -15,10 +15,11 @@ export default async function EducationSection() {
 			{sortedEduData && sortedEduData.length > 0 ? (
 				<section className="flex flex-col gap-2">
 					{sortedEduData.map((data: Education, index: number) => (
-						<div className="columns-3" key={index}>
-							<p>{`${data.degree} in ${data.fieldOfStudy}`}</p>
-							<p>{data.school}</p>
-							<p>{`${data.startYear} - ${data.endYear}`}</p>
+						<div className="columns-4 items-center border text-[15px]" key={index}>
+							<p className="border">{`${data.degree}`}</p>
+							<p className="border">{`${data.fieldOfStudy}`}</p>
+							<p className="border">{data.school}</p>
+							<p className="border">{`${data.startYear} - ${data.endYear}`}</p>
 						</div>
 					))}
 				</section>

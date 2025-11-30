@@ -15,7 +15,6 @@ export default function SkillRow({
 					<Image
 						src={SKILLS_MAP[each as keyof typeof SKILLS_MAP]}
 						alt={`${each} icon`}
-						height={32}
 						className="size-6 md:size-8"
 						width={iconWidth}
 					/>

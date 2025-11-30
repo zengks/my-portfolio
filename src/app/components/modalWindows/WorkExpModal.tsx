@@ -1,7 +1,13 @@
 'use client';
 
-import { useEffect, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import type { WorkExperience } from 'types/workExpType';
+import Image from 'next/image';
+import DefaultCompanyIcon from '@/assets/icons/defaultCompany.svg';
+type COMPANY_INFO = {
+	name: string;
+	logo_url: string;
+};
 
 export default function WorkExpModal({
 	isOpen,
@@ -14,6 +20,11 @@ export default function WorkExpModal({
 	username: string;
 	selectedWorkExp: WorkExperience | null;
 }) {
+	const [query, setQuery] = useState('');
+	const [selectedCompanyInfo, setSelectedCompanyInfo] = useState<COMPANY_INFO | null>(null);
+	const [results, setResults] = useState([]);
+	const [isSearchBrand, setIsSearchBrand] = useState(false);
+
 	useEffect(() => {
 		const handleEscape = (e: KeyboardEvent) => {
 			if (e.key === 'Escape') closeModal();
@@ -32,6 +43,26 @@ export default function WorkExpModal({
 
 	if (!isOpen) return null;
 
+	const getBrandInfo = async (queryItem: string) => {
+		try {
+			const response = await fetch(`https://api.logo.dev/search?q=${queryItem}`, {
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${process.env.NEXT_PUBLIC_LOGO_DEV_SECRET_KEY}`,
+					'Content-Type': 'application/json',
+				},
+			});
+			if (!response.ok) {
+				throw new Error('Operation Failed!');
+			}
+			const data = await response.json();
+			return data;
+		} catch (error) {
+			console.log(error);
+			throw new Error('Failed to fetch brand information');
+		}
+	};
+
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
@@ -42,7 +73,8 @@ export default function WorkExpModal({
 		const payload = {
 			id: selectedWorkExp?.id,
 			jobTitle: formData.get('jobTitle'),
-			company: formData.get('company'),
+			company: (selectedCompanyInfo && selectedCompanyInfo.name) ?? formData.get('company'),
+			companyLogoUrl: (selectedCompanyInfo && selectedCompanyInfo.logo_url) ?? '',
 			startYear: Number(formData.get('startYear')),
 			endYear: Number(formData.get('endYear')),
 		};
@@ -63,6 +95,14 @@ export default function WorkExpModal({
 			closeModal();
 		} catch (error) {
 			console.log(error);
+		}
+	};
+
+	const handleIconSearch = async () => {
+		if (query !== '') {
+			const data = await getBrandInfo(query);
+			setResults(data);
+			setIsSearchBrand(true);
 		}
 	};
 
@@ -95,6 +135,60 @@ export default function WorkExpModal({
 							defaultValue={selectedWorkExp?.company}
 							required
 						/>
+					</div>
+
+					<div className="border-2 overflow-scroll">
+						<div className="flex items-center justify-between">
+							<label>Company Icon: </label>
+							{selectedCompanyInfo ? (
+								<Image
+									src={selectedCompanyInfo.logo_url}
+									alt={selectedCompanyInfo.name}
+									width={30}
+									height={30}
+								/>
+							) : (
+								<Image
+									src={DefaultCompanyIcon}
+									alt={selectedWorkExp?.company ?? 'company icon placeholder'}
+									width={30}
+									height={30}
+								/>
+							)}
+							<input
+								type="string"
+								id="companyLogoUrl"
+								name="companyLogoUrl"
+								className="border"
+								defaultValue={selectedWorkExp?.companyLogoUrl ?? ''}
+								onChange={(e) => setQuery(e.target.value)}
+							/>
+							<button type="button" onClick={handleIconSearch}>
+								Search
+							</button>
+						</div>
+
+						{results &&
+							isSearchBrand &&
+							results.map((each: COMPANY_INFO, index: number) => (
+								<div
+									key={index}
+									className="flex items-center border-b-gray-300 hover:bg-amber-100"
+									onClick={() => {
+										setSelectedCompanyInfo(each);
+										setIsSearchBrand(false);
+									}}
+								>
+									<Image
+										className="me-4 mb-5"
+										src={each.logo_url}
+										alt={each.name}
+										width={40}
+										height={40}
+									/>
+									{each.name}
+								</div>
+							))}
 					</div>
 
 					<div>

@@ -1,5 +1,6 @@
 import { WorkExperience } from 'types/workExpType';
 import { getUserWorkExp } from '@/controllers/userWorkExpController';
+import WorkAccordion from './WorkAccordion';
 import ViewMore from './ViewMoreLink';
 
 export default async function WorkExpSection() {
@@ -15,12 +16,8 @@ export default async function WorkExpSection() {
 
 			{sortedWorkData && sortedWorkData.length > 0 ? (
 				<section className="flex flex-col gap-2">
-					{sortedWorkData?.map((data: WorkExperience, index: number) => (
-						<div className="columns-3" key={index}>
-							<p>{data.company.toUpperCase()}</p>
-							<p>{data.jobTitle}</p>
-							<p>{`${data.startYear} - ${data.endYear ? data.endYear : 'Present'}`}</p>
-						</div>
+					{sortedWorkData?.map((data: WorkExperience) => (
+						<WorkAccordion work={data} key={data.id} />
 					))}
 					<ViewMore target_url="/work" />
 				</section>
