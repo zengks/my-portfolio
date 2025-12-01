@@ -10,7 +10,7 @@ export default function CertificateAccordion({ cert }: { cert: Certificate }) {
 			<div className="flex w-full items-center justify-between p-4">
 				<div className="items-center flex justify-start text-left pr-4 text-sm tracking-wide">
 					{cert.companyLogoUrl ? (
-						<Image src={cert.companyLogoUrl} alt={cert.issuingOrg} width={60} height={60} />
+						<Image src={cert.companyLogoUrl} alt={cert.issuingOrg} width={58} height={58} />
 					) : (
 						<Image
 							src={DefaultCompanyIcon}
