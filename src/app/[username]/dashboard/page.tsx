@@ -246,7 +246,7 @@ export default function UsersPage() {
 								<div className="border-b border-gray-200 pb-2 text-gray-500 mb-3 font-bold flex justify-between items-center">
 									<span>Profile Details</span>
 								</div>
-								<div className="grid grid-cols-1 lg:grid-cols-2 gap-x-12">
+								<div className="grid grid-cols-1 gap-y-6 lg:grid-cols-2 gap-x-12">
 									<div className="space-y-2">
 										<div className="grid grid-cols-3 gap-2">
 											<span className="text-gray-500 col-span-1">Username:</span>
