@@ -26,6 +26,8 @@ import type { AboutUser } from 'types/aboutUserType';
 
 import WorkAccordion from '@/app/components/WorkAccordion';
 import EducationAccordion from '@/app/components/EducationAccordion';
+import ProjectAccordion from '@/app/components/ProjectAccordion';
+import CertificateAccordion from '@/app/components/CertificateAccordion';
 
 const ADD_BTN_STYLE =
 	'px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition-colors shadow-sm';
@@ -61,13 +63,12 @@ export default function UsersPage() {
 					'Content-Type': 'application/json',
 				},
 			});
-
 			if (res.ok) {
 				const data = await res.json();
 				console.log('dashboard received data', data);
 				setCurrentUserData(data.user);
 			} else {
-				console.log('failed to get user');
+				console.log('Failed to get user data.');
 			}
 		} catch (error) {
 			console.log('Failed to fetch:', error);
@@ -464,28 +465,7 @@ export default function UsersPage() {
 							<>
 								{currentUserData.project.map((each) => (
 									<div key={each.id} className="mb-5">
-										<p>{each.title}</p>
-										<p>{each.repo_link}</p>
-										<p>{each.preview_image_link}</p>
-										<p>
-											{each.tech_stack.length > 0 ? (
-												<span className="flex items-center gap-3">
-													{each.tech_stack.map((each, index: number) => (
-														<Image
-															key={index}
-															src={SKILLS_MAP[each as keyof typeof SKILLS_MAP]}
-															alt={`${each} icon`}
-															height={32}
-															className="size-6 md:size-8"
-														/>
-													))}
-												</span>
-											) : (
-												''
-											)}
-										</p>
-										<p>{each.description}</p>
-										<p>{each.projectYear === 0 ? 'Not Defined' : each.projectYear}</p>
+										<ProjectAccordion project={each} />
 										<div className={BUTTON_WRAPPER_STYLE}>
 											<button
 												className={EDIT_BTN_STYLE}
@@ -539,25 +519,7 @@ export default function UsersPage() {
 							<>
 								{currentUserData.certificate.map((each) => (
 									<div key={each.id} className="mb-5">
-										<p>{each.name}</p>
-										<p>{each.issuingOrg}</p>
-										<p>{`Issued ${new Date(each.dateIssued).getMonth()} ${new Date(
-											each.dateIssued
-										).getFullYear()}`}</p>
-										<p>
-											{each.dateExpired
-												? `Expire in ${each.dateExpired.getMonth()} ${each.dateExpired.getFullYear()}`
-												: 'No expiration date'}
-										</p>
-										<p>
-											Credential ID:{' '}
-											{each.credentialId ? each.credentialId : 'No Credential ID found'}
-										</p>
-										<p>
-											<a target="_blank" href={each.credentialUrl ? each.credentialUrl : '/'}>
-												Show credential
-											</a>
-										</p>
+										<CertificateAccordion cert={each} />
 										<div className={BUTTON_WRAPPER_STYLE}>
 											<button
 												className={EDIT_BTN_STYLE}
@@ -567,6 +529,7 @@ export default function UsersPage() {
 														id: each.id,
 														name: each.name,
 														issuingOrg: each.issuingOrg,
+														companyLogoUrl: each.companyLogoUrl,
 														dateIssued: each.dateIssued,
 														dateExpired: each.dateExpired ?? null,
 														credentialId: each.credentialId ?? null,

@@ -106,17 +106,18 @@ model VerificationToken {
 }
 
 model Certificate {
-  id            Int       @id @default(autoincrement())
-  username      String
-  userId        String
-  name          String
-  issuingOrg    String
-  dateIssued    DateTime
-  dateExpired   DateTime?
-  credentialId  String?
-  credentialUrl String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now())
+  id             Int       @id @default(autoincrement())
+  username       String
+  userId         String
+  name           String
+  issuingOrg     String
+  companyLogoUrl String?
+  dateIssued     DateTime
+  dateExpired    DateTime?
+  credentialId   String?
+  credentialUrl  String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @default(now())
 
   user User @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
 

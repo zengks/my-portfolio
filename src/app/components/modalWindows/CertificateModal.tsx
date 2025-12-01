@@ -1,7 +1,14 @@
 'use client';
 
-import { useEffect, type FormEvent } from 'react';
+import { useEffect, useState, type FormEvent } from 'react';
 import type { Certificate } from 'types/certificateType';
+import Image from 'next/image';
+import DefaultCompanyIcon from '@/assets/icons/defaultCompany.svg';
+
+type CERTIFICATE_INFO = {
+	name: string;
+	logo_url: string;
+};
 
 export default function CertificateModal({
 	isOpen,
@@ -14,6 +21,11 @@ export default function CertificateModal({
 	username: string;
 	selectedCertificate: Certificate | null;
 }) {
+	const [query, setQuery] = useState('');
+	const [selectedCertInfo, setSelectedCertInfo] = useState<CERTIFICATE_INFO | null>(null);
+	const [results, setResults] = useState([]);
+	const [isSearchBrand, setIsSearchBrand] = useState(false);
+
 	useEffect(() => {
 		const handleEscape = (e: KeyboardEvent) => {
 			if (e.key === 'Escape') closeModal();
@@ -32,6 +44,26 @@ export default function CertificateModal({
 
 	if (!isOpen) return null;
 
+	const getBrandInfo = async (queryItem: string) => {
+		try {
+			const response = await fetch(`https://api.logo.dev/search?q=${queryItem}`, {
+				method: 'GET',
+				headers: {
+					Authorization: `Bearer ${process.env.NEXT_PUBLIC_LOGO_DEV_SECRET_KEY}`,
+					'Content-Type': 'application/json',
+				},
+			});
+			if (!response.ok) {
+				throw new Error('Operation Failed!');
+			}
+			const data = await response.json();
+			return data;
+		} catch (error) {
+			console.log(error);
+			throw new Error('Failed to fetch brand information');
+		}
+	};
+
 	const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
 		const formData = new FormData(e.currentTarget);
@@ -40,8 +72,10 @@ export default function CertificateModal({
 		const method = isEditing ? 'PUT' : 'POST';
 
 		const payload = {
+			id: selectedCertificate?.id,
 			name: formData.get('name'),
-			issuingOrg: formData.get('issuingOrg'),
+			issuingOrg: (selectedCertInfo && selectedCertInfo.name) ?? formData.get('issuingOrg'),
+			companyLogoUrl: (selectedCertInfo && selectedCertInfo.logo_url) ?? '',
 			dateIssued: formData.get('dateIssued'),
 			dateExpired: formData.get('dateExpired'),
 			credentialId: formData.get('credentialId'),
@@ -64,6 +98,14 @@ export default function CertificateModal({
 			closeModal();
 		} catch (error) {
 			console.log(error);
+		}
+	};
+
+	const handleIconSearch = async () => {
+		if (query !== '') {
+			const data = await getBrandInfo(query);
+			setResults(data);
+			setIsSearchBrand(true);
 		}
 	};
 
@@ -97,6 +139,55 @@ export default function CertificateModal({
 							required
 						/>
 					</div>
+					<div className="flex items-center justify-between">
+						<label>Company Icon: </label>
+						{selectedCertInfo ? (
+							<Image
+								src={selectedCertInfo.logo_url}
+								alt={selectedCertInfo.name}
+								width={30}
+								height={30}
+							/>
+						) : (
+							<Image
+								src={DefaultCompanyIcon}
+								alt={selectedCertificate?.name ?? 'company icon placeholder'}
+								width={30}
+								height={30}
+							/>
+						)}
+						<input
+							type="string"
+							id="certCompanyLogoUrl"
+							name="certCompanyLogoUrl"
+							className="border"
+							onChange={(e) => setQuery(e.target.value)}
+						/>
+						<button type="button" onClick={handleIconSearch}>
+							Search
+						</button>
+					</div>
+					{results &&
+						isSearchBrand &&
+						results.map((each: CERTIFICATE_INFO, index: number) => (
+							<div
+								key={index}
+								className="flex items-center border-b-gray-300 hover:bg-amber-100"
+								onClick={() => {
+									setSelectedCertInfo(each);
+									setIsSearchBrand(false);
+								}}
+							>
+								<Image
+									className="me-4 mb-5"
+									src={each.logo_url}
+									alt={each.name}
+									width={40}
+									height={40}
+								/>
+								{each.name}
+							</div>
+						))}
 					<div>
 						<label htmlFor="dateIssued">Issue Date: </label>
 						<input
