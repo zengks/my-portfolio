@@ -187,15 +187,16 @@ model Education {
 }
 
 model Skill {
-  id           Int      @id @default(autoincrement())
-  username     String
-  userId       String
-  categoryName String
-  skills       String[]
-  description  String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now())
-  user         User     @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
+  id              Int      @id @default(autoincrement())
+  username        String
+  userId          String
+  categoryName    String?
+  subCategoryName String?
+  skills          String[]
+  description     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now())
+  user            User     @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
 
   @@index([userId, username])
 }

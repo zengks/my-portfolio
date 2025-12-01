@@ -40,15 +40,15 @@ export default function EducationAccordion({ education }: { education: Education
 				</div>
 
 				<span
-					className={`text-slate-800 transition-transform duration-500 ${
-						isOpen ? 'rotate-45' : ''
+					className={`shrink-0 text-gray-400 bg-gray-50 rounded-full p-1 transition-all duration-300 group-hover:bg-indigo-50 group-hover:text-indigo-600 ${
+						isOpen ? 'rotate-45 bg-indigo-50 text-indigo-600' : ''
 					}`}
 				>
 					<svg
-						xmlns="http://www.w3.org/2000/svg"
+						xmlns="http://www.w3.0.0.svg"
 						viewBox="0 0 16 16"
 						fill="currentColor"
-						className="w-4 h-4"
+						className="w-5 h-5"
 					>
 						<path d="M8.75 3.75a.75.75 0 0 0-1.5 0v3.5h-3.5a.75.75 0 0 0 0 1.5h3.5v3.5a.75.75 0 0 0 1.5 0v-3.5h3.5a.75.75 0 0 0 0-1.5h-3.5v-3.5Z" />
 					</svg>

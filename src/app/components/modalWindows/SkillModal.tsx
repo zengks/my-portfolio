@@ -49,7 +49,9 @@ export default function SkillModal({
 		const payload = {
 			id: selectedSkill?.id,
 			categoryName: formData.get('categoryName'),
+			subCategoryName: formData.get('subCategoryName'),
 			skills: techStackArray,
+			description: formData.get('description'),
 		};
 
 		try {
@@ -87,8 +89,16 @@ export default function SkillModal({
 							type="text"
 							id="categoryName"
 							name="categoryName"
-							defaultValue={selectedSkill?.categoryName}
-							required
+							defaultValue={selectedSkill?.categoryName ?? ''}
+						/>
+					</div>
+					<div>
+						<label htmlFor="categoryName">Sub-Category Name: </label>
+						<input
+							type="text"
+							id="subCategoryName"
+							name="subCategoryName"
+							defaultValue={selectedSkill?.subCategoryName ?? ''}
 						/>
 					</div>
 					<div>
@@ -100,6 +110,16 @@ export default function SkillModal({
 							placeholder="reactjs, tailwindcss, css..."
 							defaultValue={selectedSkill?.skills}
 							required
+						/>
+					</div>
+
+					<div>
+						<label htmlFor="description">Description: </label>
+						<textarea
+							id="description"
+							name="description"
+							placeholder="reactjs, tailwindcss, css..."
+							defaultValue={selectedSkill?.description ?? ''}
 						/>
 					</div>
 

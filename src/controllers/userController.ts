@@ -110,7 +110,9 @@ export async function getUserByUsername(username: string) {
 					select: {
 						id: true,
 						categoryName: true,
+						subCategoryName: true,
 						skills: true,
+						description: true,
 					},
 				},
 			},

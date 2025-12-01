@@ -1,12 +1,10 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 
 import { SignOutButton } from '@/app/components/UI/AuthButtons';
 import type { User } from 'types/userType';
-import { SKILLS_MAP } from '@/lib/constant';
 
 import EducationModal from '@/app/components/modalWindows/EducationModal';
 import WorkExpModal from '@/app/components/modalWindows/WorkExpModal';
@@ -28,6 +26,7 @@ import WorkAccordion from '@/app/components/WorkAccordion';
 import EducationAccordion from '@/app/components/EducationAccordion';
 import ProjectAccordion from '@/app/components/ProjectAccordion';
 import CertificateAccordion from '@/app/components/CertificateAccordion';
+import SkillsAccordion from '@/app/components/SkillsAccordion';
 
 const ADD_BTN_STYLE =
 	'px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition-colors shadow-sm';
@@ -102,6 +101,12 @@ export default function UsersPage() {
 		setSelectedAboutUserSection(null);
 		fetchCurrentUserData();
 	};
+
+	const uniqueSkillCategories = useMemo(() => {
+		if (!currentUserData?.skills) return [];
+		const categories = currentUserData.skills.map((s) => s.categoryName);
+		return Array.from(new Set(categories));
+	}, [currentUserData]);
 
 	const handleDeleteEducation = async (educationId: number) => {
 		try {
@@ -571,48 +576,45 @@ export default function UsersPage() {
 						</div>
 						{currentUserData.skills && currentUserData.skills.length > 0 ? (
 							<>
-								{currentUserData.skills.map((each) => (
-									<div key={each.id} className="mb-5">
-										<p>{each.categoryName}</p>
-										<p>
-											{each.skills.length > 0 ? (
-												<span className="flex items-center gap-3">
-													{each.skills.map((each, index: number) => (
-														<Image
-															key={index}
-															src={SKILLS_MAP[each as keyof typeof SKILLS_MAP]}
-															alt={`${each} icon`}
-															height={32}
-															className="size-6 md:size-8"
-														/>
-													))}
-												</span>
-											) : (
-												''
-											)}
+								{uniqueSkillCategories.map((eachCategory) => (
+									<div
+										key={eachCategory}
+										className="mb-5 rounded-lg border py-2 px-4 border-gray-200 bg-neutral-50 shadow-sm "
+									>
+										<p className="text-lg font-light tracking-wider text-gray-700 uppercase mb-3">
+											{eachCategory}
 										</p>
-										<div className={BUTTON_WRAPPER_STYLE}>
-											<button
-												className={EDIT_BTN_STYLE}
-												onClick={() => {
-													setActiveModal('skills');
-													const skillToEdit: Skill = {
-														id: each.id,
-														categoryName: each.categoryName,
-														skills: each.skills,
-													};
-													setSelectedSkill(skillToEdit);
-												}}
-											>
-												Edit
-											</button>
-											<button
-												className={DELETE_BTN_STYLE}
-												onClick={() => handleDeleteSkill(each.id)}
-											>
-												Delete
-											</button>
-										</div>
+										{currentUserData.skills
+											.filter((skill) => skill.categoryName === eachCategory)
+											.map((each, index) => (
+												<div key={index} className="mb-4">
+													<SkillsAccordion skill={each} />
+													<div className={BUTTON_WRAPPER_STYLE}>
+														<button
+															className={EDIT_BTN_STYLE}
+															onClick={() => {
+																setActiveModal('skills');
+																const skillToEdit: Skill = {
+																	id: each.id,
+																	categoryName: each.categoryName,
+																	subCategoryName: each.subCategoryName,
+																	skills: each.skills,
+																	description: each.description,
+																};
+																setSelectedSkill(skillToEdit);
+															}}
+														>
+															Edit
+														</button>
+														<button
+															className={DELETE_BTN_STYLE}
+															onClick={() => handleDeleteSkill(each.id)}
+														>
+															Delete
+														</button>
+													</div>
+												</div>
+											))}
 									</div>
 								))}
 							</>
