@@ -236,6 +236,184 @@ export default function UsersPage() {
 			{status === 'authenticated' && currentUserData && (
 				<>
 					<section className="section-container section-card">
+						{/* Header Section */}
+						<div className="flex justify-between items-start mb-6 border-b border-gray-100 pb-4">
+							<div>
+								<h2 className="text-2xl font-bold text-gray-800">
+									Welcome, {currentUserData.profile?.firstName}
+								</h2>
+								<p className="text-sm text-gray-500 mt-1">
+									Manage your account details and portfolio settings.
+								</p>
+							</div>
+							<SignOutButton />
+						</div>
+
+						{currentUserData.profile && (
+							<div className="bg-slate-50 rounded-xl p-6 border border-slate-200 shadow-sm">
+								{/* Main Grid Layout */}
+								<div className="grid grid-cols-1 md:grid-cols-2 gap-y-6 gap-x-12">
+									{/* Left Column: Personal Info */}
+									<div className="space-y-4">
+										<h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider border-b border-slate-200 pb-1 mb-2">
+											Personal Information
+										</h3>
+
+										<div className="grid grid-cols-3 gap-2 text-sm">
+											<span className="text-gray-500 col-span-1">Username:</span>
+											<span className="font-medium text-gray-800 col-span-2">
+												{currentUserData.profile.username}
+											</span>
+										</div>
+
+										<div className="grid grid-cols-3 gap-2 text-sm">
+											<span className="text-gray-500 col-span-1">Email:</span>
+											<span className="font-medium text-gray-800 col-span-2 break-all">
+												{currentUserData.profile.email}
+											</span>
+										</div>
+
+										<div className="grid grid-cols-3 gap-2 text-sm">
+											<span className="text-gray-500 col-span-1">Role:</span>
+											<span className="font-medium text-gray-800 col-span-2 capitalize">
+												{session?.user?.role}
+											</span>
+										</div>
+
+										<div className="grid grid-cols-3 gap-2 text-sm">
+											<span className="text-gray-500 col-span-1">User ID:</span>
+											<span className="font-mono text-gray-600 col-span-2 text-xs bg-slate-100 p-1 rounded w-fit">
+												{currentUserData.profile.userId}
+											</span>
+										</div>
+									</div>
+
+									{/* Right Column: Professional Info */}
+									<div className="space-y-4">
+										<h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider border-b border-slate-200 pb-1 mb-2">
+											Professional Details
+										</h3>
+
+										<div className="grid grid-cols-3 gap-2 text-sm">
+											<span className="text-gray-500 col-span-1">Job Title:</span>
+											<span className="font-medium text-gray-800 col-span-2">
+												{currentUserData.profile.jobTitle || 'Not set'}
+											</span>
+										</div>
+
+										<div className="grid grid-cols-3 gap-2 text-sm">
+											<span className="text-gray-500 col-span-1">Location:</span>
+											<span className="font-medium text-gray-800 col-span-2">
+												{[
+													currentUserData.profile.city,
+													currentUserData.profile.province,
+													currentUserData.profile.country,
+												]
+													.filter(Boolean)
+													.join(', ') || 'Not set'}
+											</span>
+										</div>
+
+										<div className="grid grid-cols-3 gap-2 text-sm">
+											<span className="text-gray-500 col-span-1">Bio Link:</span>
+											<span className="font-medium text-gray-800 col-span-2 truncate">
+												{currentUserData.profile.bioLink ? (
+													<a
+														href={currentUserData.profile.bioLink}
+														target="_blank"
+														className="hover:text-indigo-600 hover:underline"
+													>
+														{currentUserData.profile.bioLink}
+													</a>
+												) : (
+													'Not set'
+												)}
+											</span>
+										</div>
+									</div>
+								</div>
+
+								{/* Links Footer Section */}
+								<div className="mt-6 pt-4 border-t border-slate-200">
+									<h3 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-3">
+										Links & Documents
+									</h3>
+									<div className="flex flex-wrap gap-4">
+										{currentUserData.profile.linkedInUrl && (
+											<a
+												href={currentUserData.profile.linkedInUrl}
+												target="_blank"
+												className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-blue-700 hover:bg-blue-50 hover:border-blue-200 transition-colors"
+											>
+												<span>LinkedIn</span>
+											</a>
+										)}
+
+										{currentUserData.profile.githubUrl && (
+											<a
+												href={currentUserData.profile.githubUrl}
+												target="_blank"
+												className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-800 hover:bg-gray-50 hover:border-gray-300 transition-colors"
+											>
+												<span>GitHub</span>
+											</a>
+										)}
+
+										{currentUserData.profile.resumeUrl && (
+											<a
+												href={currentUserData.profile.resumeUrl}
+												target="_blank"
+												className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-indigo-700 hover:bg-indigo-50 hover:border-indigo-200 transition-colors"
+											>
+												<span>View Resume</span>
+											</a>
+										)}
+
+										{!currentUserData.profile.linkedInUrl &&
+											!currentUserData.profile.githubUrl &&
+											!currentUserData.profile.resumeUrl && (
+												<span className="text-sm text-gray-400 italic">
+													No social links or resume added yet.
+												</span>
+											)}
+									</div>
+								</div>
+
+								{/* Action Buttons */}
+								<div className={BUTTON_WRAPPER_STYLE}>
+									<button
+										className={EDIT_BTN_STYLE}
+										onClick={() => {
+											if (!currentUserData.profile) return;
+											setActiveModal('profile');
+											const profileToEdit: Profile = {
+												id: currentUserData.profile.id,
+												userId: currentUserData.profile.userId,
+												username: currentUserData.profile.username,
+												firstName: currentUserData.profile.firstName,
+												lastName: currentUserData.profile.lastName ?? '',
+												email: currentUserData.profile.email ?? '',
+												jobTitle: currentUserData.profile.jobTitle ?? '',
+												bioLink: currentUserData.profile.bioLink ?? '',
+												imageLink: currentUserData.profile.imageLink ?? '',
+												city: currentUserData.profile.city ?? '',
+												province: currentUserData.profile.province ?? '',
+												country: currentUserData.profile.country ?? '',
+												resumeUrl: currentUserData.profile.resumeUrl ?? '',
+												linkedInUrl: currentUserData.profile.linkedInUrl ?? '',
+												githubUrl: currentUserData.profile.githubUrl ?? '',
+												aboutUser: currentUserData.profile.aboutUser ?? null,
+											};
+											setSelectedProfile(profileToEdit);
+										}}
+									>
+										Edit Profile
+									</button>
+								</div>
+							</div>
+						)}
+					</section>
+					{/* <section className="section-container section-card">
 						<div className="flex justify-between items-center section-title">
 							<p>Welcome, {currentUserData.profile?.firstName}</p>
 							<SignOutButton />
@@ -286,7 +464,7 @@ export default function UsersPage() {
 								</div>
 							</>
 						)}
-					</section>
+					</section> */}
 
 					<ProfileModal
 						isOpen={activeModal === 'profile'}
