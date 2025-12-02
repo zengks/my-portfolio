@@ -1,22 +1,33 @@
-import SkillRow from '../SkillRow';
 import ViewMore from '../ViewMoreLink';
 import { getUserSkills } from '@/controllers/userSkillController';
+import SkillsAccordion from '../accordion/SkillsAccordion';
 
-const iconWidth = 25;
+const TARGET_CATEGORIES = ['Core Skills', 'Web Development'];
 
 export default async function SkillSection() {
 	const skillsData = await getUserSkills('zengks');
 	return (
 		<section className="section-container section-card">
-			<p className="section-title">Core Technical Skills</p>
+			<p className="section-title">Technical Skills</p>
 			<section>
 				{skillsData &&
 					skillsData.length > 0 &&
-					skillsData.map((each) => (
-						<section key={each.id} className="section-skill-card ps-[20] py-[10] mb-3">
-							<p className="skill-sort-title">{each.categoryName}</p>
-							<SkillRow skillsArray={each.skills} iconWidth={iconWidth} />
-						</section>
+					TARGET_CATEGORIES.map((eachCategory) => (
+						<div
+							key={eachCategory}
+							className="mb-5 rounded-lg border py-2 px-4 border-gray-200 bg-neutral-50 shadow-sm "
+						>
+							<p className="text-lg font-light tracking-wider text-gray-700 uppercase mb-3">
+								{eachCategory}
+							</p>
+							{skillsData
+								.filter((skill) => skill.categoryName === eachCategory)
+								.map((each, index) => (
+									<section key={index}>
+										<SkillsAccordion skill={each} />
+									</section>
+								))}
+						</div>
 					))}
 			</section>
 			<ViewMore target_url="/skills" />

@@ -618,7 +618,7 @@ export default function UsersPage() {
 								{uniqueSkillCategories.map((eachCategory) => (
 									<div
 										key={eachCategory}
-										className="mb-5 rounded-lg border py-2 px-4 border-gray-200 bg-neutral-50 shadow-sm "
+										className="mb-5 rounded-lg border py-2 px-4 border-gray-200 bg-neutral-50 shadow-sm"
 									>
 										<p className="text-lg font-light tracking-wider text-gray-700 uppercase mb-3">
 											{eachCategory}
