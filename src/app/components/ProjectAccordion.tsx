@@ -23,11 +23,7 @@ export default function ProjectAccordion({ project }: { project: Project }) {
 
 					<span className="md:col-span-6 flex flex-wrap items-center gap-2">
 						{project.tech_stack.map((tech, index) => (
-							<div
-								key={index}
-								className="relative group/icon"
-								title={tech} // Tooltip on hover
-							>
+							<div key={index} className="relative group/icon" title={tech}>
 								<Image
 									src={SKILLS_MAP[tech as keyof typeof SKILLS_MAP]}
 									alt={`${tech} icon`}

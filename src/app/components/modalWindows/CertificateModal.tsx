@@ -110,125 +110,168 @@ export default function CertificateModal({
 	};
 
 	return (
-		<section className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 backdrop-blur-sm transition-opacity duration-300">
-			<div
-				className={`
-          bg-white rounded-xl shadow-2xl w-[600px]
-          transform transition-all duration-300 scale-100 opacity-100
-          flex flex-col max-h-[90vh]
-        `}
-			>
-				<form onSubmit={handleSubmit}>
-					<div>
-						<label htmlFor="name">Name: </label>
-						<input
-							type="text"
-							id="name"
-							name="name"
-							defaultValue={selectedCertificate?.name}
-							required
-						/>
-					</div>
-					<div>
-						<label htmlFor="issuingOrg">Issuing Organization: </label>
-						<input
-							type="text"
-							id="issuingOrg"
-							name="issuingOrg"
-							defaultValue={selectedCertificate?.issuingOrg}
-							required
-						/>
-					</div>
-					<div className="flex items-center justify-between">
-						<label>Company Icon: </label>
-						{selectedCertInfo ? (
-							<Image
-								src={selectedCertInfo.logo_url}
-								alt={selectedCertInfo.name}
-								width={30}
-								height={30}
+		<section className="modal-container">
+			<div className="modal-window">
+				<div className="modal-header">
+					<p className="modal-header-title">Edit Certificate</p>
+					<button
+						onClick={closeModal}
+						className="text-gray-400 hover:text-gray-600 transition-colors"
+					>
+						<span className="sr-only">Close</span>
+						<svg
+							className="h-6 w-6"
+							fill="none"
+							viewBox="0 0 24 24"
+							strokeWidth="1.5"
+							stroke="currentColor"
+						>
+							<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+						</svg>
+					</button>
+				</div>
+				<form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+					<div className="p-6 overflow-y-auto space-y-6">
+						<div>
+							<label htmlFor="name" className="modal-label-text">
+								Name <span className="text-red-500">*</span>
+							</label>
+							<input
+								type="text"
+								id="name"
+								name="name"
+								className="modal-input"
+								defaultValue={selectedCertificate?.name}
+								required
 							/>
-						) : (
-							<Image
-								src={DefaultCompanyIcon}
-								alt={selectedCertificate?.name ?? 'company icon placeholder'}
-								width={30}
-								height={30}
+						</div>
+						<div>
+							<label htmlFor="issuingOrg" className="flex items-center flex-1 mb-1">
+								Issuing Organization <span className="text-red-500">*</span>
+								<span>
+									{selectedCertInfo ? (
+										<Image
+											src={selectedCertInfo.logo_url}
+											alt={selectedCertInfo.name}
+											width={25}
+											height={25}
+										/>
+									) : (
+										<Image
+											src={DefaultCompanyIcon}
+											alt={selectedCertificate?.name ?? 'Certificate icon placeholder'}
+											width={25}
+											height={25}
+										/>
+									)}
+								</span>
+							</label>
+							<div className="flex items-center">
+								<input
+									placeholder="Enter school name..."
+									className="modal-input"
+									type="text"
+									id="schoolLogoUrl"
+									name="schoolLogoUrl"
+									value={query}
+									onChange={(e) => {
+										setQuery(e.target.value);
+										if (selectedCertInfo?.name !== e.target.value) {
+											setSelectedCertInfo(null);
+										}
+									}}
+								/>
+								<button type="button" onClick={handleIconSearch} className="modal-primary-btn ms-3">
+									Search
+								</button>
+							</div>
+						</div>
+
+						<div className={!isSearchBrand ? 'sr-only' : 'icon-result-container'}>
+							<span>Results</span>
+							{results &&
+								results.map((each: CERTIFICATE_INFO, index: number) => (
+									<div
+										key={index}
+										className="icon-result-row"
+										onClick={() => {
+											setSelectedCertInfo(each);
+											setQuery(each.name);
+											setIsSearchBrand(false);
+										}}
+									>
+										<Image
+											className="rounded-xl"
+											src={each.logo_url}
+											alt={each.name}
+											width={50}
+											height={50}
+										/>
+										{each.name}
+									</div>
+								))}
+						</div>
+
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<div>
+								<label htmlFor="dateIssued" className="modal-label-text">
+									Issue Date <span className="text-red-500">*</span>
+								</label>
+								<input
+									type="text"
+									id="dateIssued"
+									name="dateIssued"
+									className="modal-input"
+									defaultValue={String(selectedCertificate?.dateIssued)}
+									required
+								/>
+							</div>
+							<div>
+								<label htmlFor="dateExpired" className="modal-label-text">
+									Expiration Date
+								</label>
+								<input
+									type="text"
+									id="dateExpired"
+									name="dateExpired"
+									className="modal-input"
+									defaultValue={String(selectedCertificate?.dateExpired ?? '')}
+								/>
+							</div>
+						</div>
+						<div>
+							<label htmlFor="credentialId" className="modal-label-text">
+								Credential ID
+							</label>
+							<input
+								type="text"
+								id="credentialId"
+								name="credentialId"
+								className="modal-input"
+								defaultValue={selectedCertificate?.credentialId ?? ''}
 							/>
-						)}
-						<input
-							type="string"
-							id="certCompanyLogoUrl"
-							name="certCompanyLogoUrl"
-							className="border"
-							onChange={(e) => setQuery(e.target.value)}
-						/>
-						<button type="button" onClick={handleIconSearch}>
-							Search
+						</div>
+						<div>
+							<label htmlFor="credentialUrl" className="modal-label-text">
+								Credential URL
+							</label>
+							<input
+								type="text"
+								id="credentialUrl"
+								name="credentialUrl"
+								className="modal-input"
+								defaultValue={selectedCertificate?.credentialUrl ?? ''}
+							/>
+						</div>
+					</div>
+					<div className="modal-footer">
+						<button className="modal-secondary-btn" type="button" onClick={closeModal}>
+							Cancel
+						</button>
+						<button className="modal-primary-btn" type="submit">
+							{selectedCertificate ? 'Update' : 'Add'}
 						</button>
 					</div>
-					{results &&
-						isSearchBrand &&
-						results.map((each: CERTIFICATE_INFO, index: number) => (
-							<div
-								key={index}
-								className="flex items-center border-b-gray-300 hover:bg-amber-100"
-								onClick={() => {
-									setSelectedCertInfo(each);
-									setIsSearchBrand(false);
-								}}
-							>
-								<Image
-									className="me-4 mb-5"
-									src={each.logo_url}
-									alt={each.name}
-									width={40}
-									height={40}
-								/>
-								{each.name}
-							</div>
-						))}
-					<div>
-						<label htmlFor="dateIssued">Issue Date: </label>
-						<input
-							type="text"
-							id="dateIssued"
-							name="dateIssued"
-							defaultValue={String(selectedCertificate?.dateIssued)}
-							required
-						/>
-					</div>
-					<div>
-						<label htmlFor="dateExpired">Expiration Date: </label>
-						<input
-							type="text"
-							id="dateExpired"
-							name="dateExpired"
-							defaultValue={String(selectedCertificate?.dateExpired ?? '')}
-						/>
-					</div>
-					<div>
-						<label htmlFor="credentialId">Credential ID: </label>
-						<input
-							type="text"
-							id="credentialId"
-							name="credentialId"
-							defaultValue={selectedCertificate?.credentialId ?? ''}
-						/>
-					</div>
-					<div>
-						<label htmlFor="credentialUrl">Credential URL: </label>
-						<input
-							type="text"
-							id="credentialUrl"
-							name="credentialUrl"
-							defaultValue={selectedCertificate?.credentialUrl ?? ''}
-						/>
-					</div>
-					<button type="submit">{selectedCertificate ? 'Update' : 'Add'}</button>
-					<button type="button" onClick={closeModal}>
-						Cancel
-					</button>
 				</form>
 			</div>
 		</section>

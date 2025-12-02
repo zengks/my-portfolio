@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import type { Certificate } from 'types/certificateType';
 import DefaultCompanyIcon from '@/assets/icons/defaultCompany.svg';
+import NewTabIcon from '@/assets/icons/newTab.svg';
 
 export default function CertificateAccordion({ cert }: { cert: Certificate }) {
 	return (
@@ -29,8 +30,12 @@ export default function CertificateAccordion({ cert }: { cert: Certificate }) {
 							cert.dateIssued
 						).getFullYear()}`}</p>
 						<button className="border py-1 px-2 rounded-2xl mt-1 pointer" type="button">
-							<a href={cert.credentialUrl ?? '/'} target="_blank">
-								Show Credential
+							<a
+								href={cert.credentialUrl ?? '/'}
+								target="_blank"
+								className="flex items-center gap-1"
+							>
+								Show Credential <Image src={NewTabIcon} alt="new tab icon" width={22} />
 							</a>
 						</button>
 					</div>

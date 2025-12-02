@@ -134,7 +134,7 @@ export default function EducationModal({
 					<div className="p-6 overflow-y-auto space-y-6">
 						<div>
 							<label className="flex items-center flex-1 mb-1">
-								School<span className="text-red-500">*</span>
+								School <span className="text-red-500">*</span>
 								<span>
 									{selectedEduInfo ? (
 										<Image
