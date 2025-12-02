@@ -172,7 +172,7 @@ export default function UsersPage() {
 			<DeleteConfirmModal
 				isOpen={deleteModalState.isOpen}
 				onClose={closeDeleteModal}
-				onConfirm={() => confirmDelete}
+				onConfirm={() => confirmDelete(username!)}
 				itemType={deleteModalState.type}
 			/>
 			{loading && (
