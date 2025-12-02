@@ -74,59 +74,92 @@ export default function SkillModal({
 	};
 
 	return (
-		<section className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 backdrop-blur-sm transition-opacity duration-300">
-			<div
-				className={`
-          bg-white rounded-xl shadow-2xl w-[600px]
-          transform transition-all duration-300 scale-100 opacity-100
-          flex flex-col max-h-[90vh]
-        `}
-			>
-				<form onSubmit={handleSubmit}>
-					<div>
-						<label htmlFor="categoryName">Category Name: </label>
-						<input
-							type="text"
-							id="categoryName"
-							name="categoryName"
-							defaultValue={selectedSkill?.categoryName ?? ''}
-						/>
-					</div>
-					<div>
-						<label htmlFor="categoryName">Sub-Category Name: </label>
-						<input
-							type="text"
-							id="subCategoryName"
-							name="subCategoryName"
-							defaultValue={selectedSkill?.subCategoryName ?? ''}
-						/>
-					</div>
-					<div>
-						<label htmlFor="skills">Skills: </label>
-						<input
-							type="text"
-							id="skills"
-							name="skills"
-							placeholder="reactjs, tailwindcss, css..."
-							defaultValue={selectedSkill?.skills}
-							required
-						/>
-					</div>
-
-					<div>
-						<label htmlFor="description">Description: </label>
-						<textarea
-							id="description"
-							name="description"
-							placeholder="reactjs, tailwindcss, css..."
-							defaultValue={selectedSkill?.description ?? ''}
-						/>
-					</div>
-
-					<button type="submit">{selectedSkill ? 'Update' : 'Add'}</button>
-					<button type="button" onClick={closeModal}>
-						Cancel
+		<section className="modal-container">
+			<div className="modal-window">
+				<div className="modal-header">
+					<p className="modal-header-title">Edit Skill</p>
+					<button
+						onClick={closeModal}
+						className="text-gray-400 hover:text-gray-600 transition-colors"
+					>
+						<span className="sr-only">Close</span>
+						<svg
+							className="h-6 w-6"
+							fill="none"
+							viewBox="0 0 24 24"
+							strokeWidth="1.5"
+							stroke="currentColor"
+						>
+							<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+						</svg>
 					</button>
+				</div>
+				<form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+					<div className="p-6 overflow-y-auto space-y-6">
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<div>
+								<label htmlFor="categoryName" className="modal-label-text">
+									Category Name <span className="text-red-500">*</span>
+								</label>
+								<input
+									type="text"
+									id="categoryName"
+									name="categoryName"
+									className="modal-input"
+									defaultValue={selectedSkill?.categoryName ?? ''}
+								/>
+							</div>
+							<div>
+								<label htmlFor="subCategoryName" className="modal-label-text">
+									Sub-Category Name <span className="text-red-500">*</span>
+								</label>
+								<input
+									type="text"
+									id="subCategoryName"
+									name="subCategoryName"
+									className="modal-input"
+									defaultValue={selectedSkill?.subCategoryName ?? ''}
+								/>
+							</div>
+						</div>
+						<div>
+							<label htmlFor="skills" className="modal-label-text">
+								Skills <span className="text-red-500">*</span>
+							</label>
+							<input
+								type="text"
+								id="skills"
+								name="skills"
+								className="modal-input"
+								placeholder="reactjs, tailwindcss, css..."
+								defaultValue={selectedSkill?.skills}
+								required
+							/>
+						</div>
+
+						<div>
+							<label htmlFor="description" className="modal-label-text">
+								Description <span className="text-red-500">*</span>
+							</label>
+							<textarea
+								id="description"
+								name="description"
+								rows={3}
+								className="modal-input"
+								placeholder="reactjs, tailwindcss, css..."
+								defaultValue={selectedSkill?.description ?? ''}
+							/>
+						</div>
+					</div>
+
+					<div className="modal-footer">
+						<button type="button" onClick={closeModal} className="modal-secondary-btn">
+							Cancel
+						</button>
+						<button type="submit" className="modal-primary-btn">
+							{selectedSkill ? 'Update' : 'Add'}
+						</button>
+					</div>
 				</form>
 			</div>
 		</section>

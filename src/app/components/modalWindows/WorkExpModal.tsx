@@ -210,30 +210,32 @@ export default function WorkExpModal({
 								))}
 						</div>
 
-						<div>
-							<label htmlFor="startYear" className="modal-label-text">
-								Start Year <span className="text-red-500">*</span>
-							</label>
-							<input
-								type="number"
-								id="startYear"
-								name="startYear"
-								className="modal-input"
-								defaultValue={selectedWorkExp?.startYear}
-								required
-							/>
-						</div>
-						<div>
-							<label htmlFor="endYear" className="modal-label-text">
-								End Year:{' '}
-							</label>
-							<input
-								type="number"
-								id="endYear"
-								name="endYear"
-								className="modal-input"
-								defaultValue={selectedWorkExp?.endYear ?? ''}
-							/>
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<div>
+								<label htmlFor="startYear" className="modal-label-text">
+									Start Year <span className="text-red-500">*</span>
+								</label>
+								<input
+									type="number"
+									id="startYear"
+									name="startYear"
+									className="modal-input"
+									defaultValue={selectedWorkExp?.startYear}
+									required
+								/>
+							</div>
+							<div>
+								<label htmlFor="endYear" className="modal-label-text">
+									End Year:{' '}
+								</label>
+								<input
+									type="number"
+									id="endYear"
+									name="endYear"
+									className="modal-input"
+									defaultValue={selectedWorkExp?.endYear ?? ''}
+								/>
+							</div>
 						</div>
 					</div>
 					<div className="modal-footer">
