@@ -23,11 +23,11 @@ import type { Certificate } from 'types/certificateType';
 import type { Skill } from 'types/skillType';
 import type { AboutUser } from 'types/aboutUserType';
 
-import WorkAccordion from '@/app/components/WorkAccordion';
-import EducationAccordion from '@/app/components/EducationAccordion';
-import ProjectAccordion from '@/app/components/ProjectAccordion';
-import CertificateAccordion from '@/app/components/CertificateAccordion';
-import SkillsAccordion from '@/app/components/SkillsAccordion';
+import WorkAccordion from '@/app/components/accordion/WorkAccordion';
+import EducationAccordion from '@/app/components/accordion/EducationAccordion';
+import ProjectAccordion from '@/app/components/accordion/ProjectAccordion';
+import CertificateAccordion from '@/app/components/accordion/CertificateAccordion';
+import SkillsAccordion from '@/app/components/accordion/SkillsAccordion';
 
 import {
 	deleteEducationApi,

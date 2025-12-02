@@ -1,7 +1,7 @@
 import { WorkExperience } from 'types/workExpType';
 import { getUserWorkExp } from '@/controllers/userWorkExpController';
-import WorkAccordion from './WorkAccordion';
-import ViewMore from './ViewMoreLink';
+import WorkAccordion from '../accordion/WorkAccordion';
+import ViewMore from '../ViewMoreLink';
 
 export default async function WorkExpSection() {
 	const workData = await getUserWorkExp('zengks');

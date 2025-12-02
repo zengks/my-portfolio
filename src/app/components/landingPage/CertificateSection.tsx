@@ -2,7 +2,7 @@ import React from 'react';
 import { getUserCertificate } from '@/controllers/userCertificateController';
 import type { Certificate } from 'types/certificateType';
 
-import CertificateAccordion from './CertificateAccordion';
+import CertificateAccordion from '../accordion/CertificateAccordion';
 
 export default async function CertificateSection() {
 	const certData = await getUserCertificate('zengks');

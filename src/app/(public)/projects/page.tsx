@@ -1,4 +1,4 @@
-import ProjectAccordion from '@/app/components/ProjectAccordion';
+import ProjectAccordion from '@/app/components/accordion/ProjectAccordion';
 
 import { getUserProject } from '@/controllers/userProjectController';
 

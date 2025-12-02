@@ -1,5 +1,5 @@
 import { getUserAbout } from '@/controllers/userAboutController';
-import ViewMore from './ViewMoreLink';
+import ViewMore from '../ViewMoreLink';
 
 export default async function AboutSection() {
 	const userAbout = await getUserAbout('zengks');

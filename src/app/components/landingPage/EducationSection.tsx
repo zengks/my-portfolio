@@ -1,6 +1,6 @@
 import { Education } from 'types/educationType';
 import { getUserEducation } from '@/controllers/userEducationController';
-import EducationAccordion from './EducationAccordion';
+import EducationAccordion from '../accordion/EducationAccordion';
 
 export default async function EducationSection() {
 	const eduData = await getUserEducation('zengks');

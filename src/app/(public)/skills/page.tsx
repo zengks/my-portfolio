@@ -1,5 +1,5 @@
 import { getUserSkills } from '@/controllers/userSkillController';
-import SkillsAccordion from '@/app/components/SkillsAccordion';
+import SkillsAccordion from '@/app/components/accordion/SkillsAccordion';
 
 export default async function Skills() {
 	const skillsData = await getUserSkills('zengks');

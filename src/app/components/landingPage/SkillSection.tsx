@@ -1,5 +1,5 @@
-import SkillRow from './SkillRow';
-import ViewMore from './ViewMoreLink';
+import SkillRow from '../SkillRow';
+import ViewMore from '../ViewMoreLink';
 import { getUserSkills } from '@/controllers/userSkillController';
 
 const iconWidth = 25;

@@ -1,7 +1,6 @@
 import prisma from 'src/lib/prisma';
 import { hashPassword } from 'src/lib/hash';
-import { UserUpdateInput, User } from 'types/userType';
-import { apiPaths } from '@/lib/apiPaths';
+import { UserUpdateInput } from 'types/userType';
 
 export async function getUserIdByUsername(username: string) {
 	return await prisma.user.findUnique({
@@ -169,18 +168,4 @@ export async function deleteUser(username: string) {
 	return await prisma.user.delete({
 		where: { username },
 	});
-}
-
-// client-side api call
-export async function fetchUserByUsername(username: string): Promise<User | undefined> {
-	try {
-		if (username) {
-			const res = await fetch(apiPaths.userData(username));
-			const data = await res.json();
-			return data.user;
-		}
-	} catch (error) {
-		console.error('Error fetching user data: ', error);
-		return undefined;
-	}
 }
