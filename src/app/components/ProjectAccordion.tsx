@@ -18,7 +18,7 @@ export default function ProjectAccordion({ project }: { project: Project }) {
 				onClick={toggleAccordion}
 				className="w-full flex items-center justify-between p-5 text-left hover:bg-gray-100  focus:outline-none focus:ring-gray-900 focus:ring-opacity-50"
 			>
-				<div className="flex-1 grid grid-cols-1 md:grid-cols-12 gap-y-3 md:gap-x-4 items-center pr-4">
+				<div className="flex-1 grid grid-cols-1 md:grid-cols-12 gap-y-3 md:gap-x-4 items-center pe-4">
 					<span className="md:col-span-4 text-gray-900">{project.title}</span>
 
 					<span className="md:col-span-6 flex flex-wrap items-center gap-2">

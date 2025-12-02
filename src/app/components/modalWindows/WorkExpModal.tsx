@@ -179,6 +179,7 @@ export default function WorkExpModal({
 											setSelectedCompanyInfo(null);
 										}
 									}}
+									required
 								/>
 								<button type="button" onClick={handleIconSearch} className="modal-primary-btn ms-3">
 									Search

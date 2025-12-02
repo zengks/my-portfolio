@@ -60,7 +60,14 @@ export default function WorkAccordion({ work }: { work: WorkExperience }) {
 					isOpen ? 'max-h-[1000px]' : 'max-h-0'
 				}`}
 			>
-				<div className="p-5 border-t border-gray-200 text-gray-700">{work.description}</div>
+				<div className="p-5 pt-0 border-t border-gray-100 mt-2">
+					<div className="mt-4 text-gray-600 leading-relaxed">
+						<h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
+							Description
+						</h4>
+						{work.description}
+					</div>
+				</div>
 			</div>
 		</div>
 	);

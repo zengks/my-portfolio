@@ -28,7 +28,11 @@ export default function SkillsAccordion({ skill }: { skill: Skill }) {
 								<div key={index} className="relative group/icon">
 									{SKILLS_MAP[each as keyof typeof SKILLS_MAP] ? (
 										<Image
-											src={SKILLS_MAP[each as keyof typeof SKILLS_MAP]}
+											src={
+												SKILLS_MAP[each as keyof typeof SKILLS_MAP]
+													? SKILLS_MAP[each as keyof typeof SKILLS_MAP]
+													: DefaultProgrammingIcon
+											}
 											alt={`${each} icon`}
 											width={30}
 											height={30}
@@ -37,7 +41,7 @@ export default function SkillsAccordion({ skill }: { skill: Skill }) {
 									) : (
 										<Image
 											src={DefaultProgrammingIcon}
-											alt={`${each} icon`}
+											alt={'default programming icon'}
 											width={30}
 											height={30}
 											className="object-contain opacity-80 group-hover/icon:opacity-100 transition-opacity"

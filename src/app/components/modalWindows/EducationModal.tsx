@@ -79,6 +79,7 @@ export default function EducationModal({
 			schoolLogoUrl: (selectedEduInfo && selectedEduInfo.logo_url) ?? '',
 			startYear: Number(formData.get('startYear')),
 			endYear: Number(formData.get('endYear')),
+			description: formData.get('description'),
 		};
 
 		try {
@@ -161,8 +162,14 @@ export default function EducationModal({
 									type="text"
 									id="schoolLogoUrl"
 									name="schoolLogoUrl"
-									value={selectedEduInfo ? selectedEduInfo.name : ''}
-									onChange={(e) => setQuery(e.target.value)}
+									value={query}
+									onChange={(e) => {
+										setQuery(e.target.value);
+										if (selectedEduInfo?.name !== e.target.value) {
+											setSelectedEduInfo(null);
+										}
+									}}
+									required
 								/>
 								<button type="button" onClick={handleIconSearch} className="modal-primary-btn ms-3">
 									Search
@@ -247,6 +254,17 @@ export default function EducationModal({
 									defaultValue={selectedEducation?.endYear ?? ''}
 								/>
 							</div>
+						</div>
+						<div>
+							<label htmlFor="description" className="modal-label-text">
+								Description
+							</label>
+							<textarea
+								rows={3}
+								name="description"
+								className="modal-input"
+								defaultValue={selectedEducation?.description ?? ''}
+							/>
 						</div>
 					</div>
 					<div className="modal-footer">

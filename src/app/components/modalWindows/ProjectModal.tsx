@@ -146,7 +146,7 @@ export default function ProjectModal({
 
 						<div>
 							<label htmlFor="repo_link" className="modal-label-text">
-								Repo Link:{' '}
+								Repo Link
 							</label>
 							<input
 								type="text"
@@ -159,7 +159,7 @@ export default function ProjectModal({
 
 						<div>
 							<label htmlFor="project_link" className="modal-label-text">
-								Project Link:{' '}
+								Project Link
 							</label>
 							<input
 								type="text"
@@ -172,7 +172,7 @@ export default function ProjectModal({
 
 						<div>
 							<label htmlFor="description" className="modal-label-text">
-								Description:{' '}
+								Description
 							</label>
 							<textarea
 								rows={3}
