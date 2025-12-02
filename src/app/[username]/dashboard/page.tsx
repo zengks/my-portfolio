@@ -13,6 +13,7 @@ import ProfileModal from '@/app/components/modalWindows/ProfileModal';
 import CertificateModal from '@/app/components/modalWindows/CertificateModal';
 import SkillModal from '@/app/components/modalWindows/SkillModal';
 import AboutUserModal from '@/app/components/modalWindows/AboutUserModal';
+import DeleteConfirmModal from '@/app/components/modalWindows/DeleteConfirmModal';
 
 import type { Education } from 'types/educationType';
 import type { WorkExperience } from 'types/workExpType';
@@ -28,6 +29,15 @@ import ProjectAccordion from '@/app/components/ProjectAccordion';
 import CertificateAccordion from '@/app/components/CertificateAccordion';
 import SkillsAccordion from '@/app/components/SkillsAccordion';
 
+import {
+	deleteEducationApi,
+	deleteWorkExpApi,
+	deleteProjectApi,
+	deleteCertificateApi,
+	deleteSkillApi,
+	deleteAboutUserSectionApi,
+} from '@/lib/deleteApi';
+
 const ADD_BTN_STYLE =
 	'px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition-colors shadow-sm';
 const BUTTON_WRAPPER_STYLE = 'flex justify-end items-center gap-3 mt-3';
@@ -35,6 +45,12 @@ const EDIT_BTN_STYLE =
 	'px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 rounded-md hover:bg-indigo-100 transition-colors';
 const DELETE_BTN_STYLE =
 	'px-4 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-md hover:bg-red-100 transition-colors';
+
+type DeleteState = {
+	isOpen: boolean;
+	type: 'work' | 'education' | 'project' | 'certificate' | 'skill' | 'aboutUser' | null;
+	id: number | null;
+};
 
 export default function UsersPage() {
 	const { data: session, status } = useSession();
@@ -51,6 +67,12 @@ export default function UsersPage() {
 	const [selectedCertificate, setSelectedCertificate] = useState<Certificate | null>(null);
 	const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
 	const [selectedAboutUserSection, setSelectedAboutUserSection] = useState<AboutUser | null>(null);
+
+	const [deleteModalState, setDeleteModalState] = useState<DeleteState>({
+		isOpen: false,
+		type: null,
+		id: null,
+	});
 
 	const username = session?.user?.username;
 
@@ -79,15 +101,9 @@ export default function UsersPage() {
 			router.replace('/users/login');
 		}
 
-		if (status === 'loading') {
-			setLoading(true);
-		} else {
-			setLoading(false);
-		}
+		setLoading(status === 'loading');
 
-		if (status === 'authenticated') {
-			fetchCurrentUserData();
-		}
+		if (status === 'authenticated') fetchCurrentUserData();
 	}, [router, status, username]);
 
 	const closeModal = () => {
@@ -108,128 +124,57 @@ export default function UsersPage() {
 		return Array.from(new Set(categories));
 	}, [currentUserData]);
 
-	const handleDeleteEducation = async (educationId: number) => {
-		try {
-			const response = await fetch(`/api/users/${username}/education`, {
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(educationId),
-			});
-
-			if (!response.ok) {
-				throw new Error('Operation Failed!');
-			}
-		} catch (error) {
-			console.log(error);
-		} finally {
-			fetchCurrentUserData();
-		}
+	const handleDelete = (type: DeleteState['type'], targetId: number) => {
+		setDeleteModalState({ isOpen: true, type, id: targetId });
 	};
 
-	const handleDeleteWorkExp = async (workExpId: number) => {
-		try {
-			const response = await fetch(`/api/users/${username}/work`, {
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(workExpId),
-			});
-
-			if (!response.ok) {
-				throw new Error('Operation Failed!');
-			}
-		} catch (error) {
-			console.log(error);
-		} finally {
-			fetchCurrentUserData();
-		}
+	const closeDeleteModal = () => {
+		setDeleteModalState({ isOpen: false, type: null, id: null });
 	};
 
-	const handleDeleteProject = async (projectId: number) => {
-		try {
-			const response = await fetch(`/api/users/${username}/project`, {
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(projectId),
-			});
+	const confirmDelete = async (username: string) => {
+		const { type, id } = deleteModalState;
+		if (!type || !id) return;
 
-			if (!response.ok) {
-				throw new Error('Operation Failed!');
+		try {
+			setLoading(true);
+			switch (type) {
+				case 'education':
+					await deleteEducationApi(username, id);
+					break;
+				case 'work':
+					await deleteWorkExpApi(username, id);
+					break;
+				case 'project':
+					await deleteProjectApi(username, id);
+					break;
+				case 'certificate':
+					await deleteCertificateApi(username, id);
+					break;
+				case 'skill':
+					await deleteSkillApi(username, id);
+					break;
+				case 'aboutUser':
+					await deleteAboutUserSectionApi(username, id);
+					break;
 			}
 		} catch (error) {
-			console.log(error);
+			console.log('Deletion Failed', error);
 		} finally {
+			closeDeleteModal();
 			fetchCurrentUserData();
-		}
-	};
-
-	const handleDeleteCertificate = async (certificateId: number) => {
-		try {
-			const response = await fetch(`/api/users/${username}/certificate`, {
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(certificateId),
-			});
-
-			if (!response.ok) {
-				throw new Error('Operation Failed!');
-			}
-		} catch (error) {
-			console.log(error);
-		} finally {
-			fetchCurrentUserData();
-		}
-	};
-
-	const handleDeleteSkill = async (skillId: number) => {
-		try {
-			const response = await fetch(`/api/users/${username}/skill`, {
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(skillId),
-			});
-
-			if (!response.ok) {
-				throw new Error('Operation Failed!');
-			}
-		} catch (error) {
-			console.log(error);
-		} finally {
-			fetchCurrentUserData();
-		}
-	};
-
-	const handleDeleteAboutUserSection = async (aboutUserId: number) => {
-		try {
-			const response = await fetch(`/api/users/${username}/aboutUser`, {
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(aboutUserId),
-			});
-
-			if (!response.ok) {
-				throw new Error('Operation Failed!');
-			}
-		} catch (error) {
-			console.log(error);
-		} finally {
-			fetchCurrentUserData();
+			setLoading(false);
 		}
 	};
 
 	return (
 		<>
+			<DeleteConfirmModal
+				isOpen={deleteModalState.isOpen}
+				onClose={closeDeleteModal}
+				onConfirm={() => confirmDelete}
+				itemType={deleteModalState.type}
+			/>
 			{loading && (
 				<section className="section-container section-card">Loading current user...</section>
 			)}
@@ -419,7 +364,7 @@ export default function UsersPage() {
 											</button>
 											<button
 												className={DELETE_BTN_STYLE}
-												onClick={() => handleDeleteAboutUserSection(each.id)}
+												onClick={() => handleDelete('aboutUser', each.id)}
 											>
 												Delete
 											</button>
@@ -475,7 +420,7 @@ export default function UsersPage() {
 											</button>
 											<button
 												className={DELETE_BTN_STYLE}
-												onClick={() => handleDeleteEducation(edu.id)}
+												onClick={() => handleDelete('education', edu.id)}
 											>
 												Delete
 											</button>
@@ -533,7 +478,7 @@ export default function UsersPage() {
 											</button>
 											<button
 												className={DELETE_BTN_STYLE}
-												onClick={() => handleDeleteWorkExp(work.id)}
+												onClick={() => handleDelete('work', work.id)}
 											>
 												Delete
 											</button>
@@ -587,7 +532,7 @@ export default function UsersPage() {
 											</button>
 											<button
 												className={DELETE_BTN_STYLE}
-												onClick={() => handleDeleteProject(each.id)}
+												onClick={() => handleDelete('project', each.id)}
 											>
 												Delete
 											</button>
@@ -641,7 +586,7 @@ export default function UsersPage() {
 											</button>
 											<button
 												className={DELETE_BTN_STYLE}
-												onClick={() => handleDeleteCertificate(each.id)}
+												onClick={() => handleDelete('certificate', each.id)}
 											>
 												Delete
 											</button>
@@ -702,7 +647,7 @@ export default function UsersPage() {
 														</button>
 														<button
 															className={DELETE_BTN_STYLE}
-															onClick={() => handleDeleteSkill(each.id)}
+															onClick={() => handleDelete('skill', each.id)}
 														>
 															Delete
 														</button>
