@@ -56,7 +56,7 @@ export default function ProfileModal({
 		<section className="modal-container">
 			<div className="modal-window">
 				<div className="modal-header">
-					<h2 className="text-xl font-bold text-gray-800">Edit Profile</h2>
+					<h2 className="modal-header-title">Edit Profile</h2>
 					<button
 						onClick={closeModal}
 						className="text-gray-400 hover:text-gray-600 transition-colors"

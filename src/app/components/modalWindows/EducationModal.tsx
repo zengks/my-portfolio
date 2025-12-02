@@ -109,117 +109,154 @@ export default function EducationModal({
 	};
 
 	return (
-		<section className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 backdrop-blur-sm transition-opacity duration-300">
-			<div
-				className={`
-          bg-white rounded-xl shadow-2xl w-[600px]
-          transform transition-all duration-300 scale-100 opacity-100
-          flex flex-col max-h-[90vh]
-        `}
-			>
-				<form onSubmit={handleSubmit}>
-					<div>
-						<label htmlFor="school">School: </label>
-						<input
-							type="text"
-							id="school"
-							name="school"
-							defaultValue={selectedEducation?.school}
-							required
-						/>
+		<section className="modal-container">
+			<div className="modal-window">
+				<div className="modal-header">
+					<h2 className="modal-header-title">Edit Education</h2>
+					<button
+						onClick={closeModal}
+						className="text-gray-400 hover:text-gray-600 transition-colors"
+					>
+						<span className="sr-only">Close</span>
+						<svg
+							className="h-6 w-6"
+							fill="none"
+							viewBox="0 0 24 24"
+							strokeWidth="1.5"
+							stroke="currentColor"
+						>
+							<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+						</svg>
+					</button>
+				</div>
+
+				<form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+					<div className="p-6 overflow-y-auto space-y-6">
+						<div>
+							<label className="flex items-center flex-1 mb-1">
+								School<span className="text-red-500">*</span>
+								<span>
+									{selectedEduInfo ? (
+										<Image
+											src={selectedEduInfo.logo_url}
+											alt={selectedEduInfo.name}
+											width={25}
+											height={25}
+										/>
+									) : (
+										<Image
+											src={DefaultSchoolIcon}
+											alt={selectedEducation?.school ?? 'school icon placeholder'}
+											width={25}
+											height={25}
+										/>
+									)}
+								</span>
+							</label>
+
+							<div className="flex items-center">
+								<input
+									placeholder="Enter school name..."
+									className="modal-input"
+									type="text"
+									id="schoolLogoUrl"
+									name="schoolLogoUrl"
+									value={selectedEduInfo ? selectedEduInfo.name : ''}
+									onChange={(e) => setQuery(e.target.value)}
+								/>
+								<button type="button" onClick={handleIconSearch} className="modal-primary-btn ms-3">
+									Search
+								</button>
+							</div>
+						</div>
+						<div className={!isSearchBrand ? 'sr-only' : 'icon-result-container'}>
+							<span>Results</span>
+							{results &&
+								results.map((each: EDUCATION_INFO, index: number) => (
+									<div
+										key={index}
+										className="icon-result-row"
+										onClick={() => {
+											setSelectedEduInfo(each);
+											setIsSearchBrand(false);
+										}}
+									>
+										<Image
+											className="rounded-xl"
+											src={each.logo_url}
+											alt={each.name}
+											width={50}
+											height={50}
+										/>
+										{each.name}
+									</div>
+								))}
+						</div>
+
+						<div>
+							<label htmlFor="degree" className="modal-label-text">
+								Degree <span className="text-red-500">*</span>
+							</label>
+							<input
+								type="text"
+								id="degree"
+								name="degree"
+								className="modal-input"
+								defaultValue={selectedEducation?.degree}
+								required
+							/>
+						</div>
+
+						<div>
+							<label htmlFor="fieldOfStudy" className="modal-label-text">
+								Field of Study <span className="text-red-500">*</span>
+							</label>
+							<input
+								type="text"
+								id="fieldOfStudy"
+								name="fieldOfStudy"
+								className="modal-input"
+								defaultValue={selectedEducation?.fieldOfStudy ?? ''}
+								required
+							/>
+						</div>
+
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<div>
+								<label htmlFor="startYear" className="modal-label-text">
+									Start Year <span className="text-red-500">*</span>
+								</label>
+								<input
+									type="number"
+									id="startYear"
+									name="startYear"
+									className="modal-input"
+									defaultValue={selectedEducation?.startYear}
+									required
+								/>
+							</div>
+							<div>
+								<label htmlFor="endYear" className="modal-label-text">
+									End Year
+								</label>
+								<input
+									type="number"
+									id="endYear"
+									name="endYear"
+									className="modal-input"
+									defaultValue={selectedEducation?.endYear ?? ''}
+								/>
+							</div>
+						</div>
 					</div>
-					<div className="flex items-center justify-between">
-						<label>School Icon: </label>
-						{selectedEduInfo ? (
-							<Image
-								src={selectedEduInfo.logo_url}
-								alt={selectedEduInfo.name}
-								width={30}
-								height={30}
-							/>
-						) : (
-							<Image
-								src={DefaultSchoolIcon}
-								alt={selectedEducation?.school ?? 'school icon placeholder'}
-								width={30}
-								height={30}
-							/>
-						)}
-						<input
-							type="string"
-							id="schoolLogoUrl"
-							name="schoolLogoUrl"
-							className="border"
-							onChange={(e) => setQuery(e.target.value)}
-						/>
-						<button type="button" onClick={handleIconSearch}>
-							Search
+					<div className="modal-footer">
+						<button className="modal-secondary-btn" type="button" onClick={closeModal}>
+							Cancel
+						</button>
+						<button type="submit" className="modal-primary-btn">
+							{selectedEducation ? 'Update' : 'Add'}
 						</button>
 					</div>
-					{results &&
-						isSearchBrand &&
-						results.map((each: EDUCATION_INFO, index: number) => (
-							<div
-								key={index}
-								className="flex items-center border-b-gray-300 hover:bg-amber-100"
-								onClick={() => {
-									setSelectedEduInfo(each);
-									setIsSearchBrand(false);
-								}}
-							>
-								<Image
-									className="me-4 mb-5"
-									src={each.logo_url}
-									alt={each.name}
-									width={40}
-									height={40}
-								/>
-								{each.name}
-							</div>
-						))}
-					<div>
-						<label htmlFor="degree">Degree: </label>
-						<input
-							type="text"
-							id="degree"
-							name="degree"
-							defaultValue={selectedEducation?.degree}
-							required
-						/>
-					</div>
-					<div>
-						<label htmlFor="fieldOfStudy">Field of Study: </label>
-						<input
-							type="text"
-							id="fieldOfStudy"
-							name="fieldOfStudy"
-							defaultValue={selectedEducation?.fieldOfStudy ?? ''}
-							required
-						/>
-					</div>
-					<div>
-						<label htmlFor="startYear">Start Year: </label>
-						<input
-							type="number"
-							id="startYear"
-							name="startYear"
-							defaultValue={selectedEducation?.startYear}
-							required
-						/>
-					</div>
-					<div>
-						<label htmlFor="endYear">End Year: </label>
-						<input
-							type="number"
-							id="endYear"
-							name="endYear"
-							defaultValue={selectedEducation?.endYear ?? ''}
-						/>
-					</div>
-					<button type="submit">{selectedEducation ? 'Update' : 'Add'}</button>
-					<button type="button" onClick={closeModal}>
-						Cancel
-					</button>
 				</form>
 			</div>
 		</section>
