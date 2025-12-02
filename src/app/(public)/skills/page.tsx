@@ -12,6 +12,7 @@ export default async function Skills() {
 
 	return (
 		<section className="section-container section-card text-wrap">
+			<p className="section-title">Technical Skills</p>
 			{skillsData &&
 				skillsData.length > 0 &&
 				uniqueSkillCategories().map((eachCategory) => (

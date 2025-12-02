@@ -77,27 +77,10 @@ export default function RegisterPage() {
 
 			<div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
 				<div className="bg-white px-6 py-8 shadow-lg rounded-xl border border-gray-100 sm:px-10">
-					<form className="space-y-6" onSubmit={handleSubmit}>
-						<div>
-							<label htmlFor="firstName" className={LABEL_STYLE}>
-								First Name
-							</label>
-							<div className="mt-2">
-								<input
-									id="firstName"
-									name="firstName"
-									type="text"
-									required
-									value={firstName}
-									onChange={(e) => setFirstName(e.target.value)}
-									className={INPUT_STYLE}
-								/>
-							</div>
-						</div>
-
+					<form className="space-y-4" onSubmit={handleSubmit}>
 						<div>
 							<label htmlFor="username" className={LABEL_STYLE}>
-								Username
+								Username <span className="text-red-500">*</span>
 							</label>
 							<div className="mt-2">
 								<input
@@ -113,25 +96,8 @@ export default function RegisterPage() {
 						</div>
 
 						<div>
-							<label htmlFor="email" className={LABEL_STYLE}>
-								Email address
-							</label>
-							<div className="mt-2">
-								<input
-									id="email"
-									name="email"
-									type="email"
-									required
-									value={email}
-									onChange={(e) => setEmail(e.target.value)}
-									className={INPUT_STYLE}
-								/>
-							</div>
-						</div>
-
-						<div>
 							<label htmlFor="password" className={LABEL_STYLE}>
-								Password
+								Password <span className="text-red-500">*</span>
 							</label>
 							<div className="mt-2">
 								<input
@@ -141,6 +107,40 @@ export default function RegisterPage() {
 									required
 									value={password}
 									onChange={(e) => setPassword(e.target.value)}
+									className={INPUT_STYLE}
+								/>
+							</div>
+						</div>
+
+						<div>
+							<label htmlFor="firstName" className={LABEL_STYLE}>
+								First Name <span className="text-red-500">*</span>
+							</label>
+							<div className="mt-2">
+								<input
+									id="firstName"
+									name="firstName"
+									type="text"
+									required
+									value={firstName}
+									onChange={(e) => setFirstName(e.target.value)}
+									className={INPUT_STYLE}
+								/>
+							</div>
+						</div>
+
+						<div>
+							<label htmlFor="email" className={LABEL_STYLE}>
+								Email address <span className="text-red-500">*</span>
+							</label>
+							<div className="mt-2">
+								<input
+									id="email"
+									name="email"
+									type="email"
+									required
+									value={email}
+									onChange={(e) => setEmail(e.target.value)}
 									className={INPUT_STYLE}
 								/>
 							</div>
@@ -201,7 +201,6 @@ export default function RegisterPage() {
 						</div>
 					</form>
 
-					{/* Login Link */}
 					<p className="mt-10 text-center text-sm text-gray-500">
 						Already have an account?{' '}
 						<a
