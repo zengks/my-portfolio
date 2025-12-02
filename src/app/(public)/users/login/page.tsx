@@ -5,9 +5,8 @@ import { SignInButton } from '@/app/components/UI/AuthButtons';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
-// --- STYLES ---
 const INPUT_STYLE =
-	'block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6';
+	'block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6';
 const LABEL_STYLE = 'block text-sm font-medium leading-6 text-gray-900';
 const BUTTON_STYLE =
 	'flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors';
@@ -28,8 +27,6 @@ export default function LoginPage() {
 	const currentUsername = session?.user?.username;
 
 	useEffect(() => {
-		// Only redirect if authenticated.
-		// If unauthenticated, stay here to let them log in.
 		if (status === 'authenticated' && currentUsername) {
 			router.replace(`/${currentUsername}/dashboard`);
 		}
@@ -43,7 +40,7 @@ export default function LoginPage() {
 
 	const handleLogin = async (event: FormEvent) => {
 		event.preventDefault();
-		setError(''); // Clear previous errors
+		setError('');
 
 		const result = await SignInButton('credentials', {
 			redirect: false,
@@ -54,13 +51,10 @@ export default function LoginPage() {
 		if (result?.error) {
 			setError(result.error);
 		} else if (result?.ok) {
-			// The session might take a moment to update, the useEffect will handle the redirect
-			// or we can force a refresh if needed.
 			router.refresh();
 		}
 	};
 
-	// Prevent flash of login form if we are already authenticated
 	if (status === 'authenticated') {
 		return (
 			<div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
@@ -70,17 +64,14 @@ export default function LoginPage() {
 	}
 
 	return (
-		<div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8 bg-gray-50 h-screen">
-			<div className="sm:mx-auto sm:w-full sm:max-w-sm">
-				<h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
-					Sign in to your account
-				</h2>
-			</div>
+		<div className="flex flex-1 flex-col justify-center bg-gray-50">
+			<h2 className="text-center text-2xl font-bold tracking-wide text-gray-900">
+				Sign in to your account
+			</h2>
 
 			<div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
 				<div className="bg-white px-6 py-8 shadow-lg rounded-xl border border-gray-100 sm:px-10">
 					<form className="space-y-6" onSubmit={handleLogin}>
-						{/* Username Field */}
 						<div>
 							<label htmlFor="username" className={LABEL_STYLE}>
 								Username
@@ -98,7 +89,6 @@ export default function LoginPage() {
 							</div>
 						</div>
 
-						{/* Password Field */}
 						<div>
 							<div className="flex items-center justify-between">
 								<label htmlFor="password" className={LABEL_STYLE}>
@@ -118,11 +108,10 @@ export default function LoginPage() {
 							</div>
 						</div>
 
-						{/* Error Message Display */}
 						{error && (
 							<div className="rounded-md bg-red-50 p-4 border border-red-200">
 								<div className="flex">
-									<div className="flex-shrink-0">
+									<div className="shrink-0">
 										<svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
 											<path
 												fillRule="evenodd"
@@ -131,7 +120,7 @@ export default function LoginPage() {
 											/>
 										</svg>
 									</div>
-									<div className="ml-3">
+									<div className="ms-3">
 										<h3 className="text-sm font-medium text-red-800">Login Failed</h3>
 										<div className="mt-2 text-sm text-red-700">
 											<p>
@@ -144,7 +133,6 @@ export default function LoginPage() {
 							</div>
 						)}
 
-						{/* Submit Button */}
 						<div>
 							<button type="submit" className={BUTTON_STYLE}>
 								{status === 'loading' ? 'Signing in...' : 'Log In'}
@@ -152,12 +140,11 @@ export default function LoginPage() {
 						</div>
 					</form>
 
-					{/* Register Link */}
 					<p className="mt-10 text-center text-sm text-gray-500">
 						Not a member?{' '}
 						<a
 							href="/users/register"
-							className="font-semibold leading-6 text-indigo-600 hover:text-indigo-500 transition-colors"
+							className="ms-1 font-semibold leading-6 text-indigo-600 hover:text-indigo-500 transition-colors"
 						>
 							Register Now
 						</a>
@@ -167,90 +154,3 @@ export default function LoginPage() {
 		</div>
 	);
 }
-// 'use client';
-// import { useState, FormEvent, useEffect } from 'react';
-// import { SignInButton } from '@/app/components/UI/AuthButtons';
-// import { useRouter } from 'next/navigation';
-// import { useSession } from 'next-auth/react';
-
-// type AuthErrorMessages = {
-// 	CredentialsSignin: string;
-// 	AccessDenied: string;
-// 	Configuration: string;
-// };
-
-// export default function LoginPage() {
-// 	const [username, setUsername] = useState('');
-// 	const [password, setPassword] = useState('');
-// 	const [error, setError] = useState('');
-
-// 	const router = useRouter();
-// 	const { status, data: session } = useSession();
-// 	const currentUsername = session?.user?.username;
-
-// 	useEffect(() => {
-// 		if (status === 'authenticated') {
-// 			// router.replace('/dashboard');
-// 			if (currentUsername) {
-// 				router.replace(`/${currentUsername}/dashboard`);
-// 			}
-// 		} else {
-// 			router.replace('/users/login');
-// 		}
-// 	}, [router, status]);
-
-// 	const errorMessages: AuthErrorMessages = {
-// 		CredentialsSignin: 'Invalid username or password.',
-// 		AccessDenied: 'Access Denied.',
-// 		Configuration: 'Server Configuration Error.',
-// 	};
-
-// 	const handleLogin = async (event: FormEvent) => {
-// 		event.preventDefault();
-// 		const result = await SignInButton('credentials', {
-// 			redirect: false,
-// 			username,
-// 			password,
-// 		});
-// 		if (result?.error) {
-// 			setError(result.error);
-// 		} else if (result?.ok) {
-// 			router.replace(`/${currentUsername}/dashboard`);
-// 		}
-// 	};
-// 	return (
-// 		<section className="section-container section-card">
-// 			<form onSubmit={handleLogin}>
-// 				<div>
-// 					<label htmlFor="username">Username: </label>
-// 					<input
-// 						type="text"
-// 						name="username"
-// 						value={username}
-// 						onChange={(e) => setUsername(e.target.value)}
-// 					/>
-// 				</div>
-// 				<div>
-// 					<label htmlFor="password">Password: </label>
-// 					<input
-// 						type="password"
-// 						name="password"
-// 						value={password}
-// 						onChange={(e) => setPassword(e.target.value)}
-// 					/>
-// 				</div>
-// 				<div>
-// 					<button type="submit">Log In</button>
-// 				</div>
-// 				{error && (
-// 					<div className="p-3 rounded bg-red-100 text-red-500 w-100">
-// 						- {errorMessages[error as keyof typeof errorMessages] ?? 'An unknown error occurred.'}
-// 					</div>
-// 				)}
-// 				<div>
-// 					<a href="/users/register">Register Now</a>
-// 				</div>
-// 			</form>
-// 		</section>
-// 	);
-// }
