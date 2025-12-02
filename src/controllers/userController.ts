@@ -1,7 +1,6 @@
 import prisma from 'src/lib/prisma';
 import { hashPassword } from 'src/lib/hash';
-import { UserUpdateInput, User } from 'types/userType';
-import { apiPaths } from '@/lib/apiPaths';
+import { UserUpdateInput } from 'types/userType';
 
 export async function getUserIdByUsername(username: string) {
 	return await prisma.user.findUnique({
@@ -15,94 +14,113 @@ export async function getAllUsers() {
 }
 
 export async function getUserByUsername(username: string) {
-	return await prisma.user.findUnique({
-		where: { username },
-		select: {
-			role: true,
-			certificate: {
-				select: {
-					id: true,
-					name: true,
-					issuingOrg: true,
-					credentialId: true,
-					credentialUrl: true,
-					dateIssued: true,
-					dateExpired: true,
+	try {
+		const user = await prisma.user.findUnique({
+			where: { username },
+			select: {
+				role: true,
+				certificate: {
+					select: {
+						id: true,
+						name: true,
+						issuingOrg: true,
+						companyLogoUrl: true,
+						credentialId: true,
+						credentialUrl: true,
+						dateIssued: true,
+						dateExpired: true,
+					},
 				},
-			},
-			education: {
-				select: {
-					id: true,
-					school: true,
-					degree: true,
-					fieldOfStudy: true,
-					startYear: true,
-					endYear: true,
-					gpa: true,
-					description: true,
+				education: {
+					select: {
+						id: true,
+						school: true,
+						degree: true,
+						fieldOfStudy: true,
+						schoolLogoUrl: true,
+						city: true,
+						province: true,
+						country: true,
+						startYear: true,
+						endYear: true,
+						gpa: true,
+						description: true,
+					},
 				},
-			},
-			profile: {
-				select: {
-					id: true,
-					username: true,
-					userId: true,
-					firstName: true,
-					lastName: true,
-					email: true,
-					bioLink: true,
-					imageLink: true,
-					city: true,
-					province: true,
-					country: true,
-					githubUrl: true,
-					linkedInUrl: true,
-					jobTitle: true,
-					resumeUrl: true,
-					aboutUser: {
-						select: {
-							id: true,
-							username: true,
-							userId: true,
-							profileId: true,
-							header: true,
-							aboutContent: true,
+				profile: {
+					select: {
+						id: true,
+						username: true,
+						userId: true,
+						firstName: true,
+						lastName: true,
+						email: true,
+						bioLink: true,
+						imageLink: true,
+						city: true,
+						province: true,
+						country: true,
+						githubUrl: true,
+						linkedInUrl: true,
+						jobTitle: true,
+						resumeUrl: true,
+						aboutUser: {
+							select: {
+								id: true,
+								username: true,
+								userId: true,
+								profileId: true,
+								header: true,
+								aboutContent: true,
+							},
 						},
 					},
 				},
-			},
 
-			workExperience: {
-				select: {
-					id: true,
-					jobTitle: true,
-					company: true,
-					startYear: true,
-					endYear: true,
-					description: true,
+				workExperience: {
+					select: {
+						id: true,
+						jobTitle: true,
+						company: true,
+						companyLogoUrl: true,
+						city: true,
+						province: true,
+						country: true,
+						locationType: true,
+						employmentType: true,
+						startYear: true,
+						endYear: true,
+						description: true,
+					},
+				},
+				project: {
+					select: {
+						id: true,
+						title: true,
+						repo_link: true,
+						project_link: true,
+						description: true,
+						preview_image_link: true,
+						tech_stack: true,
+						projectYear: true,
+					},
+				},
+				skills: {
+					select: {
+						id: true,
+						categoryName: true,
+						subCategoryName: true,
+						skills: true,
+						description: true,
+					},
 				},
 			},
-			project: {
-				select: {
-					id: true,
-					title: true,
-					repo_link: true,
-					project_link: true,
-					description: true,
-					preview_image_link: true,
-					tech_stack: true,
-					projectYear: true,
-				},
-			},
-			skills: {
-				select: {
-					id: true,
-					categoryName: true,
-					skills: true,
-				},
-			},
-		},
-	});
+		});
+
+		return user;
+	} catch (error) {
+		console.log(error);
+	}
 }
 
 export async function createUser(
@@ -150,18 +168,4 @@ export async function deleteUser(username: string) {
 	return await prisma.user.delete({
 		where: { username },
 	});
-}
-
-// client-side api call
-export async function fetchUserByUsername(username: string): Promise<User | undefined> {
-	try {
-		if (username) {
-			const res = await fetch(apiPaths.userData(username));
-			const data = await res.json();
-			return data.user;
-		}
-	} catch (error) {
-		console.error('Error fetching user data: ', error);
-		return undefined;
-	}
 }

@@ -65,40 +65,64 @@ export default function AboutUserModal({
 	};
 
 	return (
-		<section className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 backdrop-blur-sm transition-opacity duration-300">
-			<div
-				className={`
-          bg-white rounded-xl shadow-2xl w-[600px]
-          transform transition-all duration-300 scale-100 opacity-100
-          flex flex-col max-h-[90vh]
-        `}
-			>
-				<form onSubmit={handleSubmit}>
-					<div>
-						<label htmlFor="header">Header: </label>
-						<input
-							type="text"
-							id="header"
-							name="header"
-							defaultValue={selectedAboutUserSection?.header}
-							required
-						/>
-					</div>
-					<div>
-						<label htmlFor="aboutContent">Content: </label>
-						<input
-							type="text"
-							id="aboutContent"
-							name="aboutContent"
-							defaultValue={selectedAboutUserSection?.aboutContent ?? ''}
-							required
-						/>
+		<section className="modal-container">
+			<div className="modal-window">
+				<div className="modal-header">
+					<h2 className="modal-header-title">Edit About</h2>
+					<button
+						onClick={closeModal}
+						className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
+					>
+						<span className="sr-only">Close</span>
+						<svg
+							className="h-6 w-6"
+							fill="none"
+							viewBox="0 0 24 24"
+							strokeWidth="1.5"
+							stroke="currentColor"
+						>
+							<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+						</svg>
+					</button>
+				</div>
+				<form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+					<div className="p-6 overflow-y-auto space-y-6">
+						<div>
+							<label htmlFor="header" className="modal-label-text">
+								Header Name <span className="text-red-500">*</span>
+							</label>
+							<input
+								type="text"
+								id="header"
+								name="header"
+								className="modal-input"
+								defaultValue={selectedAboutUserSection?.header}
+								required
+							/>
+						</div>
+
+						<div>
+							<label htmlFor="aboutContent" className="modal-label-text">
+								Content
+							</label>
+							<textarea
+								rows={3}
+								id="aboutContent"
+								name="aboutContent"
+								className="modal-input"
+								defaultValue={selectedAboutUserSection?.aboutContent ?? ''}
+							/>
+						</div>
 					</div>
 
-					<button type="submit">{selectedAboutUserSection ? 'Update' : 'Add'}</button>
-					<button type="button" onClick={closeModal}>
-						Cancel
-					</button>
+					<div className="modal-footer">
+						<button type="button" onClick={closeModal} className="modal-secondary-btn">
+							Cancel
+						</button>
+						<button type="submit" className="modal-primary-btn">
+							{selectedAboutUserSection ? 'Update' : 'Add'}
+						</button>
+					</div>
 				</form>
 			</div>
 		</section>

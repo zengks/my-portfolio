@@ -2,7 +2,7 @@ import React from 'react';
 import { getUserCertificate } from '@/controllers/userCertificateController';
 import type { Certificate } from 'types/certificateType';
 
-import { getYear } from '@/utility';
+import CertificateAccordion from '../accordion/CertificateAccordion';
 
 export default async function CertificateSection() {
 	const certData = await getUserCertificate('zengks');
@@ -19,16 +19,8 @@ export default async function CertificateSection() {
 			{sortedCertData && sortedCertData.length > 0 ? (
 				<section className="flex flex-col gap-2">
 					{sortedCertData.map((data: Certificate, index: number) => (
-						<div className="columns-5" key={index}>
-							<p>{data.name}</p>
-							<p>{data.issuingOrg}</p>
-							<p>{`${getYear(data.dateIssued)}`}</p>
-							<p>{`${getYear(data.dateExpired)}`}</p>
-							<p>
-								<a target="_blank" href={data.credentialUrl ? data.credentialUrl : '/'}>
-									View
-								</a>
-							</p>
+						<div key={index}>
+							<CertificateAccordion cert={data} />
 						</div>
 					))}
 				</section>

@@ -20,7 +20,9 @@ export async function addSkill(username: string, skillData: Skill) {
 			userId: user.id,
 			username: username,
 			categoryName: skillData.categoryName,
+			subCategoryName: skillData.subCategoryName,
 			skills: skillData.skills,
+			description: skillData.description,
 		},
 	});
 
@@ -40,7 +42,9 @@ export async function updateSkill(username: string, selectedSkillData: Skill) {
 		},
 		data: {
 			categoryName: selectedSkillData.categoryName,
+			subCategoryName: selectedSkillData.subCategoryName,
 			skills: selectedSkillData.skills,
+			description: selectedSkillData.description,
 		},
 	});
 

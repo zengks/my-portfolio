@@ -295,6 +295,7 @@ export const SKILLS_MAP = {
 	prisma: PrismaIcon,
 	python: PythonIcon,
 	reactjs: ReactIcon,
+	reactnative: ReactIcon,
 	resume: ResumeIcon,
 	sun: SunIcon,
 	swift: SwiftIcon,

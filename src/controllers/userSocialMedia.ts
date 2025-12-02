@@ -1,5 +1,4 @@
 import prisma from '@/lib/prisma';
-import { apiPaths } from '@/lib/apiPaths';
 import { SocialMedia } from 'types/socialMediaType';
 
 export async function getAllUserSocialMedia(userId: string) {
@@ -23,16 +22,4 @@ export async function updateUserSocialMedia(newSocialMediaData: SocialMedia[]) {
 	);
 
 	return updatedSocialMedia;
-}
-
-// client-side api call
-export async function fetchAllUserSocialMedia(): Promise<SocialMedia[] | undefined> {
-	try {
-		const res = await fetch(apiPaths.userSocialMedia());
-		const data = await res.json();
-		return data.socialMedia;
-	} catch (error) {
-		console.error('Error fetching user social media, ', error);
-		return undefined;
-	}
 }

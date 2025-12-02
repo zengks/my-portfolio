@@ -21,6 +21,7 @@ export async function addCertificate(username: string, certificateData: Certific
 			username: username,
 			name: certificateData.name,
 			issuingOrg: certificateData.issuingOrg,
+			companyLogoUrl: certificateData.companyLogoUrl,
 			dateIssued: new Date(certificateData.dateIssued),
 			dateExpired: certificateData.dateExpired ? new Date(certificateData.dateExpired) : null,
 			credentialId: certificateData.credentialId ?? null,
@@ -49,6 +50,7 @@ export async function updateUserCertificate(
 		data: {
 			name: selectedCertificateData.name,
 			issuingOrg: selectedCertificateData.issuingOrg,
+			companyLogoUrl: selectedCertificateData.companyLogoUrl,
 			dateIssued: new Date(selectedCertificateData.dateIssued),
 			dateExpired: selectedCertificateData.dateExpired
 				? new Date(selectedCertificateData.dateExpired)

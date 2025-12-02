@@ -106,17 +106,18 @@ model VerificationToken {
 }
 
 model Certificate {
-  id            Int       @id @default(autoincrement())
-  username      String
-  userId        String
-  name          String
-  issuingOrg    String
-  dateIssued    DateTime
-  dateExpired   DateTime?
-  credentialId  String?
-  credentialUrl String?
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @default(now())
+  id             Int       @id @default(autoincrement())
+  username       String
+  userId         String
+  name           String
+  issuingOrg     String
+  companyLogoUrl String?
+  dateIssued     DateTime
+  dateExpired    DateTime?
+  credentialId   String?
+  credentialUrl  String?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @default(now())
 
   user User @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
 
@@ -142,49 +143,60 @@ model Project {
 }
 
 model WorkExperience {
-  id          Int      @id @default(autoincrement())
-  username    String
-  userId      String
-  jobTitle    String
-  company     String
-  startYear   Int
-  endYear     Int?
-  description String?
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @default(now())
-  user        User     @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
+  id             Int      @id @default(autoincrement())
+  username       String
+  userId         String
+  jobTitle       String
+  company        String
+  companyLogoUrl String?
+  city           String?
+  province       String?
+  country        String?
+  locationType   String?
+  employmentType String?
+  startYear      Int
+  endYear        Int?
+  description    String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @default(now())
+  user           User     @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
 
   @@index([userId, username])
 }
 
 model Education {
-  id           Int      @id @default(autoincrement())
-  username     String
-  userId       String
-  school       String
-  degree       String
-  fieldOfStudy String?
-  startYear    Int
-  endYear      Int?
-  gpa          Float?
-  description  String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now())
-  user         User     @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
+  id            Int      @id @default(autoincrement())
+  username      String
+  userId        String
+  school        String
+  degree        String
+  fieldOfStudy  String?
+  schoolLogoUrl String?
+  startYear     Int
+  endYear       Int?
+  gpa           Float?
+  description   String?
+  city          String?
+  province      String?
+  country       String?
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @default(now())
+  user          User     @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
 
   @@index([userId, username])
 }
 
 model Skill {
-  id           Int      @id @default(autoincrement())
-  username     String
-  userId       String
-  categoryName String
-  skills       String[]
-  description  String?
-  createdAt    DateTime @default(now())
-  updatedAt    DateTime @default(now())
-  user         User     @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
+  id              Int      @id @default(autoincrement())
+  username        String
+  userId          String
+  categoryName    String?
+  subCategoryName String?
+  skills          String[]
+  description     String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @default(now())
+  user            User     @relation(fields: [userId, username], references: [id, username], onDelete: Cascade)
 
   @@index([userId, username])
 }

@@ -1,4 +1,4 @@
-import WorkAccordion from '../../components/WorkAccordion';
+import WorkAccordion from '../../components/accordion/WorkAccordion';
 import { getUserWorkExp } from '@/controllers/userWorkExpController';
 
 export default async function Work() {

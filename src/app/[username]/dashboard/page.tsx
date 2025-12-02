@@ -1,12 +1,10 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 
 import { SignOutButton } from '@/app/components/UI/AuthButtons';
 import type { User } from 'types/userType';
-import { SKILLS_MAP } from '@/lib/constant';
 
 import EducationModal from '@/app/components/modalWindows/EducationModal';
 import WorkExpModal from '@/app/components/modalWindows/WorkExpModal';
@@ -15,6 +13,7 @@ import ProfileModal from '@/app/components/modalWindows/ProfileModal';
 import CertificateModal from '@/app/components/modalWindows/CertificateModal';
 import SkillModal from '@/app/components/modalWindows/SkillModal';
 import AboutUserModal from '@/app/components/modalWindows/AboutUserModal';
+import DeleteConfirmModal from '@/app/components/modalWindows/DeleteConfirmModal';
 
 import type { Education } from 'types/educationType';
 import type { WorkExperience } from 'types/workExpType';
@@ -23,6 +22,35 @@ import type { Profile } from 'types/profileType';
 import type { Certificate } from 'types/certificateType';
 import type { Skill } from 'types/skillType';
 import type { AboutUser } from 'types/aboutUserType';
+
+import WorkAccordion from '@/app/components/accordion/WorkAccordion';
+import EducationAccordion from '@/app/components/accordion/EducationAccordion';
+import ProjectAccordion from '@/app/components/accordion/ProjectAccordion';
+import CertificateAccordion from '@/app/components/accordion/CertificateAccordion';
+import SkillsAccordion from '@/app/components/accordion/SkillsAccordion';
+
+import {
+	deleteEducationApi,
+	deleteWorkExpApi,
+	deleteProjectApi,
+	deleteCertificateApi,
+	deleteSkillApi,
+	deleteAboutUserSectionApi,
+} from '@/lib/deleteApi';
+
+const ADD_BTN_STYLE =
+	'px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition-colors shadow-sm';
+const BUTTON_WRAPPER_STYLE = 'flex justify-end items-center gap-3 mt-3';
+const EDIT_BTN_STYLE =
+	'px-4 py-2 text-sm font-medium text-indigo-600 bg-indigo-50 rounded-md hover:bg-indigo-100 transition-colors';
+const DELETE_BTN_STYLE =
+	'px-4 py-2 text-sm font-medium text-red-600 bg-red-50 rounded-md hover:bg-red-100 transition-colors';
+
+type DeleteState = {
+	isOpen: boolean;
+	type: 'work' | 'education' | 'project' | 'certificate' | 'skill' | 'aboutUser' | null;
+	id: number | null;
+};
 
 export default function UsersPage() {
 	const { data: session, status } = useSession();
@@ -40,6 +68,12 @@ export default function UsersPage() {
 	const [selectedSkill, setSelectedSkill] = useState<Skill | null>(null);
 	const [selectedAboutUserSection, setSelectedAboutUserSection] = useState<AboutUser | null>(null);
 
+	const [deleteModalState, setDeleteModalState] = useState<DeleteState>({
+		isOpen: false,
+		type: null,
+		id: null,
+	});
+
 	const username = session?.user?.username;
 
 	const fetchCurrentUserData = async () => {
@@ -50,13 +84,12 @@ export default function UsersPage() {
 					'Content-Type': 'application/json',
 				},
 			});
-
 			if (res.ok) {
 				const data = await res.json();
 				console.log('dashboard received data', data);
 				setCurrentUserData(data.user);
 			} else {
-				console.log('failed to get user');
+				console.log('Failed to get user data.');
 			}
 		} catch (error) {
 			console.log('Failed to fetch:', error);
@@ -68,15 +101,9 @@ export default function UsersPage() {
 			router.replace('/users/login');
 		}
 
-		if (status === 'loading') {
-			setLoading(true);
-		} else {
-			setLoading(false);
-		}
+		setLoading(status === 'loading');
 
-		if (status === 'authenticated') {
-			fetchCurrentUserData();
-		}
+		if (status === 'authenticated') fetchCurrentUserData();
 	}, [router, status, username]);
 
 	const closeModal = () => {
@@ -91,180 +118,212 @@ export default function UsersPage() {
 		fetchCurrentUserData();
 	};
 
-	const handleDeleteEducation = async (educationId: number) => {
-		try {
-			const response = await fetch(`/api/users/${username}/education`, {
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(educationId),
-			});
+	const uniqueSkillCategories = useMemo(() => {
+		if (!currentUserData?.skills) return [];
+		const categories = currentUserData.skills.map((s) => s.categoryName);
+		return Array.from(new Set(categories));
+	}, [currentUserData]);
 
-			if (!response.ok) {
-				throw new Error('Operation Failed!');
-			}
-		} catch (error) {
-			console.log(error);
-		} finally {
-			fetchCurrentUserData();
-		}
+	const handleDelete = (type: DeleteState['type'], targetId: number) => {
+		setDeleteModalState({ isOpen: true, type, id: targetId });
 	};
 
-	const handleDeleteWorkExp = async (workExpId: number) => {
-		try {
-			const response = await fetch(`/api/users/${username}/work`, {
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(workExpId),
-			});
-
-			if (!response.ok) {
-				throw new Error('Operation Failed!');
-			}
-		} catch (error) {
-			console.log(error);
-		} finally {
-			fetchCurrentUserData();
-		}
+	const closeDeleteModal = () => {
+		setDeleteModalState({ isOpen: false, type: null, id: null });
 	};
 
-	const handleDeleteProject = async (projectId: number) => {
-		try {
-			const response = await fetch(`/api/users/${username}/project`, {
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(projectId),
-			});
+	const confirmDelete = async (username: string) => {
+		const { type, id } = deleteModalState;
+		if (!type || !id) return;
 
-			if (!response.ok) {
-				throw new Error('Operation Failed!');
+		try {
+			setLoading(true);
+			switch (type) {
+				case 'education':
+					await deleteEducationApi(username, id);
+					break;
+				case 'work':
+					await deleteWorkExpApi(username, id);
+					break;
+				case 'project':
+					await deleteProjectApi(username, id);
+					break;
+				case 'certificate':
+					await deleteCertificateApi(username, id);
+					break;
+				case 'skill':
+					await deleteSkillApi(username, id);
+					break;
+				case 'aboutUser':
+					await deleteAboutUserSectionApi(username, id);
+					break;
 			}
 		} catch (error) {
-			console.log(error);
+			console.log('Deletion Failed', error);
 		} finally {
+			closeDeleteModal();
 			fetchCurrentUserData();
-		}
-	};
-
-	const handleDeleteCertificate = async (certificateId: number) => {
-		try {
-			const response = await fetch(`/api/users/${username}/certificate`, {
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(certificateId),
-			});
-
-			if (!response.ok) {
-				throw new Error('Operation Failed!');
-			}
-		} catch (error) {
-			console.log(error);
-		} finally {
-			fetchCurrentUserData();
-		}
-	};
-
-	const handleDeleteSkill = async (skillId: number) => {
-		try {
-			const response = await fetch(`/api/users/${username}/skill`, {
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(skillId),
-			});
-
-			if (!response.ok) {
-				throw new Error('Operation Failed!');
-			}
-		} catch (error) {
-			console.log(error);
-		} finally {
-			fetchCurrentUserData();
-		}
-	};
-
-	const handleDeleteAboutUserSection = async (aboutUserId: number) => {
-		try {
-			const response = await fetch(`/api/users/${username}/aboutUser`, {
-				method: 'DELETE',
-				headers: {
-					'Content-Type': 'application/json',
-				},
-				body: JSON.stringify(aboutUserId),
-			});
-
-			if (!response.ok) {
-				throw new Error('Operation Failed!');
-			}
-		} catch (error) {
-			console.log(error);
-		} finally {
-			fetchCurrentUserData();
+			setLoading(false);
 		}
 	};
 
 	return (
 		<>
+			<DeleteConfirmModal
+				isOpen={deleteModalState.isOpen}
+				onClose={closeDeleteModal}
+				onConfirm={() => confirmDelete(username!)}
+				itemType={deleteModalState.type}
+			/>
 			{loading && (
 				<section className="section-container section-card">Loading current user...</section>
 			)}
 			{status === 'authenticated' && currentUserData && (
 				<>
 					<section className="section-container section-card">
-						<div className="flex justify-between items-center section-title">
-							<p>Welcome, {currentUserData.profile?.firstName}</p>
+						<div className="flex justify-between items-start">
+							<span className="section-title">Welcome, {currentUserData.profile?.firstName}</span>
 							<SignOutButton />
 						</div>
+
 						{currentUserData.profile && (
-							<>
-								<p>ID: {currentUserData.profile.userId}</p>
-								<p>Username: {currentUserData.profile.username}</p>
-								<p>Role: {session.user.role}</p>
-								<p>Email: {currentUserData.profile.email}</p>
-								<p>Job Title: {currentUserData.profile.jobTitle}</p>
-								<p>City: {currentUserData.profile.city}</p>
-								<p>Province: {currentUserData.profile.province}</p>
-								<p>Country: {currentUserData.profile.country}</p>
-								<p>LinkedIn Link: {currentUserData.profile.linkedInUrl}</p>
-								<p>GitHub Link: {currentUserData.profile.githubUrl}</p>
-								<p>Bio: {currentUserData.profile.bioLink}</p>
-								<p>Resume: {currentUserData.profile.resumeUrl}</p>
-								<button
-									onClick={() => {
-										if (!currentUserData.profile) return;
-										setActiveModal('profile');
-										const profileToEdit: Profile = {
-											id: currentUserData.profile.id,
-											userId: currentUserData.profile.userId,
-											username: currentUserData.profile.username,
-											firstName: currentUserData.profile.firstName,
-											lastName: currentUserData.profile.lastName ?? '',
-											email: currentUserData.profile.email ?? '',
-											jobTitle: currentUserData.profile.jobTitle ?? '',
-											bioLink: currentUserData.profile.bioLink ?? '',
-											imageLink: currentUserData.profile.imageLink ?? '',
-											city: currentUserData.profile.city ?? '',
-											province: currentUserData.profile.province ?? '',
-											country: currentUserData.profile.country ?? '',
-											resumeUrl: currentUserData.profile.resumeUrl ?? '',
-											linkedInUrl: currentUserData.profile.linkedInUrl ?? '',
-											githubUrl: currentUserData.profile.githubUrl ?? '',
-											aboutUser: currentUserData.profile.aboutUser ?? null,
-										};
-										setSelectedProfile(profileToEdit);
-									}}
-								>
-									Edit
-								</button>
-							</>
+							<div className="bg-neutral-50 rounded-lg p-6 border border-gray-200 shadow-sm">
+								<div className="border-b border-gray-200 pb-2 text-gray-500 mb-3 font-bold flex justify-between items-center">
+									<span>Profile Details</span>
+								</div>
+								<div className="grid grid-cols-1 gap-y-6 lg:grid-cols-2 gap-x-12">
+									<div className="space-y-2">
+										<div className="grid grid-cols-3 gap-2">
+											<span className="text-gray-500 col-span-1">Username:</span>
+											<span className="text-gray-800 col-span-2">
+												{currentUserData.profile.username}
+											</span>
+										</div>
+
+										<div className="grid grid-cols-3 gap-2">
+											<span className="text-gray-500 col-span-1">Email:</span>
+											<span className="text-gray-800 col-span-2 break-all">
+												{currentUserData.profile.email}
+											</span>
+										</div>
+
+										<div className="grid grid-cols-3 gap-2">
+											<span className="text-gray-500 col-span-1">Role:</span>
+											<span className="text-gray-800 col-span-2 capitalize">
+												{session?.user?.role}
+											</span>
+										</div>
+
+										<div className="grid grid-cols-3 gap-2">
+											<span className="text-gray-500 col-span-1">UserID:</span>
+											<span className="text-gray-800 col-span-2 break-all text-medium">
+												{currentUserData.profile.userId || ''}
+											</span>
+										</div>
+									</div>
+
+									<div className="space-y-2">
+										<div className="grid grid-cols-3 gap-2">
+											<span className="text-gray-500 col-span-1">Job Title:</span>
+											<span className="text-gray-800 col-span-2">
+												{currentUserData.profile.jobTitle || 'N/A'}
+											</span>
+										</div>
+
+										<div className="grid grid-cols-3 gap-2">
+											<span className="text-gray-500 col-span-1">Location:</span>
+											<span className="text-gray-800 col-span-2">
+												{`
+													${currentUserData.profile.city},
+													${currentUserData.profile.province},
+													${currentUserData.profile.country}`}
+											</span>
+										</div>
+
+										<div className="grid grid-cols-3 gap-2">
+											<span className="text-gray-500 col-span-1">Resume:</span>
+											<span className="col-span-2">
+												{currentUserData.profile.resumeUrl ? (
+													<a
+														href={currentUserData.profile.resumeUrl}
+														target="_blank"
+														className="font-medium hover:text-indigo-600 transition-colors"
+													>
+														<span className="italic">View Resume</span>
+													</a>
+												) : (
+													<span className="text-gray-800 col-span-2 italic">No Resume Added</span>
+												)}
+											</span>
+										</div>
+									</div>
+								</div>
+
+								<div className="mt-2">
+									<span className="text-gray-500 col-span-1">Bio:</span>
+									<p className="text-gray-800 col-span-2">
+										{currentUserData.profile.bioLink || ''}
+									</p>
+								</div>
+
+								<div className="mt-6 pt-4 border-t border-slate-200">
+									<p className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">
+										Social Links
+									</p>
+									<div className="flex gap-4">
+										{currentUserData.profile.linkedInUrl && (
+											<a
+												href={currentUserData.profile.linkedInUrl}
+												target="_blank"
+												className="flex items-center px-3 py-2 bg-white border border-gray-200 rounded-lg font-medium hover:text-blue-500  transition-colors"
+											>
+												<span>LinkedIn</span>
+											</a>
+										)}
+
+										{currentUserData.profile.githubUrl && (
+											<a
+												href={currentUserData.profile.githubUrl}
+												target="_blank"
+												className="flex items-center gap-2 px-3 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-800 hover:bg-gray-50 hover:border-gray-300 transition-colors"
+											>
+												<span>GitHub</span>
+											</a>
+										)}
+									</div>
+								</div>
+
+								<div className={BUTTON_WRAPPER_STYLE}>
+									<button
+										className={EDIT_BTN_STYLE}
+										onClick={() => {
+											if (!currentUserData.profile) return;
+											setActiveModal('profile');
+											const profileToEdit: Profile = {
+												id: currentUserData.profile.id,
+												userId: currentUserData.profile.userId,
+												username: currentUserData.profile.username,
+												firstName: currentUserData.profile.firstName,
+												lastName: currentUserData.profile.lastName ?? '',
+												email: currentUserData.profile.email ?? '',
+												jobTitle: currentUserData.profile.jobTitle ?? '',
+												bioLink: currentUserData.profile.bioLink ?? '',
+												imageLink: currentUserData.profile.imageLink ?? '',
+												city: currentUserData.profile.city ?? '',
+												province: currentUserData.profile.province ?? '',
+												country: currentUserData.profile.country ?? '',
+												resumeUrl: currentUserData.profile.resumeUrl ?? '',
+												linkedInUrl: currentUserData.profile.linkedInUrl ?? '',
+												githubUrl: currentUserData.profile.githubUrl ?? '',
+												aboutUser: currentUserData.profile.aboutUser ?? null,
+											};
+											setSelectedProfile(profileToEdit);
+										}}
+									>
+										Edit Profile
+									</button>
+								</div>
+							</div>
 						)}
 					</section>
 
@@ -278,29 +337,38 @@ export default function UsersPage() {
 					<section className="section-container section-card">
 						<div className="section-title flex justify-between items-center">
 							<div>About User</div>
-							<button onClick={() => setActiveModal('aboutUser')}>Add</button>
+							<button className={ADD_BTN_STYLE} onClick={() => setActiveModal('aboutUser')}>
+								Add
+							</button>
 						</div>
 						{currentUserData.profile && currentUserData.profile.aboutUser.length > 0 && (
 							<>
 								{currentUserData.profile.aboutUser.map((each) => (
-									<div key={each.id} className="border-b mb-5">
+									<div key={each.id} className="mb-5">
 										<p>{each.header}</p>
 										<p>{each.aboutContent}</p>
-										<button
-											onClick={() => {
-												setActiveModal('aboutUser');
-												const aboutUserSectionToEdit: AboutUser = {
-													id: each.id,
-													header: each.header,
-													aboutContent: each.aboutContent,
-												};
-												setSelectedAboutUserSection(aboutUserSectionToEdit);
-											}}
-										>
-											Edit
-										</button>
-										<button onClick={() => handleDeleteAboutUserSection(each.id)}>Delete</button>
-										<br />
+										<div className={BUTTON_WRAPPER_STYLE}>
+											<button
+												className={EDIT_BTN_STYLE}
+												onClick={() => {
+													setActiveModal('aboutUser');
+													const aboutUserSectionToEdit: AboutUser = {
+														id: each.id,
+														header: each.header,
+														aboutContent: each.aboutContent,
+													};
+													setSelectedAboutUserSection(aboutUserSectionToEdit);
+												}}
+											>
+												Edit
+											</button>
+											<button
+												className={DELETE_BTN_STYLE}
+												onClick={() => handleDelete('aboutUser', each.id)}
+											>
+												Delete
+											</button>
+										</div>
 									</div>
 								))}
 							</>
@@ -317,37 +385,46 @@ export default function UsersPage() {
 					<section className="section-container section-card">
 						<div className="section-title flex justify-between items-center">
 							<div>Education</div>
-							<button onClick={() => setActiveModal('education')}>Add</button>
+							<button className={ADD_BTN_STYLE} onClick={() => setActiveModal('education')}>
+								Add
+							</button>
 						</div>
 						{currentUserData.education && currentUserData.education.length > 0 ? (
 							<>
 								{currentUserData.education.map((edu) => (
-									<div key={edu.id} className="border-b mb-5">
-										<p>{edu.school}</p>
-										<p>{edu.degree}</p>
-										<p>{edu.fieldOfStudy}</p>
-										<p>{edu.startYear}</p>
-										<p>{edu.endYear === 0 ? edu.endYear : 'Present'}</p>
-										<button
-											onClick={() => {
-												setActiveModal('education');
-												const educationToEdit: Education = {
-													id: edu.id,
-													school: edu.school,
-													degree: edu.degree,
-													fieldOfStudy: edu.fieldOfStudy,
-													startYear: edu.startYear,
-													endYear: edu.endYear ?? null,
-													gpa: edu.gpa,
-													description: edu.description,
-												};
-												setSelectedEducation(educationToEdit);
-											}}
-										>
-											Edit
-										</button>
-										<button onClick={() => handleDeleteEducation(edu.id)}>Delete</button>
-										<br />
+									<div key={edu.id} className="mb-5">
+										<EducationAccordion education={edu} />
+										<div className={BUTTON_WRAPPER_STYLE}>
+											<button
+												className={EDIT_BTN_STYLE}
+												onClick={() => {
+													setActiveModal('education');
+													const educationToEdit: Education = {
+														id: edu.id,
+														school: edu.school,
+														degree: edu.degree,
+														fieldOfStudy: edu.fieldOfStudy,
+														schoolLogoUrl: edu.schoolLogoUrl ?? '',
+														city: edu.city ?? '',
+														province: edu.province ?? '',
+														country: edu.country ?? '',
+														startYear: edu.startYear,
+														endYear: edu.endYear ?? null,
+														gpa: edu.gpa,
+														description: edu.description ?? '',
+													};
+													setSelectedEducation(educationToEdit);
+												}}
+											>
+												Edit
+											</button>
+											<button
+												className={DELETE_BTN_STYLE}
+												onClick={() => handleDelete('education', edu.id)}
+											>
+												Delete
+											</button>
+										</div>
 									</div>
 								))}
 							</>
@@ -366,34 +443,46 @@ export default function UsersPage() {
 					<section className="section-container section-card">
 						<div className="section-title flex justify-between items-center">
 							<div>Work</div>
-							<button onClick={() => setActiveModal('workExperience')}>Add</button>
+							<button className={ADD_BTN_STYLE} onClick={() => setActiveModal('workExperience')}>
+								Add
+							</button>
 						</div>
 						{currentUserData.workExperience && currentUserData.workExperience.length > 0 ? (
 							<>
 								{currentUserData.workExperience.map((work) => (
-									<div key={work.id} className="border-b mb-5">
-										<p>{work.jobTitle}</p>
-										<p>{work.company}</p>
-										<p>{work.startYear}</p>
-										<p>{work.endYear === 0 ? 'Present' : work.endYear}</p>
-										<button
-											onClick={() => {
-												setActiveModal('workExperience');
-												const workExpToEdit: WorkExperience = {
-													id: work.id,
-													jobTitle: work.jobTitle,
-													company: work.company,
-													startYear: work.startYear,
-													endYear: work.endYear ?? null,
-													description: work.description ?? null,
-												};
-												setSelectedWorkExp(workExpToEdit);
-											}}
-										>
-											Edit
-										</button>
-										<button onClick={() => handleDeleteWorkExp(work.id)}>Delete</button>
-										<br />
+									<div key={work.id} className="mb-5">
+										<WorkAccordion work={work} />
+										<div className={BUTTON_WRAPPER_STYLE}>
+											<button
+												className={EDIT_BTN_STYLE}
+												onClick={() => {
+													setActiveModal('workExperience');
+													const workExpToEdit: WorkExperience = {
+														id: work.id,
+														jobTitle: work.jobTitle,
+														company: work.company,
+														companyLogoUrl: work.companyLogoUrl,
+														city: work.city,
+														province: work.province,
+														country: work.country,
+														locationType: work.locationType,
+														employmentType: work.employmentType,
+														startYear: work.startYear,
+														endYear: work.endYear ?? null,
+														description: work.description ?? null,
+													};
+													setSelectedWorkExp(workExpToEdit);
+												}}
+											>
+												Edit
+											</button>
+											<button
+												className={DELETE_BTN_STYLE}
+												onClick={() => handleDelete('work', work.id)}
+											>
+												Delete
+											</button>
+										</div>
 									</div>
 								))}
 							</>
@@ -412,54 +501,42 @@ export default function UsersPage() {
 					<section className="section-container section-card">
 						<div className="section-title flex justify-between items-center">
 							<div>Project</div>
-							<button onClick={() => setActiveModal('project')}>Add</button>
+							<button className={ADD_BTN_STYLE} onClick={() => setActiveModal('project')}>
+								Add
+							</button>
 						</div>
 						{currentUserData.project && currentUserData.project.length > 0 ? (
 							<>
 								{currentUserData.project.map((each) => (
-									<div key={each.id} className="border-b mb-5">
-										<p>{each.title}</p>
-										<p>{each.repo_link}</p>
-										<p>{each.preview_image_link}</p>
-										<p>
-											{each.tech_stack.length > 0 ? (
-												<span className="flex items-center gap-3">
-													{each.tech_stack.map((each, index: number) => (
-														<Image
-															key={index}
-															src={SKILLS_MAP[each as keyof typeof SKILLS_MAP]}
-															alt={`${each} icon`}
-															height={32}
-															className="size-6 md:size-8"
-														/>
-													))}
-												</span>
-											) : (
-												''
-											)}
-										</p>
-										<p>{each.description}</p>
-										<p>{each.projectYear === 0 ? 'Not Defined' : each.projectYear}</p>
-										<button
-											onClick={() => {
-												setActiveModal('project');
-												const projectToEdit: Project = {
-													id: each.id,
-													title: each.title,
-													repo_link: each.repo_link ?? null,
-													description: each.description ?? null,
-													project_link: each.project_link ?? null,
-													preview_image_link: each.preview_image_link ?? null,
-													tech_stack: each.tech_stack,
-													projectYear: each.projectYear,
-												};
-												setSelectedProject(projectToEdit);
-											}}
-										>
-											Edit
-										</button>
-										<button onClick={() => handleDeleteProject(each.id)}>Delete</button>
-										<br />
+									<div key={each.id} className="mb-5">
+										<ProjectAccordion project={each} />
+										<div className={BUTTON_WRAPPER_STYLE}>
+											<button
+												className={EDIT_BTN_STYLE}
+												onClick={() => {
+													setActiveModal('project');
+													const projectToEdit: Project = {
+														id: each.id,
+														title: each.title,
+														repo_link: each.repo_link ?? null,
+														description: each.description ?? null,
+														project_link: each.project_link ?? null,
+														preview_image_link: each.preview_image_link ?? null,
+														tech_stack: each.tech_stack,
+														projectYear: each.projectYear,
+													};
+													setSelectedProject(projectToEdit);
+												}}
+											>
+												Edit
+											</button>
+											<button
+												className={DELETE_BTN_STYLE}
+												onClick={() => handleDelete('project', each.id)}
+											>
+												Delete
+											</button>
+										</div>
 									</div>
 								))}
 							</>
@@ -478,49 +555,42 @@ export default function UsersPage() {
 					<section className="section-container section-card">
 						<div className="section-title flex justify-between items-center">
 							<div>Licenses & Certifications</div>
-							<button onClick={() => setActiveModal('certificate')}>Add</button>
+							<button className={ADD_BTN_STYLE} onClick={() => setActiveModal('certificate')}>
+								Add
+							</button>
 						</div>
 						{currentUserData.certificate && currentUserData.certificate.length > 0 ? (
 							<>
 								{currentUserData.certificate.map((each) => (
-									<div key={each.id} className="border-b mb-5">
-										<p>{each.name}</p>
-										<p>{each.issuingOrg}</p>
-										<p>{`Issued ${new Date(each.dateIssued).getMonth()} ${new Date(
-											each.dateIssued
-										).getFullYear()}`}</p>
-										<p>
-											{each.dateExpired
-												? `Expire in ${each.dateExpired.getMonth()} ${each.dateExpired.getFullYear()}`
-												: 'No expiration date'}
-										</p>
-										<p>
-											Credential ID:{' '}
-											{each.credentialId ? each.credentialId : 'No Credential ID found'}
-										</p>
-										<p>
-											<a target="_blank" href={each.credentialUrl ? each.credentialUrl : '/'}>
-												Show credential
-											</a>
-										</p>
-										<button
-											onClick={() => {
-												setActiveModal('certificate');
-												const certificateToEdit: Certificate = {
-													id: each.id,
-													name: each.name,
-													issuingOrg: each.issuingOrg,
-													dateIssued: each.dateIssued,
-													dateExpired: each.dateExpired ?? null,
-													credentialId: each.credentialId ?? null,
-													credentialUrl: each.credentialUrl ?? null,
-												};
-												setSelectedCertificate(certificateToEdit);
-											}}
-										>
-											Edit
-										</button>
-										<button onClick={() => handleDeleteCertificate(each.id)}>Delete</button>
+									<div key={each.id} className="mb-5">
+										<CertificateAccordion cert={each} />
+										<div className={BUTTON_WRAPPER_STYLE}>
+											<button
+												className={EDIT_BTN_STYLE}
+												onClick={() => {
+													setActiveModal('certificate');
+													const certificateToEdit: Certificate = {
+														id: each.id,
+														name: each.name,
+														issuingOrg: each.issuingOrg,
+														companyLogoUrl: each.companyLogoUrl,
+														dateIssued: each.dateIssued,
+														dateExpired: each.dateExpired ?? null,
+														credentialId: each.credentialId ?? null,
+														credentialUrl: each.credentialUrl ?? null,
+													};
+													setSelectedCertificate(certificateToEdit);
+												}}
+											>
+												Edit
+											</button>
+											<button
+												className={DELETE_BTN_STYLE}
+												onClick={() => handleDelete('certificate', each.id)}
+											>
+												Delete
+											</button>
+										</div>
 									</div>
 								))}
 							</>
@@ -539,44 +609,51 @@ export default function UsersPage() {
 					<section className="section-container section-card">
 						<div className="section-title flex justify-between items-center">
 							<div>Skills</div>
-							<button onClick={() => setActiveModal('skills')}>Add</button>
+							<button className={ADD_BTN_STYLE} onClick={() => setActiveModal('skills')}>
+								Add
+							</button>
 						</div>
 						{currentUserData.skills && currentUserData.skills.length > 0 ? (
 							<>
-								{currentUserData.skills.map((each) => (
-									<div key={each.id} className="border-b mb-5">
-										<p>{each.categoryName}</p>
-										<p>
-											{each.skills.length > 0 ? (
-												<span className="flex items-center gap-3">
-													{each.skills.map((each, index: number) => (
-														<Image
-															key={index}
-															src={SKILLS_MAP[each as keyof typeof SKILLS_MAP]}
-															alt={`${each} icon`}
-															height={32}
-															className="size-6 md:size-8"
-														/>
-													))}
-												</span>
-											) : (
-												''
-											)}
+								{uniqueSkillCategories.map((eachCategory) => (
+									<div
+										key={eachCategory}
+										className="mb-5 rounded-lg border py-2 px-4 border-gray-200 bg-neutral-50 shadow-sm"
+									>
+										<p className="text-lg font-light tracking-wider text-gray-700 uppercase mb-3">
+											{eachCategory}
 										</p>
-										<button
-											onClick={() => {
-												setActiveModal('skills');
-												const skillToEdit: Skill = {
-													id: each.id,
-													categoryName: each.categoryName,
-													skills: each.skills,
-												};
-												setSelectedSkill(skillToEdit);
-											}}
-										>
-											Edit
-										</button>
-										<button onClick={() => handleDeleteSkill(each.id)}>Delete</button>
+										{currentUserData.skills
+											.filter((skill) => skill.categoryName === eachCategory)
+											.map((each, index) => (
+												<div key={index} className="mb-4">
+													<SkillsAccordion skill={each} />
+													<div className={BUTTON_WRAPPER_STYLE}>
+														<button
+															className={EDIT_BTN_STYLE}
+															onClick={() => {
+																setActiveModal('skills');
+																const skillToEdit: Skill = {
+																	id: each.id,
+																	categoryName: each.categoryName,
+																	subCategoryName: each.subCategoryName,
+																	skills: each.skills,
+																	description: each.description,
+																};
+																setSelectedSkill(skillToEdit);
+															}}
+														>
+															Edit
+														</button>
+														<button
+															className={DELETE_BTN_STYLE}
+															onClick={() => handleDelete('skill', each.id)}
+														>
+															Delete
+														</button>
+													</div>
+												</div>
+											))}
 									</div>
 								))}
 							</>
