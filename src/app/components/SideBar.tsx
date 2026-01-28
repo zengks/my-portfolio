@@ -10,6 +10,7 @@ import resumeIcon from 'src/assets/icons/resume.svg';
 import contactMeIcon from 'src/assets/icons/contactMe.svg';
 import jobIcon from 'src/assets/icons/job.svg';
 import userIcon from 'src/assets/icons/user.svg';
+import NewTabIcon from '@/assets/icons/newTab.svg';
 
 import { getUserProfile } from '@/controllers/userProfileController';
 
@@ -99,9 +100,14 @@ export default async function SideBar() {
 					/>
 
 					<p>
-						{profileData?.resumeUrl ? (
-							<a href={profileData.resumeUrl} target="_blank" rel="noopener noreferrer">
-								View Resume
+						{profileData?.resumeUrl || profileData?.resumeUrl?.includes('.pdf') ? (
+							<a
+								href={profileData.resumeUrl}
+								className="flex items-center hover:underline"
+								target="_blank"
+								rel="noopener noreferrer"
+							>
+								View Resume <Image src={NewTabIcon} alt="New Tab Icon" width={21} />
 							</a>
 						) : (
 							<span>No Resume Available</span>

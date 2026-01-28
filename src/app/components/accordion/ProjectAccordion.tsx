@@ -4,6 +4,8 @@ import { useState } from 'react';
 import { Project } from 'types/projectType';
 import Image from 'next/image';
 import { SKILLS_MAP } from '@/lib/constant';
+import Markdown from 'react-markdown';
+import NewTabIcon from '@/assets/icons/newTab.svg';
 
 export default function ProjectAccordion({ project }: { project: Project }) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -66,13 +68,27 @@ export default function ProjectAccordion({ project }: { project: Project }) {
 						<h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
 							Description
 						</h4>
-						{project.description}
+						<div className="prose prose-slate list-disc max-w-none">
+							<Markdown
+								components={{
+									ul: ({ ...props }) => <ul className="list-disc pl-5 space-y-1" {...props} />,
+									ol: ({ ...props }) => <ol className="list-decimal pl-5 space-y-1" {...props} />,
+									li: ({ ...props }) => <li className="pl-1" {...props} />,
+								}}
+							>
+								{project.description}
+							</Markdown>
+						</div>
 					</div>
 
 					{(project.repo_link || project.project_link) && (
 						<div className="mt-4 flex gap-3">
-							<a href={project.repo_link || '/'} target="_blank">
-								View Repo
+							<a
+								href={project.repo_link || '/'}
+								target="_blank"
+								className="flex items-center hover:underline italic"
+							>
+								View Repo <Image src={NewTabIcon} alt="New Tab Icon" width={20} />
 							</a>
 						</div>
 					)}

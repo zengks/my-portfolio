@@ -2,6 +2,7 @@
 import { useEffect, useMemo, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
+import Image from 'next/image';
 
 import { SignOutButton } from '@/app/components/UI/AuthButtons';
 import type { User } from 'types/userType';
@@ -37,6 +38,8 @@ import {
 	deleteSkillApi,
 	deleteAboutUserSectionApi,
 } from '@/lib/deleteApi';
+
+import NewTabIcon from '@/assets/icons/newTab.svg';
 
 const ADD_BTN_STYLE =
 	'px-4 py-2 text-sm font-medium text-white bg-indigo-600 rounded-md hover:bg-indigo-700 transition-colors shadow-sm';
@@ -249,7 +252,9 @@ export default function UsersPage() {
 														target="_blank"
 														className="font-medium hover:text-indigo-600 transition-colors"
 													>
-														<span className="italic">View Resume</span>
+														<span className="italic flex items-center hover:underline">
+															View Resume <Image src={NewTabIcon} alt="New Tab Icon" width={21} />
+														</span>
 													</a>
 												) : (
 													<span className="text-gray-800 col-span-2 italic">No Resume Added</span>

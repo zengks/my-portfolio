@@ -79,7 +79,8 @@ export default function NavBar() {
 						<Image src={sunIcon} alt="Light Mode Icon" width={25} height={25} />
 					</button>
 
-					<button
+					{/* light/dark mode to be implemented in the future */}
+					{/* <button
 						onClick={() => setTheme('dark')}
 						className={`
               absolute p-2 rounded-full
@@ -90,7 +91,7 @@ export default function NavBar() {
             `}
 					>
 						<Image src={moonIcon} alt="Dark Mode Icon" width={25} height={25} />
-					</button>
+					</button> */}
 				</div>
 			</div>
 		</div>
