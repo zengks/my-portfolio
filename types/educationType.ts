@@ -7,7 +7,9 @@ export interface Education {
 	city: string | null;
 	province: string | null;
 	country: string | null;
+	startMonth: number;
 	startYear: number;
+	endMonth: number | null;
 	endYear: number | null;
 	gpa: number | null;
 	description: string | null;

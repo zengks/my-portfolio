@@ -77,7 +77,9 @@ export default function EducationModal({
 			degree: formData.get('degree'),
 			fieldOfStudy: formData.get('fieldOfStudy'),
 			schoolLogoUrl: (selectedEduInfo && selectedEduInfo.logo_url) ?? '',
+			startMonth: Number(formData.get('startMonth')),
 			startYear: Number(formData.get('startYear')),
+			endMonth: Number(formData.get('endMonth')),
 			endYear: Number(formData.get('endYear')),
 			description: formData.get('description'),
 		};
@@ -169,7 +171,6 @@ export default function EducationModal({
 											setSelectedEduInfo(null);
 										}
 									}}
-									required
 								/>
 								<button type="button" onClick={handleIconSearch} className="modal-primary-btn ms-3">
 									Search
@@ -230,6 +231,19 @@ export default function EducationModal({
 
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 							<div>
+								<label htmlFor="startMonth" className="modal-label-text">
+									Start Month <span className="text-red-500">*</span>
+								</label>
+								<input
+									type="number"
+									id="startMonth"
+									name="startMonth"
+									className="modal-input"
+									defaultValue={selectedEducation?.startMonth}
+									required
+								/>
+							</div>
+							<div>
 								<label htmlFor="startYear" className="modal-label-text">
 									Start Year <span className="text-red-500">*</span>
 								</label>
@@ -240,6 +254,18 @@ export default function EducationModal({
 									className="modal-input"
 									defaultValue={selectedEducation?.startYear}
 									required
+								/>
+							</div>
+							<div>
+								<label htmlFor="endMonth" className="modal-label-text">
+									End Month
+								</label>
+								<input
+									type="number"
+									id="endMonth"
+									name="endMonth"
+									className="modal-input"
+									defaultValue={selectedEducation?.endMonth ?? ''}
 								/>
 							</div>
 							<div>

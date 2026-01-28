@@ -3,6 +3,7 @@ import { useEffect, useMemo, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
+import Markdown from 'react-markdown';
 
 import { SignOutButton } from '@/app/components/UI/AuthButtons';
 import type { User } from 'types/userType';
@@ -264,12 +265,13 @@ export default function UsersPage() {
 									</div>
 								</div>
 
-								<div className="mt-2">
+								{/* Bio section is not needed at this time */}
+								{/* <div className="mt-2">
 									<span className="text-gray-500 col-span-1">Bio:</span>
 									<p className="text-gray-800 col-span-2">
 										{currentUserData.profile.bioLink || ''}
 									</p>
-								</div>
+								</div> */}
 
 								<div className="mt-6 pt-4 border-t border-slate-200">
 									<p className="text-sm font-bold text-gray-400 uppercase tracking-wider mb-3">
@@ -348,34 +350,51 @@ export default function UsersPage() {
 						</div>
 						{currentUserData.profile && currentUserData.profile.aboutUser.length > 0 && (
 							<>
-								{currentUserData.profile.aboutUser.map((each) => (
-									<div key={each.id} className="mb-5">
-										<p>{each.header}</p>
-										<p>{each.aboutContent}</p>
-										<div className={BUTTON_WRAPPER_STYLE}>
-											<button
-												className={EDIT_BTN_STYLE}
-												onClick={() => {
-													setActiveModal('aboutUser');
-													const aboutUserSectionToEdit: AboutUser = {
-														id: each.id,
-														header: each.header,
-														aboutContent: each.aboutContent,
-													};
-													setSelectedAboutUserSection(aboutUserSectionToEdit);
-												}}
-											>
-												Edit
-											</button>
-											<button
-												className={DELETE_BTN_STYLE}
-												onClick={() => handleDelete('aboutUser', each.id)}
-											>
-												Delete
-											</button>
+								{currentUserData.profile.aboutUser
+									.slice()
+									.sort((a, b) => a.id - b.id)
+									.map((each) => (
+										<div key={each.id} className="mb-5">
+											<p className="section-title">{each.header}</p>
+											<div className="prose prose-slate list-disc max-w-none">
+												<Markdown
+													components={{
+														ul: ({ ...props }) => (
+															<ul className="list-disc pl-5 space-y-1" {...props} />
+														),
+														ol: ({ ...props }) => (
+															<ol className="list-decimal pl-5 space-y-1" {...props} />
+														),
+														li: ({ ...props }) => <li className="pl-1" {...props} />,
+													}}
+												>
+													{each.aboutContent}
+												</Markdown>
+											</div>
+											<div className={BUTTON_WRAPPER_STYLE}>
+												<button
+													className={EDIT_BTN_STYLE}
+													onClick={() => {
+														setActiveModal('aboutUser');
+														const aboutUserSectionToEdit: AboutUser = {
+															id: each.id,
+															header: each.header,
+															aboutContent: each.aboutContent,
+														};
+														setSelectedAboutUserSection(aboutUserSectionToEdit);
+													}}
+												>
+													Edit
+												</button>
+												<button
+													className={DELETE_BTN_STYLE}
+													onClick={() => handleDelete('aboutUser', each.id)}
+												>
+													Delete
+												</button>
+											</div>
 										</div>
-									</div>
-								))}
+									))}
 							</>
 						)}
 					</section>
@@ -413,7 +432,9 @@ export default function UsersPage() {
 														city: edu.city ?? '',
 														province: edu.province ?? '',
 														country: edu.country ?? '',
+														startMonth: edu.startMonth,
 														startYear: edu.startYear,
+														endMonth: edu.endMonth ?? null,
 														endYear: edu.endYear ?? null,
 														gpa: edu.gpa,
 														description: edu.description ?? '',
@@ -472,7 +493,9 @@ export default function UsersPage() {
 														country: work.country,
 														locationType: work.locationType,
 														employmentType: work.employmentType,
+														startMonth: work.startMonth,
 														startYear: work.startYear,
+														endMonth: work.endMonth ?? null,
 														endYear: work.endYear ?? null,
 														description: work.description ?? null,
 													};

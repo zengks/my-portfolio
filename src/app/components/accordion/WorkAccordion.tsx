@@ -4,6 +4,7 @@ import Image from 'next/image';
 import { useState } from 'react';
 import type { WorkExperience } from 'types/workExpType';
 import DefaultCompanyIcon from '@/assets/icons/defaultCompany.svg';
+import Markdown from 'react-markdown';
 
 export default function WorkAccordion({ work }: { work: WorkExperience }) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -65,7 +66,17 @@ export default function WorkAccordion({ work }: { work: WorkExperience }) {
 						<h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
 							Description
 						</h4>
-						{work.description}
+						<div className="prose prose-slate list-disc max-w-none">
+							<Markdown
+								components={{
+									ul: ({ ...props }) => <ul className="list-disc pl-5 space-y-1" {...props} />,
+									ol: ({ ...props }) => <ol className="list-decimal pl-5 space-y-1" {...props} />,
+									li: ({ ...props }) => <li className="pl-1" {...props} />,
+								}}
+							>
+								{work.description}
+							</Markdown>
+						</div>
 					</div>
 				</div>
 			</div>

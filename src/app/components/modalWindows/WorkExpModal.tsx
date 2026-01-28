@@ -69,15 +69,19 @@ export default function WorkExpModal({
 
 		const isEditing = !!selectedWorkExp;
 		const method = isEditing ? 'PUT' : 'POST';
-
+		console.log(method);
 		const payload = {
 			id: selectedWorkExp?.id,
 			jobTitle: formData.get('jobTitle'),
 			company: (selectedCompanyInfo && selectedCompanyInfo.name) ?? formData.get('company'),
 			companyLogoUrl: (selectedCompanyInfo && selectedCompanyInfo.logo_url) ?? '',
+			startMonth: Number(formData.get('startMonth')),
 			startYear: Number(formData.get('startYear')),
+			endMonth: Number(formData.get('endMonth')),
 			endYear: Number(formData.get('endYear')),
 		};
+
+		console.log(payload);
 
 		try {
 			const response = await fetch(`/api/users/${username}/work`, {
@@ -145,7 +149,7 @@ export default function WorkExpModal({
 
 						<div>
 							<label htmlFor="company" className="flex items-center flex-1 mb-1">
-								Company <span className="text-red-500">*</span>
+								Company
 								<span>
 									{selectedCompanyInfo ? (
 										<Image
@@ -168,8 +172,8 @@ export default function WorkExpModal({
 							<div className="flex items-center">
 								<input
 									type="text"
-									id="companyLogoUrl"
-									name="companyLogoUrl"
+									id="company"
+									name="company"
 									className="modal-input"
 									placeholder="Enter company name..."
 									value={query}
@@ -179,7 +183,6 @@ export default function WorkExpModal({
 											setSelectedCompanyInfo(null);
 										}
 									}}
-									required
 								/>
 								<button type="button" onClick={handleIconSearch} className="modal-primary-btn ms-3">
 									Search
@@ -213,6 +216,19 @@ export default function WorkExpModal({
 
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 							<div>
+								<label htmlFor="startMonth" className="modal-label-text">
+									Start Month <span className="text-red-500">*</span>
+								</label>
+								<input
+									type="number"
+									id="startMonth"
+									name="startMonth"
+									className="modal-input"
+									defaultValue={selectedWorkExp?.startMonth}
+									required
+								/>
+							</div>
+							<div>
 								<label htmlFor="startYear" className="modal-label-text">
 									Start Year <span className="text-red-500">*</span>
 								</label>
@@ -223,6 +239,18 @@ export default function WorkExpModal({
 									className="modal-input"
 									defaultValue={selectedWorkExp?.startYear}
 									required
+								/>
+							</div>
+							<div>
+								<label htmlFor="endMonth" className="modal-label-text">
+									End Month:{' '}
+								</label>
+								<input
+									type="number"
+									id="endMonth"
+									name="endMonth"
+									className="modal-input"
+									defaultValue={selectedWorkExp?.endMonth ?? ''}
 								/>
 							</div>
 							<div>

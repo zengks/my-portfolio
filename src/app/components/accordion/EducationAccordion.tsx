@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import { useState } from 'react';
 import type { Education } from 'types/educationType';
+import Markdown from 'react-markdown';
 import DefaultSchoolIcon from '@/assets/icons/defaultSchool.svg';
 
 export default function EducationAccordion({ education }: { education: Education }) {
@@ -65,7 +66,17 @@ export default function EducationAccordion({ education }: { education: Education
 						<h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
 							Description
 						</h4>
-						{education.description}
+						<div className="prose prose-slate list-disc max-w-none">
+							<Markdown
+								components={{
+									ul: ({ ...props }) => <ul className="list-disc pl-5 space-y-1" {...props} />,
+									ol: ({ ...props }) => <ol className="list-decimal pl-5 space-y-1" {...props} />,
+									li: ({ ...props }) => <li className="pl-1" {...props} />,
+								}}
+							>
+								{education.description}
+							</Markdown>
+						</div>
 					</div>
 				</div>
 			</div>

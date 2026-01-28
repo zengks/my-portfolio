@@ -5,6 +5,7 @@ import Image from 'next/image';
 import type { Skill } from 'types/skillType';
 import { SKILLS_MAP } from '@/lib/constant';
 import DefaultProgrammingIcon from '@/assets/icons/defaultProgramming.svg';
+import Markdown from 'react-markdown';
 
 export default function SkillsAccordion({ skill }: { skill: Skill }) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -78,7 +79,17 @@ export default function SkillsAccordion({ skill }: { skill: Skill }) {
 						<h4 className="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">
 							Description
 						</h4>
-						{skill.description}
+						<div className="prose prose-slate list-disc max-w-none">
+							<Markdown
+								components={{
+									ul: ({ ...props }) => <ul className="list-disc pl-5 space-y-1" {...props} />,
+									ol: ({ ...props }) => <ol className="list-decimal pl-5 space-y-1" {...props} />,
+									li: ({ ...props }) => <li className="pl-1" {...props} />,
+								}}
+							>
+								{skill.description}
+							</Markdown>
+						</div>
 					</div>
 				</div>
 			</div>
