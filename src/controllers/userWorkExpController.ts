@@ -4,6 +4,7 @@ import { WorkExperience } from 'types/workExpType';
 export async function getUserWorkExp(username: string) {
 	return await prisma.workExperience.findMany({
 		where: { username },
+		orderBy: [{ startYear: 'desc' }, { endYear: 'desc' }],
 	});
 }
 

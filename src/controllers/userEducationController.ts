@@ -4,7 +4,7 @@ import { Education } from 'types/educationType';
 export async function getUserEducation(username: string) {
 	return await prisma.education.findMany({
 		where: { username },
-		orderBy: { startYear: 'desc' }, // Most recent first
+		orderBy: [{ endYear: 'desc' }, { startYear: 'desc' }],
 	});
 }
 

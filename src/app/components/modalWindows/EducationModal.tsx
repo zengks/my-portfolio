@@ -87,8 +87,10 @@ export default function EducationModal({
 
 		if (isManualEntry) {
 			finalSchoolName = manualSchoolName;
-		} else {
-			finalSchoolName = query;
+		} else if (selectedEduInfo) {
+			finalSchoolName = selectedEduInfo.name;
+		} else if (selectedEducation) {
+			finalSchoolName = selectedEducation.school || '';
 		}
 
 		const payload = {
@@ -141,7 +143,7 @@ export default function EducationModal({
 		if (manualSchoolName !== '') {
 			setSelectedEduInfo({
 				name: manualSchoolName,
-				logo_url: DefaultSchoolIcon,
+				logo_url: DefaultSchoolIcon.src,
 			});
 		}
 	};
@@ -265,33 +267,34 @@ export default function EducationModal({
 									Confirm
 								</button>
 							</div>
+
+							{query !== '' && results.length > 0 && (
+								<div className={!isSearchBrand ? 'sr-only' : 'icon-result-container'}>
+									<span>Results</span>
+									{results.map((each: EDUCATION_INFO, index: number) => (
+										<div
+											key={index}
+											className="icon-result-row cursor-pointer"
+											onClick={() => {
+												setSelectedEduInfo(each);
+												setQuery(each.name);
+												setIsSearchBrand(false);
+												setResults([]);
+											}}
+										>
+											<Image
+												className="rounded-xl"
+												src={each.logo_url}
+												alt={each.name}
+												width={50}
+												height={50}
+											/>
+											{each.name}
+										</div>
+									))}
+								</div>
+							)}
 						</div>
-						{query !== '' && results.length > 0 && (
-							<div className={!isSearchBrand ? 'sr-only' : 'icon-result-container'}>
-								<span>Results</span>
-								{results.map((each: EDUCATION_INFO, index: number) => (
-									<div
-										key={index}
-										className="icon-result-row cursor-pointer"
-										onClick={() => {
-											setSelectedEduInfo(each);
-											setQuery(each.name);
-											setIsSearchBrand(false);
-											setResults([]);
-										}}
-									>
-										<Image
-											className="rounded-xl"
-											src={each.logo_url}
-											alt={each.name}
-											width={50}
-											height={50}
-										/>
-										{each.name}
-									</div>
-								))}
-							</div>
-						)}
 
 						<div>
 							<label htmlFor="degree" className="modal-label-text">

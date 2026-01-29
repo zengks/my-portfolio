@@ -4,6 +4,8 @@ import { useEffect, useState, type FormEvent } from 'react';
 import type { WorkExperience } from 'types/workExpType';
 import Image from 'next/image';
 import DefaultCompanyIcon from '@/assets/icons/defaultCompany.svg';
+import { handleKeyDown } from '@/lib/utility';
+
 type COMPANY_INFO = {
 	name: string;
 	logo_url: string;
@@ -24,6 +26,8 @@ export default function WorkExpModal({
 	const [selectedCompanyInfo, setSelectedCompanyInfo] = useState<COMPANY_INFO | null>(null);
 	const [results, setResults] = useState([]);
 	const [isSearchBrand, setIsSearchBrand] = useState(false);
+	const [isManualEntry, setIsManualEntry] = useState(false);
+	const [manualCompanyName, setManualCompanyName] = useState('');
 
 	useEffect(() => {
 		const handleEscape = (e: KeyboardEvent) => {
@@ -69,19 +73,42 @@ export default function WorkExpModal({
 
 		const isEditing = !!selectedWorkExp;
 		const method = isEditing ? 'PUT' : 'POST';
-		console.log(method);
+
+		let finalLogoUrl = '';
+		let finalCompanyName = '';
+
+		if (isManualEntry) {
+			finalLogoUrl = DefaultCompanyIcon.src;
+		} else if (selectedCompanyInfo) {
+			finalLogoUrl = selectedCompanyInfo.logo_url;
+		} else if (selectedWorkExp) {
+			finalLogoUrl = selectedWorkExp.companyLogoUrl || '';
+		}
+
+		if (isManualEntry) {
+			finalCompanyName = manualCompanyName;
+		} else if (selectedCompanyInfo) {
+			finalCompanyName = selectedCompanyInfo.name;
+		} else if (selectedWorkExp) {
+			finalCompanyName = selectedWorkExp.company || '';
+		}
+
 		const payload = {
 			id: selectedWorkExp?.id,
 			jobTitle: formData.get('jobTitle'),
-			company: (selectedCompanyInfo && selectedCompanyInfo.name) ?? formData.get('company'),
-			companyLogoUrl: (selectedCompanyInfo && selectedCompanyInfo.logo_url) ?? '',
+			company: finalCompanyName,
+			companyLogoUrl: finalLogoUrl,
 			startMonth: Number(formData.get('startMonth')),
 			startYear: Number(formData.get('startYear')),
 			endMonth: Number(formData.get('endMonth')),
 			endYear: Number(formData.get('endYear')),
+			city: formData.get('city'),
+			province: formData.get('province'),
+			country: formData.get('country'),
+			locationType: formData.get('locationType'),
+			employmentType: formData.get('employmentType'),
+			description: formData.get('description'),
 		};
-
-		console.log(payload);
 
 		try {
 			const response = await fetch(`/api/users/${username}/work`, {
@@ -96,6 +123,12 @@ export default function WorkExpModal({
 				throw new Error('Operation Failed!');
 			}
 
+			setSelectedCompanyInfo(null);
+			setQuery('');
+			setManualCompanyName('');
+			setIsManualEntry(false);
+			setIsSearchBrand(false);
+			setResults([]);
 			closeModal();
 		} catch (error) {
 			console.log(error);
@@ -107,6 +140,15 @@ export default function WorkExpModal({
 			const data = await getBrandInfo(query);
 			setResults(data);
 			setIsSearchBrand(true);
+		}
+	};
+
+	const handleManualConfirm = () => {
+		if (manualCompanyName !== '') {
+			setSelectedCompanyInfo({
+				name: manualCompanyName,
+				logo_url: DefaultCompanyIcon.src,
+			});
 		}
 	};
 
@@ -131,7 +173,11 @@ export default function WorkExpModal({
 						</svg>
 					</button>
 				</div>
-				<form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+				<form
+					onSubmit={handleSubmit}
+					onKeyDown={handleKeyDown}
+					className="flex flex-col flex-1 overflow-hidden"
+				>
 					<div className="p-6 overflow-y-auto space-y-6">
 						<div>
 							<label htmlFor="jobTitle" className="modal-label-text">
@@ -148,28 +194,50 @@ export default function WorkExpModal({
 						</div>
 
 						<div>
-							<label htmlFor="company" className="flex items-center flex-1 mb-1">
-								Company
-								<span>
-									{selectedCompanyInfo ? (
-										<Image
-											src={selectedCompanyInfo.logo_url}
-											alt={selectedCompanyInfo.name}
-											width={25}
-											height={25}
-										/>
-									) : (
-										<Image
-											src={DefaultCompanyIcon}
-											alt={selectedWorkExp?.company ?? 'company icon placeholder'}
-											width={25}
-											height={25}
-										/>
-									)}
-								</span>
-							</label>
+							<div className="flex justify-between items-center mb-1">
+								<label htmlFor="company" className="flex items-center flex-1 mb-1">
+									Company <span className="text-red-500">*</span>
+									<span className="ms-2">
+										{selectedCompanyInfo ? (
+											<Image
+												src={selectedCompanyInfo.logo_url || DefaultCompanyIcon}
+												alt={selectedCompanyInfo.name}
+												width={25}
+												height={25}
+											/>
+										) : selectedWorkExp ? (
+											<Image
+												src={selectedWorkExp.companyLogoUrl || DefaultCompanyIcon}
+												alt={selectedWorkExp.company}
+												width={25}
+												height={25}
+											/>
+										) : (
+											<div></div>
+										)}
+									</span>
+									<span className="ms-2">
+										{selectedCompanyInfo
+											? selectedCompanyInfo.name
+											: selectedWorkExp
+												? selectedWorkExp.company
+												: ''}
+									</span>
+								</label>
+								<div>
+									<input
+										id="manualEntry"
+										type="checkbox"
+										value={isManualEntry ? 'true' : 'false'}
+										onChange={() => setIsManualEntry(!isManualEntry)}
+									/>
+									<label htmlFor="manualEntry" className="ms-2">
+										Enter company manually
+									</label>
+								</div>
+							</div>
 
-							<div className="flex items-center">
+							<div className={`flex items-center ${isManualEntry ? 'hidden' : ''}`}>
 								<input
 									type="text"
 									id="company"
@@ -179,39 +247,66 @@ export default function WorkExpModal({
 									value={query}
 									onChange={(e) => {
 										setQuery(e.target.value);
-										if (selectedCompanyInfo?.name !== e.target.value) {
-											setSelectedCompanyInfo(null);
-										}
 									}}
+									required={!isManualEntry && selectedWorkExp === null}
 								/>
 								<button type="button" onClick={handleIconSearch} className="modal-primary-btn ms-3">
 									Search
 								</button>
 							</div>
-						</div>
-						<div className={!isSearchBrand ? 'sr-only' : 'icon-result-container'}>
-							<span>Results</span>
-							{results &&
-								results.map((each: COMPANY_INFO, index: number) => (
-									<div
-										key={index}
-										className="icon-result-row"
-										onClick={() => {
-											setSelectedCompanyInfo(each);
-											setQuery(each.name);
-											setIsSearchBrand(false);
-										}}
-									>
-										<Image
-											className="rounded-xl"
-											src={each.logo_url}
-											alt={each.name}
-											width={50}
-											height={50}
-										/>
-										{each.name}
-									</div>
-								))}
+
+							<div className={`${isManualEntry ? '' : 'hidden'} flex items-center`}>
+								<Image
+									src={DefaultCompanyIcon}
+									alt="Default Company Icon Placeholder"
+									width={25}
+									height={25}
+								/>
+								<input
+									placeholder="Enter company name..."
+									className="modal-input ms-2"
+									type="text"
+									id="manualCompanyEntry"
+									name="manualCompanyEntry"
+									value={manualCompanyName ?? ''}
+									onChange={(e) => setManualCompanyName(e.target.value)}
+									required={isManualEntry && selectedWorkExp === null}
+								/>
+								<button
+									type="button"
+									onClick={handleManualConfirm}
+									className="modal-primary-btn ms-3 cursor-pointer"
+								>
+									Confirm
+								</button>
+							</div>
+
+							{query !== '' && results.length > 0 && (
+								<div className={!isSearchBrand ? 'sr-only' : 'icon-result-container'}>
+									<span>Results</span>
+									{results.map((each: COMPANY_INFO, index: number) => (
+										<div
+											key={index}
+											className="icon-result-row"
+											onClick={() => {
+												setSelectedCompanyInfo(each);
+												setQuery(each.name);
+												setIsSearchBrand(false);
+												setResults([]);
+											}}
+										>
+											<Image
+												className="rounded-xl"
+												src={each.logo_url}
+												alt={each.name}
+												width={50}
+												height={50}
+											/>
+											{each.name}
+										</div>
+									))}
+								</div>
+							)}
 						</div>
 
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -265,6 +360,77 @@ export default function WorkExpModal({
 									defaultValue={selectedWorkExp?.endYear ?? ''}
 								/>
 							</div>
+							<div>
+								<label htmlFor="city" className="modal-label-text">
+									City:{' '}
+								</label>
+								<input
+									type="text"
+									id="city"
+									name="city"
+									className="modal-input"
+									defaultValue={selectedWorkExp?.city ?? ''}
+								/>
+							</div>
+							<div>
+								<label htmlFor="province" className="modal-label-text">
+									Province:{' '}
+								</label>
+								<input
+									type="text"
+									id="province"
+									name="province"
+									className="modal-input"
+									defaultValue={selectedWorkExp?.province ?? ''}
+								/>
+							</div>
+							<div>
+								<label htmlFor="country" className="modal-label-text">
+									Country:{' '}
+								</label>
+								<input
+									type="text"
+									id="country"
+									name="country"
+									className="modal-input"
+									defaultValue={selectedWorkExp?.country ?? ''}
+								/>
+							</div>
+							<div>
+								<label htmlFor="locationType" className="modal-label-text">
+									Location Type:{' '}
+								</label>
+								<input
+									type="text"
+									id="locationType"
+									name="locationType"
+									className="modal-input"
+									defaultValue={selectedWorkExp?.locationType ?? ''}
+								/>
+							</div>
+							<div>
+								<label htmlFor="employmentType" className="modal-label-text">
+									Employment Type:{' '}
+								</label>
+								<input
+									type="text"
+									id="employmentType"
+									name="employmentType"
+									className="modal-input"
+									defaultValue={selectedWorkExp?.employmentType ?? ''}
+								/>
+							</div>
+						</div>
+						<div>
+							<label htmlFor="description" className="modal-label-text">
+								Description
+							</label>
+							<textarea
+								rows={3}
+								name="description"
+								className="modal-input"
+								defaultValue={selectedWorkExp?.description ?? ''}
+							/>
 						</div>
 					</div>
 					<div className="modal-footer">

@@ -20,24 +20,28 @@ export default function WorkAccordion({ work }: { work: WorkExperience }) {
 				onClick={toggleAccordion}
 				className="flex w-full items-center justify-between p-5 hover:bg-gray-100 focus:outline-none focus:ring-gray-900 focus:ring-opacity-50 cursor-pointer"
 			>
-				<div className=" items-center flex justify-start text-left pr-4 text-sm tracking-wide">
-					{work.companyLogoUrl ? (
-						<Image src={work.companyLogoUrl} alt={work.company} width={58} height={58} />
-					) : (
-						<Image
-							src={DefaultCompanyIcon}
-							alt={work.company ?? 'company icon placeholder'}
-							width={58}
-							height={58}
-						/>
-					)}
+				<div className="flex items-start justify-start text-left pr-4 text-sm tracking-wide">
+					<div className="shrink-0 mt-1">
+						{work.companyLogoUrl ? (
+							<Image src={work.companyLogoUrl} alt={work.company} width={58} height={58} />
+						) : (
+							<Image
+								src={DefaultCompanyIcon}
+								alt={work.company ?? 'company icon placeholder'}
+								width={58}
+								height={58}
+							/>
+						)}
+					</div>
 
 					<div className="ms-3">
 						<p className="text-gray-900 text-[16px]">{work.jobTitle}</p>
 						<p className="text-gray-700 text-[14px]">{work.company}</p>
+						<p className="text-gray-500 text-[14px]">{`${work.employmentType} ${work.locationType}`}</p>
 						<p className="text-gray-500 text-[14px]">{`${getMonthInWords(work.startMonth)} ${work.startYear} - ${work.endMonth ? getMonthInWords(work.endMonth) : ''} ${
 							work.endYear ? work.endYear : 'Present'
 						}`}</p>
+						<p className="text-gray-500 text-[14px]">{`${work.city}, ${work.province}, ${work.country}`}</p>
 					</div>
 				</div>
 
