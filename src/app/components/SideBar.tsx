@@ -28,8 +28,10 @@ export default async function SideBar() {
 	const profileData = await getUserProfile();
 	return (
 		<div>
-			<section className="lg:hidden flex justify-center items-center py-6">
-				<Image src={selfieRounded} alt="selfie emoji photo" width={160} priority />
+			<section className="lg:hidden flex justify-center items-center py-4">
+				<Link href="/myInfo">
+					<Image src={selfieRounded} alt="selfie emoji photo" width={140} priority />
+				</Link>
 			</section>
 			<aside className="section-sidebar hidden lg:flex lg:flex-col justify-center sticky top-24 self-start tracking-wide">
 				<section className="flex items-center justify-center">

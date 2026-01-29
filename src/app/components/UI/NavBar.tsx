@@ -53,13 +53,14 @@ export default function NavBar() {
 							</Link>
 						);
 					})}
+
 					{status === 'authenticated' && (
 						<Link
 							key="dashboard"
 							href={`/${session.user.username}/dashboard`}
 							className="group relative pb-1 text-neutral-600 hover:text-neutral-900 transition-colors"
 						>
-							Dashboard
+							DASHBOARD
 							<span
 								className={`
                     absolute bottom-0 left-1/2 -translate-x-1/2
@@ -124,6 +125,23 @@ export default function NavBar() {
 							{item.name.toUpperCase()}
 						</Link>
 					))}
+					<Link
+						key="myInfo"
+						href="/myInfo"
+						onClick={closeMenu}
+						className="group relative pb-1 text-neutral-600 hover:text-neutral-900 transition-colors"
+					>
+						MY INFO
+						<span
+							className={`
+                    absolute bottom-0 left-1/2 -translate-x-1/2
+                    h-0.5 bg-neutral-700 rounded-full
+                    transition-all duration-400 ease-out
+                    ${pathname === '/myInfo' ? 'w-2' : 'w-0'}
+                    ${'group-hover:w-full'}
+                  `}
+						/>
+					</Link>
 					{status === 'authenticated' && (
 						<Link
 							href={`/${session.user.username}/dashboard`}
