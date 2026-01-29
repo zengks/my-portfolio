@@ -20,6 +20,7 @@ export async function getUserByUsername(username: string) {
 			select: {
 				role: true,
 				certificate: {
+					orderBy: { dateIssued: 'desc' },
 					select: {
 						id: true,
 						name: true,

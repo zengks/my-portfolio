@@ -4,6 +4,7 @@ import { useEffect, useState, type FormEvent } from 'react';
 import type { Certificate } from 'types/certificateType';
 import Image from 'next/image';
 import DefaultCompanyIcon from '@/assets/icons/defaultCompany.svg';
+import { handleKeyDown } from '@/lib/utility';
 
 type CERTIFICATE_INFO = {
 	name: string;
@@ -25,6 +26,8 @@ export default function CertificateModal({
 	const [selectedCertInfo, setSelectedCertInfo] = useState<CERTIFICATE_INFO | null>(null);
 	const [results, setResults] = useState([]);
 	const [isSearchBrand, setIsSearchBrand] = useState(false);
+	const [isManualEntry, setIsManualEntry] = useState(false);
+	const [manualOrgName, setManualOrgName] = useState('');
 
 	useEffect(() => {
 		const handleEscape = (e: KeyboardEvent) => {
@@ -71,11 +74,30 @@ export default function CertificateModal({
 		const isEditing = !!selectedCertificate;
 		const method = isEditing ? 'PUT' : 'POST';
 
+		let finalLogoUrl = '';
+		let finalOrgName = '';
+
+		if (isManualEntry) {
+			finalLogoUrl = DefaultCompanyIcon.src;
+		} else if (selectedCertInfo) {
+			finalLogoUrl = selectedCertInfo.logo_url;
+		} else if (selectedCertificate) {
+			finalLogoUrl = selectedCertificate.companyLogoUrl || '';
+		}
+
+		if (isManualEntry) {
+			finalOrgName = manualOrgName;
+		} else if (selectedCertInfo) {
+			finalOrgName = selectedCertInfo.name;
+		} else if (selectedCertificate) {
+			finalOrgName = selectedCertificate.issuingOrg || '';
+		}
+
 		const payload = {
 			id: selectedCertificate?.id,
 			name: formData.get('name'),
-			issuingOrg: (selectedCertInfo && selectedCertInfo.name) ?? formData.get('issuingOrg'),
-			companyLogoUrl: (selectedCertInfo && selectedCertInfo.logo_url) ?? '',
+			issuingOrg: finalOrgName,
+			companyLogoUrl: finalLogoUrl,
 			dateIssued: formData.get('dateIssued'),
 			dateExpired: formData.get('dateExpired'),
 			credentialId: formData.get('credentialId'),
@@ -95,6 +117,12 @@ export default function CertificateModal({
 				throw new Error('Operation Failed!');
 			}
 
+			setSelectedCertInfo(null);
+			setQuery('');
+			setManualOrgName('');
+			setIsManualEntry(false);
+			setIsSearchBrand(false);
+			setResults([]);
 			closeModal();
 		} catch (error) {
 			console.log(error);
@@ -106,6 +134,15 @@ export default function CertificateModal({
 			const data = await getBrandInfo(query);
 			setResults(data);
 			setIsSearchBrand(true);
+		}
+	};
+
+	const handleManualConfirm = () => {
+		if (manualOrgName !== '') {
+			setSelectedCertInfo({
+				name: manualOrgName,
+				logo_url: DefaultCompanyIcon.src,
+			});
 		}
 	};
 
@@ -130,7 +167,11 @@ export default function CertificateModal({
 						</svg>
 					</button>
 				</div>
-				<form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+				<form
+					onSubmit={handleSubmit}
+					onKeyDown={handleKeyDown}
+					className="flex flex-col flex-1 overflow-hidden"
+				>
 					<div className="p-6 overflow-y-auto space-y-6">
 						<div>
 							<label htmlFor="name" className="modal-label-text">
@@ -146,27 +187,50 @@ export default function CertificateModal({
 							/>
 						</div>
 						<div>
-							<label htmlFor="issuingOrg" className="flex items-center flex-1 mb-1">
-								Issuing Organization <span className="text-red-500">*</span>
-								<span>
-									{selectedCertInfo ? (
-										<Image
-											src={selectedCertInfo.logo_url}
-											alt={selectedCertInfo.name}
-											width={25}
-											height={25}
-										/>
-									) : (
-										<Image
-											src={DefaultCompanyIcon}
-											alt={selectedCertificate?.name ?? 'Certificate icon placeholder'}
-											width={25}
-											height={25}
-										/>
-									)}
-								</span>
-							</label>
-							<div className="flex items-center">
+							<div className="flex justify-between items-center mb-1">
+								<label htmlFor="issuingOrg" className="flex items-center flex-1 mb-1">
+									Issuing Organization <span className="text-red-500">*</span>
+									<span className="ms-2">
+										{selectedCertInfo ? (
+											<Image
+												src={selectedCertInfo.logo_url || DefaultCompanyIcon}
+												alt={selectedCertInfo.name}
+												width={25}
+												height={25}
+											/>
+										) : selectedCertificate ? (
+											<Image
+												src={selectedCertificate.companyLogoUrl || DefaultCompanyIcon}
+												alt={selectedCertificate.issuingOrg}
+												width={25}
+												height={25}
+											/>
+										) : (
+											<div></div>
+										)}
+									</span>
+									<span className="ms-2">
+										{selectedCertInfo
+											? selectedCertInfo.name
+											: selectedCertificate
+												? selectedCertificate.issuingOrg
+												: ''}
+									</span>
+								</label>
+								<div>
+									<input
+										id="manualEntry"
+										type="checkbox"
+										value={isManualEntry ? 'true' : 'false'}
+										onChange={() => setIsManualEntry(!isManualEntry)}
+									/>
+									<label htmlFor="manualEntry" className="ms-2">
+										Enter Manually
+									</label>
+								</div>
+							</div>
+
+							<div className={`flex items-center ${isManualEntry ? 'hidden' : ''}`}>
 								<input
 									placeholder="Enter school name..."
 									className="modal-input"
@@ -181,16 +245,46 @@ export default function CertificateModal({
 										}
 									}}
 								/>
-								<button type="button" onClick={handleIconSearch} className="modal-primary-btn ms-3">
+								<button
+									type="button"
+									onClick={handleIconSearch}
+									className="modal-primary-btn ms-3 cursor-pointer"
+								>
 									Search
+								</button>
+							</div>
+
+							<div className={`${isManualEntry ? '' : 'hidden'} flex items-center`}>
+								<Image
+									src={DefaultCompanyIcon}
+									alt="Default Company Icon Placeholder"
+									width={25}
+									height={25}
+								/>
+								<input
+									placeholder="Enter organization name..."
+									className="modal-input ms-2"
+									type="text"
+									id="manualOrgEntry"
+									name="manualOrgEntry"
+									value={manualOrgName ?? ''}
+									onChange={(e) => setManualOrgName(e.target.value)}
+									required={isManualEntry && selectedCertificate === null}
+								/>
+								<button
+									type="button"
+									onClick={handleManualConfirm}
+									className="modal-primary-btn ms-3 cursor-pointer"
+								>
+									Confirm
 								</button>
 							</div>
 						</div>
 
-						<div className={!isSearchBrand ? 'sr-only' : 'icon-result-container'}>
-							<span>Results</span>
-							{results &&
-								results.map((each: CERTIFICATE_INFO, index: number) => (
+						{query !== '' && results.length > 0 && (
+							<div className={!isSearchBrand ? 'sr-only' : 'icon-result-container'}>
+								<span>Results</span>
+								{results.map((each: CERTIFICATE_INFO, index: number) => (
 									<div
 										key={index}
 										className="icon-result-row"
@@ -198,6 +292,7 @@ export default function CertificateModal({
 											setSelectedCertInfo(each);
 											setQuery(each.name);
 											setIsSearchBrand(false);
+											setResults([]);
 										}}
 									>
 										<Image
@@ -210,7 +305,8 @@ export default function CertificateModal({
 										{each.name}
 									</div>
 								))}
-						</div>
+							</div>
+						)}
 
 						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
 							<div>
@@ -222,7 +318,7 @@ export default function CertificateModal({
 									id="dateIssued"
 									name="dateIssued"
 									className="modal-input"
-									defaultValue={String(selectedCertificate?.dateIssued)}
+									defaultValue={String(selectedCertificate?.dateIssued ?? '')}
 									required
 								/>
 							</div>
