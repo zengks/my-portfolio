@@ -5,7 +5,7 @@ body {
 }
 
 .section-sidebar {
-	@apply ms-25 pt-[30] border border-gray-200 rounded-lg bg-white shadow-sm overflow-hidden;
+	@apply lg:ms-18 xl:ms-25 pt-[30] border border-gray-200 rounded-lg bg-white shadow-sm overflow-hidden;
 }
 
 .section-sidebar-row {
@@ -21,11 +21,11 @@ body {
 }
 
 .section-container {
-	@apply mx-[100];
+	@apply mx-[20] lg:mx-[100] md:mx-[60];
 }
 
 .section-card {
-	@apply mb-[15] px-[40] py-[30] border border-gray-200 rounded-lg bg-white shadow-sm overflow-hidden;
+	@apply mb-[10] lg:mb-[15] px-[20] lg:px-[40] py-[20] lg:py-[30] border border-gray-200 rounded-lg bg-white shadow-sm overflow-hidden;
 }
 
 .section-skill-card {

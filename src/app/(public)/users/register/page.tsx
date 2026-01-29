@@ -70,7 +70,7 @@ export default function RegisterPage() {
 	};
 
 	return (
-		<div className="flex flex-1 flex-col justify-center lg:px-8 bg-gray-50">
+		<div className="section-container section-card flex flex-1 flex-col justify-center lg:px-8 bg-gray-50">
 			<h2 className="text-center text-2xl font-bold leading-9 tracking-wide text-gray-900">
 				Create an account
 			</h2>

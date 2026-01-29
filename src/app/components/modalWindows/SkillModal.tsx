@@ -107,6 +107,7 @@ export default function SkillModal({
 									name="categoryName"
 									className="modal-input"
 									defaultValue={selectedSkill?.categoryName ?? ''}
+									required
 								/>
 							</div>
 							<div>
@@ -119,6 +120,7 @@ export default function SkillModal({
 									name="subCategoryName"
 									className="modal-input"
 									defaultValue={selectedSkill?.subCategoryName ?? ''}
+									required
 								/>
 							</div>
 						</div>
@@ -139,7 +141,7 @@ export default function SkillModal({
 
 						<div>
 							<label htmlFor="description" className="modal-label-text">
-								Description <span className="text-red-500">*</span>
+								Description
 							</label>
 							<textarea
 								id="description"

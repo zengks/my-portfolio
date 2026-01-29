@@ -41,11 +41,11 @@ export default function RootLayout({
 			<body className="flex flex-col min-h-screen max-w-[1440px] mx-auto">
 				<SessionWrapper>
 					<NavBar />
-					<main className="flex flex-1">
-						<section className="w-1/4">
+					<main className="flex flex-col lg:flex-row flex-1">
+						<section className="w-full lg:w-1/4">
 							<SideBar />
 						</section>
-						<section className="w-3/4">{children}</section>
+						<section className="w-full lg:w-3/4">{children}</section>
 					</main>
 					<Footer />
 				</SessionWrapper>

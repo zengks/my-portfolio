@@ -6,6 +6,7 @@ const TARGET_CATEGORIES = ['Core Skills', 'Web Development'];
 
 export default async function SkillSection() {
 	const skillsData = await getUserSkills('zengks');
+	console.log('Skills Data:', skillsData);
 	return (
 		<section className="section-container section-card">
 			<p className="section-title">Technical Skills</p>

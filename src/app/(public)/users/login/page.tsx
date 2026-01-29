@@ -64,7 +64,7 @@ export default function LoginPage() {
 	}
 
 	return (
-		<div className="flex flex-1 flex-col justify-center bg-gray-50">
+		<div className="section-container section-card border flex flex-1 flex-col justify-center bg-gray-50">
 			<h2 className="text-center text-2xl font-bold tracking-wide text-gray-900">
 				Sign in to your account
 			</h2>
