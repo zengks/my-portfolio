@@ -5,6 +5,7 @@ import { useState } from 'react';
 import type { WorkExperience } from 'types/workExpType';
 import DefaultCompanyIcon from '@/assets/icons/defaultCompany.svg';
 import Markdown from 'react-markdown';
+import { getMonthInWords } from '@/lib/utility';
 
 export default function WorkAccordion({ work }: { work: WorkExperience }) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +35,7 @@ export default function WorkAccordion({ work }: { work: WorkExperience }) {
 					<div className="ms-3">
 						<p className="text-gray-900 text-[16px]">{work.jobTitle}</p>
 						<p className="text-gray-700 text-[14px]">{work.company}</p>
-						<p className="text-gray-500 text-[14px]">{`${work.startYear} - ${
+						<p className="text-gray-500 text-[14px]">{`${getMonthInWords(work.startMonth)} ${work.startYear} - ${work.endMonth ? getMonthInWords(work.endMonth) : ''} ${
 							work.endYear ? work.endYear : 'Present'
 						}`}</p>
 					</div>

@@ -5,6 +5,7 @@ import { useState } from 'react';
 import type { Education } from 'types/educationType';
 import Markdown from 'react-markdown';
 import DefaultSchoolIcon from '@/assets/icons/defaultSchool.svg';
+import { getMonthInWords } from '@/lib/utility';
 
 export default function EducationAccordion({ education }: { education: Education }) {
 	const [isOpen, setIsOpen] = useState(false);
@@ -34,7 +35,7 @@ export default function EducationAccordion({ education }: { education: Education
 					<div className="ms-3">
 						<p className="text-gray-900 text-[16px]">{education.school}</p>
 						<p className="text-gray-700 text-[14px]">{`${education.degree}, ${education.fieldOfStudy}`}</p>
-						<p className="text-gray-500 text-[14px]">{`${education.startYear} - ${
+						<p className="text-gray-500 text-[14px]">{`${getMonthInWords(education.startMonth)} ${education.startYear} - ${education.endMonth ? getMonthInWords(education.endMonth) : ''} ${
 							education.endYear ? education.endYear : 'Present'
 						}`}</p>
 					</div>

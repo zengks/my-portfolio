@@ -4,6 +4,7 @@ import { useEffect, useState, type FormEvent } from 'react';
 import type { Education } from 'types/educationType';
 import Image from 'next/image';
 import DefaultSchoolIcon from '@/assets/icons/defaultSchool.svg';
+import { handleKeyDown } from '@/lib/utility';
 
 type EDUCATION_INFO = {
 	name: string;
@@ -25,6 +26,8 @@ export default function EducationModal({
 	const [selectedEduInfo, setSelectedEduInfo] = useState<EDUCATION_INFO | null>(null);
 	const [results, setResults] = useState([]);
 	const [isSearchBrand, setIsSearchBrand] = useState(false);
+	const [isManualEntry, setIsManualEntry] = useState(false);
+	const [manualSchoolName, setManualSchoolName] = useState('');
 
 	useEffect(() => {
 		const handleEscape = (e: KeyboardEvent) => {
@@ -71,12 +74,29 @@ export default function EducationModal({
 		const isEditing = !!selectedEducation;
 		const method = isEditing ? 'PUT' : 'POST';
 
+		let finalLogoUrl = '';
+		let finalSchoolName = '';
+
+		if (isManualEntry) {
+			finalLogoUrl = DefaultSchoolIcon.src;
+		} else if (selectedEduInfo) {
+			finalLogoUrl = selectedEduInfo.logo_url;
+		} else if (selectedEducation) {
+			finalLogoUrl = selectedEducation.schoolLogoUrl || '';
+		}
+
+		if (isManualEntry) {
+			finalSchoolName = manualSchoolName;
+		} else {
+			finalSchoolName = query;
+		}
+
 		const payload = {
 			id: selectedEducation?.id,
-			school: (selectedEduInfo && selectedEduInfo.name) ?? formData.get('school'),
+			school: finalSchoolName,
 			degree: formData.get('degree'),
 			fieldOfStudy: formData.get('fieldOfStudy'),
-			schoolLogoUrl: (selectedEduInfo && selectedEduInfo.logo_url) ?? '',
+			schoolLogoUrl: finalLogoUrl,
 			startMonth: Number(formData.get('startMonth')),
 			startYear: Number(formData.get('startYear')),
 			endMonth: Number(formData.get('endMonth')),
@@ -97,6 +117,12 @@ export default function EducationModal({
 				throw new Error('Operation Failed!');
 			}
 
+			setSelectedEduInfo(null);
+			setQuery('');
+			setManualSchoolName('');
+			setIsManualEntry(false);
+			setIsSearchBrand(false);
+			setResults([]);
 			closeModal();
 		} catch (error) {
 			console.log(error);
@@ -108,6 +134,15 @@ export default function EducationModal({
 			const data = await getBrandInfo(query);
 			setResults(data);
 			setIsSearchBrand(true);
+		}
+	};
+
+	const handleManualConfirm = () => {
+		if (manualSchoolName !== '') {
+			setSelectedEduInfo({
+				name: manualSchoolName,
+				logo_url: DefaultSchoolIcon,
+			});
 		}
 	};
 
@@ -133,33 +168,59 @@ export default function EducationModal({
 					</button>
 				</div>
 
-				<form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+				<form
+					onSubmit={handleSubmit}
+					onKeyDown={handleKeyDown}
+					className="flex flex-col flex-1 overflow-hidden"
+				>
 					<div className="p-6 overflow-y-auto space-y-6">
 						<div>
-							<label className="flex items-center flex-1 mb-1">
-								School <span className="text-red-500">*</span>
-								<span>
-									{selectedEduInfo ? (
-										<Image
-											src={selectedEduInfo.logo_url}
-											alt={selectedEduInfo.name}
-											width={25}
-											height={25}
-										/>
-									) : (
-										<Image
-											src={DefaultSchoolIcon}
-											alt={selectedEducation?.school ?? 'school icon placeholder'}
-											width={25}
-											height={25}
-										/>
-									)}
-								</span>
-							</label>
+							<div className="flex justify-between items-center mb-1">
+								<label className="flex items-center flex-1 mb-1">
+									School <span className="text-red-500">*</span>
+									<span className="ms-2">
+										{selectedEduInfo ? (
+											<Image
+												src={selectedEduInfo.logo_url || DefaultSchoolIcon}
+												alt={selectedEduInfo.name}
+												width={25}
+												height={25}
+											/>
+										) : selectedEducation ? (
+											<Image
+												src={selectedEducation.schoolLogoUrl || DefaultSchoolIcon}
+												alt={selectedEducation.school}
+												width={25}
+												height={25}
+											/>
+										) : (
+											<div></div>
+										)}
+									</span>
+									<span className="ms-2">
+										{selectedEduInfo
+											? selectedEduInfo.name
+											: selectedEducation
+												? selectedEducation.school
+												: ''}
+									</span>
+								</label>
+								<div>
+									<input
+										id="manualEntry"
+										type="checkbox"
+										value={isManualEntry ? 'true' : 'false'}
+										onChange={() => setIsManualEntry(!isManualEntry)}
+									/>
+									<label htmlFor="manualEntry" className="ms-2">
+										Enter school manually
+									</label>
+								</div>
+							</div>
 
-							<div className="flex items-center">
+							<div className={`flex items-center ${isManualEntry ? 'hidden' : ''}`}>
 								<input
-									placeholder="Enter school name..."
+									placeholder="Search school here..."
 									className="modal-input"
 									type="text"
 									id="schoolLogoUrl"
@@ -167,26 +228,56 @@ export default function EducationModal({
 									value={query}
 									onChange={(e) => {
 										setQuery(e.target.value);
-										if (selectedEduInfo?.name !== e.target.value) {
-											setSelectedEduInfo(null);
-										}
 									}}
+									required={!isManualEntry && selectedEducation === null}
 								/>
-								<button type="button" onClick={handleIconSearch} className="modal-primary-btn ms-3">
+								<button
+									type="button"
+									onClick={handleIconSearch}
+									className="modal-primary-btn ms-3 cursor-pointer"
+								>
 									Search
 								</button>
 							</div>
+
+							<div className={`${isManualEntry ? '' : 'hidden'} flex items-center`}>
+								<Image
+									src={DefaultSchoolIcon}
+									alt="Default School Icon Placeholder"
+									width={25}
+									height={25}
+								/>
+								<input
+									placeholder="Enter school name..."
+									className="modal-input ms-2"
+									type="text"
+									id="manualSchoolEntry"
+									name="manualSchoolEntry"
+									value={manualSchoolName ?? ''}
+									onChange={(e) => setManualSchoolName(e.target.value)}
+									required={isManualEntry && selectedEducation === null}
+								/>
+								<button
+									type="button"
+									onClick={handleManualConfirm}
+									className="modal-primary-btn ms-3 cursor-pointer"
+								>
+									Confirm
+								</button>
+							</div>
 						</div>
-						<div className={!isSearchBrand ? 'sr-only' : 'icon-result-container'}>
-							<span>Results</span>
-							{results &&
-								results.map((each: EDUCATION_INFO, index: number) => (
+						{query !== '' && results.length > 0 && (
+							<div className={!isSearchBrand ? 'sr-only' : 'icon-result-container'}>
+								<span>Results</span>
+								{results.map((each: EDUCATION_INFO, index: number) => (
 									<div
 										key={index}
-										className="icon-result-row"
+										className="icon-result-row cursor-pointer"
 										onClick={() => {
 											setSelectedEduInfo(each);
+											setQuery(each.name);
 											setIsSearchBrand(false);
+											setResults([]);
 										}}
 									>
 										<Image
@@ -199,7 +290,8 @@ export default function EducationModal({
 										{each.name}
 									</div>
 								))}
-						</div>
+							</div>
+						)}
 
 						<div>
 							<label htmlFor="degree" className="modal-label-text">
@@ -294,7 +386,15 @@ export default function EducationModal({
 						</div>
 					</div>
 					<div className="modal-footer">
-						<button className="modal-secondary-btn" type="button" onClick={closeModal}>
+						<button
+							className="modal-secondary-btn"
+							type="button"
+							onClick={() => {
+								setSelectedEduInfo(null);
+								setQuery('');
+								closeModal();
+							}}
+						>
 							Cancel
 						</button>
 						<button type="submit" className="modal-primary-btn">

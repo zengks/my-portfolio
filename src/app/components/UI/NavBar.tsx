@@ -5,23 +5,23 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 
-import moonIcon from 'src/assets/icons/moon.svg';
-import sunIcon from 'src/assets/icons/sun.svg';
-import Image from 'next/image';
-import { useState } from 'react';
+// import moonIcon from 'src/assets/icons/moon.svg';
+// import sunIcon from 'src/assets/icons/sun.svg';
+// import Image from 'next/image';
+// import { useState } from 'react';
 
 export default function NavBar() {
 	const pathname = usePathname();
-	const [theme, setTheme] = useState('light');
+	// const [theme, setTheme] = useState('light');
 	const { data: session, status } = useSession();
 
 	return (
 		<div className="flex justify-around items-center my-8">
 			<Link href="/" className="tracking-[16]">
-				<p className="logo logo-creative ps-[35]">steven</p>
+				<p className="logo logo-creative ps-[35px]">steven</p>
 			</Link>
 			<div className="flex justify-between items-center gap-10">
-				<nav className="flex justify-center gap-9 text-[15px] items-center">
+				<nav className="flex justify-center gap-10 text-[15px] items-center">
 					{MENU_ITEMS.map((item) => {
 						const isActive = pathname === item.link;
 						return (
@@ -35,9 +35,9 @@ export default function NavBar() {
 								<span
 									className={`
                     absolute bottom-0 left-1/2 -translate-x-1/2
-                    h-[2px] bg-neutral-700 rounded-full
+                    h-0.5 bg-neutral-700 rounded-full
                     transition-all duration-400 ease-out
-                    ${isActive ? 'w-[8px]' : 'w-0'}
+                    ${isActive ? 'w-2' : 'w-0'}
                     ${'group-hover:w-full'}
                   `}
 								/>
@@ -54,9 +54,9 @@ export default function NavBar() {
 							<span
 								className={`
                     absolute bottom-0 left-1/2 -translate-x-1/2
-                    h-[2px] bg-neutral-700 rounded-full
+                    h-0.5 bg-neutral-700 rounded-full
                     transition-all duration-400 ease-out
-                    ${pathname === `/${session.user.username}/dashboard` ? 'w-[8px]' : 'w-0'}
+                    ${pathname === `/${session.user.username}/dashboard` ? 'w-2' : 'w-0'}
                     ${'group-hover:w-full'}
                   `}
 							/>
@@ -64,7 +64,11 @@ export default function NavBar() {
 					)}
 				</nav>
 			</div>
-			<div className="flex justify-center items-center gap-2 me-3">
+
+			{/* only for style purposes */}
+			<div></div>
+			{/* light/dark mode to be implemented in the future */}
+			{/* <div className="flex justify-center items-center gap-2 me-3">
 				<div className="group relative flex items-center justify-center w-10 h-10">
 					<button
 						onClick={() => setTheme('light')}
@@ -79,8 +83,7 @@ export default function NavBar() {
 						<Image src={sunIcon} alt="Light Mode Icon" width={25} height={25} />
 					</button>
 
-					{/* light/dark mode to be implemented in the future */}
-					{/* <button
+					<button
 						onClick={() => setTheme('dark')}
 						className={`
               absolute p-2 rounded-full
@@ -91,9 +94,9 @@ export default function NavBar() {
             `}
 					>
 						<Image src={moonIcon} alt="Dark Mode Icon" width={25} height={25} />
-					</button> */}
+					</button>
 				</div>
-			</div>
+			</div> */}
 		</div>
 	);
 }
