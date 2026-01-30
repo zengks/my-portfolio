@@ -1,5 +1,5 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import Image from 'next/image';
@@ -80,7 +80,7 @@ export default function UsersPage() {
 
 	const username = session?.user?.username;
 
-	const fetchCurrentUserData = async () => {
+	const fetchCurrentUserData = useCallback(async () => {
 		try {
 			const res = await fetch(`/api/users/${username}/dashboard`, {
 				method: 'GET',
@@ -90,7 +90,6 @@ export default function UsersPage() {
 			});
 			if (res.ok) {
 				const data = await res.json();
-				console.log('dashboard received data', data);
 				setCurrentUserData(data.user);
 			} else {
 				console.log('Failed to get user data.');
@@ -98,7 +97,7 @@ export default function UsersPage() {
 		} catch (error) {
 			console.log('Failed to fetch:', error);
 		}
-	};
+	}, [username]);
 
 	useEffect(() => {
 		if (status === 'unauthenticated') {
@@ -108,7 +107,7 @@ export default function UsersPage() {
 		setLoading(status === 'loading');
 
 		if (status === 'authenticated') fetchCurrentUserData();
-	}, [router, status, username]);
+	}, [fetchCurrentUserData, router, status, username]);
 
 	const closeModal = () => {
 		setActiveModal(null);
