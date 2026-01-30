@@ -5,6 +5,7 @@ import type { WorkExperience } from 'types/workExpType';
 import Image from 'next/image';
 import DefaultCompanyIcon from '@/assets/icons/defaultCompany.svg';
 import { handleKeyDown } from '@/lib/utility';
+import { useRouter } from 'next/navigation';
 
 type COMPANY_INFO = {
 	name: string;
@@ -28,6 +29,8 @@ export default function WorkExpModal({
 	const [isSearchBrand, setIsSearchBrand] = useState(false);
 	const [isManualEntry, setIsManualEntry] = useState(false);
 	const [manualCompanyName, setManualCompanyName] = useState('');
+
+	const router = useRouter();
 
 	useEffect(() => {
 		const handleEscape = (e: KeyboardEvent) => {
@@ -132,6 +135,8 @@ export default function WorkExpModal({
 			closeModal();
 		} catch (error) {
 			console.log(error);
+		} finally {
+			router.refresh();
 		}
 	};
 
