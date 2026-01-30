@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import { WorkExperience } from 'types/workExpType';
+import { revalidatePath } from 'next/cache';
 
 export async function getUserWorkExp(username: string) {
 	return await prisma.workExperience.findMany({
@@ -35,6 +36,8 @@ export async function addWorkExperience(username: string, workExpData: WorkExper
 			description: workExpData.description ?? null,
 		},
 	});
+	revalidatePath('/');
+	revalidatePath('/work');
 	return newWorkExp;
 }
 
@@ -66,11 +69,16 @@ export async function updateWorkExperience(username: string, newWorkExpData: Wor
 			description: newWorkExpData.description ?? null,
 		},
 	});
+	revalidatePath('/');
+	revalidatePath('/work');
 	return updatedWorkExp;
 }
 
 export async function deleteWorkExperience(workExpId: number) {
-	return await prisma.workExperience.delete({
+	const result = await prisma.workExperience.delete({
 		where: { id: workExpId },
 	});
+	revalidatePath('/');
+	revalidatePath('/work');
+	return result;
 }

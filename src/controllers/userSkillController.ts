@@ -1,5 +1,6 @@
 import prisma from '@/lib/prisma';
 import type { Skill } from 'types/skillType';
+import { revalidatePath } from 'next/cache';
 
 export async function getUserSkills(username: string) {
 	return await prisma.skill.findMany({
@@ -26,6 +27,9 @@ export async function addSkill(username: string, skillData: Skill) {
 		},
 	});
 
+	revalidatePath('/');
+	revalidatePath('/skills');
+
 	return newSkill;
 }
 export async function updateSkill(username: string, selectedSkillData: Skill) {
@@ -48,10 +52,18 @@ export async function updateSkill(username: string, selectedSkillData: Skill) {
 		},
 	});
 
+	revalidatePath('/');
+	revalidatePath('/skills');
+
 	return updatedSkill;
 }
 export async function deleteSkill(skillId: number) {
-	return await prisma.skill.delete({
+	const result = await prisma.skill.delete({
 		where: { id: skillId },
 	});
+
+	revalidatePath('/');
+	revalidatePath('/skills');
+
+	return result;
 }
