@@ -2,10 +2,9 @@ import prisma from '@/lib/prisma';
 
 import { AboutUser } from 'types/aboutUserType';
 
-export async function getUserAbout(username: string = 'zengks') {
-	return await prisma.profile.findUnique({
+export async function getUserAbout(username: string) {
+	return await prisma.aboutUser.findMany({
 		where: { username },
-		select: { aboutUser: true },
 	});
 }
 

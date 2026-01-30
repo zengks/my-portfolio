@@ -1,34 +1,37 @@
-import SkillRow from '../../components/SkillRow';
+import { getUserSkills } from '@/controllers/userSkillController';
+import SkillsAccordion from '@/app/components/accordion/SkillsAccordion';
 
-import {
-	MERN_STACK,
-	MOBILE_DEV_SKILLS,
-	NEXT_STACK,
-	PROJECT_MANAGEMENT_TOOLS,
-} from '@/lib/constant';
+export default async function Skills() {
+	const skillsData = await getUserSkills('zengks');
 
-const iconWidth = 30;
+	const uniqueSkillCategories = () => {
+		if (!skillsData) return [];
+		const categories = skillsData.map((s) => s.categoryName);
+		return Array.from(new Set(categories));
+	};
 
-export default function Skills() {
 	return (
 		<section className="section-container section-card text-wrap">
-			<p className="section-title">Skills / Toolkit</p>
-			<section className="section-skill-card ps-[20] py-[10] mb-3">
-				<p className="skill-sort-title">MERN Stack</p>
-				<SkillRow skillsArray={MERN_STACK} iconWidth={iconWidth} />
-			</section>
-			<section className="section-skill-card ps-[20] py-[10] mb-3">
-				<p className="skill-sort-title">NextJS Stack</p>
-				<SkillRow skillsArray={NEXT_STACK} iconWidth={iconWidth} />
-			</section>
-			<section className="section-skill-card ps-[20] py-[10] mb-3">
-				<p className="skill-sort-title">Mobile App Development</p>
-				<SkillRow skillsArray={MOBILE_DEV_SKILLS} iconWidth={iconWidth} />
-			</section>
-			<section className="section-skill-card ps-[20] py-[10] mb-3">
-				<p className="skill-sort-title">Project Management Tools</p>
-				<SkillRow skillsArray={PROJECT_MANAGEMENT_TOOLS} iconWidth={iconWidth} />
-			</section>
+			<p className="section-title">Technical Skills</p>
+			{skillsData &&
+				skillsData.length > 0 &&
+				uniqueSkillCategories().map((eachCategory) => (
+					<div
+						key={eachCategory}
+						className="mb-5 rounded-lg border py-2 px-4 border-gray-200 bg-neutral-50 shadow-sm"
+					>
+						<p className="text-lg font-light tracking-wider text-gray-700 uppercase mb-3">
+							{eachCategory}
+						</p>
+						{skillsData
+							.filter((skill) => skill.categoryName === eachCategory)
+							.map((each, index) => (
+								<section key={index}>
+									<SkillsAccordion skill={each} />
+								</section>
+							))}
+					</div>
+				))}
 		</section>
 	);
 }

@@ -1,20 +1,10 @@
 import prisma from '@/lib/prisma';
 import { Education } from 'types/educationType';
 
-export async function getAllUserEducation(username: string) {
+export async function getUserEducation(username: string) {
 	return await prisma.education.findMany({
 		where: { username },
-		select: {
-			id: true,
-			school: true,
-			degree: true,
-			fieldOfStudy: true,
-			startYear: true,
-			endYear: true,
-			gpa: true,
-			description: true,
-		},
-		orderBy: { startYear: 'desc' }, // Most recent first
+		orderBy: [{ endYear: 'desc' }, { startYear: 'desc' }],
 	});
 }
 
@@ -32,11 +22,17 @@ export async function addEducation(username: string, newEducationData: Education
 			username: username,
 			school: newEducationData.school,
 			degree: newEducationData.degree,
-			fieldOfStudy: newEducationData.fieldOfStudy ?? null,
+			fieldOfStudy: newEducationData.fieldOfStudy,
+			schoolLogoUrl: newEducationData.schoolLogoUrl,
+			city: newEducationData.city,
+			province: newEducationData.province,
+			country: newEducationData.country,
+			startMonth: newEducationData.startMonth,
 			startYear: newEducationData.startYear,
-			endYear: newEducationData.endYear ?? null,
-			gpa: newEducationData.gpa ?? null,
-			description: newEducationData.description ?? null,
+			endMonth: newEducationData.endMonth,
+			endYear: newEducationData.endYear,
+			gpa: newEducationData.gpa,
+			description: newEducationData.description,
 		},
 	});
 	return newEducation;
@@ -57,9 +53,17 @@ export async function updateUserEducation(username: string, selectedEducationDat
 		data: {
 			school: selectedEducationData.school,
 			degree: selectedEducationData.degree,
-			fieldOfStudy: selectedEducationData.fieldOfStudy ?? null,
+			fieldOfStudy: selectedEducationData.fieldOfStudy,
+			schoolLogoUrl: selectedEducationData.schoolLogoUrl,
+			city: selectedEducationData.city,
+			province: selectedEducationData.province,
+			country: selectedEducationData.country,
+			startMonth: selectedEducationData.startMonth,
 			startYear: selectedEducationData.startYear,
-			endYear: selectedEducationData.endYear ?? null,
+			endMonth: selectedEducationData.endMonth,
+			endYear: selectedEducationData.endYear,
+			gpa: selectedEducationData.gpa,
+			description: selectedEducationData.description,
 		},
 	});
 

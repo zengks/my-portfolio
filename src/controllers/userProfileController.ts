@@ -1,6 +1,4 @@
 import prisma from 'src/lib/prisma';
-import { Profile } from 'types/profileType';
-import { apiPaths } from '@/lib/apiPaths';
 import { writeFile, unlink } from 'fs/promises';
 import path from 'path';
 
@@ -89,16 +87,4 @@ export async function updateUserProfile(username: string, formData: FormData) {
 		},
 	});
 	return updatedUserProfile;
-}
-
-// client-side fetch user profile
-export async function fetchUserProfile(): Promise<Profile | undefined> {
-	try {
-		const res = await fetch(apiPaths.userProfile());
-		const data = await res.json();
-		return data.profile;
-	} catch (error) {
-		console.error('Error fetching user profile: ', error);
-		return undefined;
-	}
 }

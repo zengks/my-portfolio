@@ -38,17 +38,14 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang="en" className={`${manrope.variable} ${lora.variable} ${hurricane.variable}`}>
-			<body className="flex flex-col min-h-screen justify-between max-w-[1440px] mx-auto">
+			<body className="flex flex-col min-h-screen max-w-[1440px] mx-auto">
 				<SessionWrapper>
 					<NavBar />
-					<main className="flex">
-						<section className="w-1/4">
+					<main className="flex flex-col lg:flex-row flex-1">
+						<section className="w-full lg:w-1/4">
 							<SideBar />
 						</section>
-						<section className="w-3/4">
-							{/* <SessionWrapper>{children}</SessionWrapper> */}
-							{children}
-						</section>
+						<section className="w-full lg:w-3/4">{children}</section>
 					</main>
 					<Footer />
 				</SessionWrapper>

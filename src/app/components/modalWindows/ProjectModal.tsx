@@ -78,87 +78,129 @@ export default function ProjectModal({
 	};
 
 	return (
-		<section className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-white/60 backdrop-blur-sm transition-opacity duration-300">
-			<div
-				className={`
-          bg-white rounded-xl shadow-2xl w-[600px]
-          transform transition-all duration-300 scale-100 opacity-100
-          flex flex-col max-h-[90vh]
-        `}
-			>
-				<form onSubmit={handleSubmit}>
-					<div>
-						<label htmlFor="title">Title: </label>
-						<input
-							type="text"
-							id="title"
-							name="title"
-							defaultValue={selectedProject?.title}
-							required
-						/>
-					</div>
-					<div>
-						<label htmlFor="repo_link">Repo Link: </label>
-						<input
-							type="text"
-							id="repo_link"
-							name="repo_link"
-							defaultValue={selectedProject?.repo_link ?? ''}
-						/>
-					</div>
-
-					<div>
-						<label htmlFor="project_link">Project Link: </label>
-						<input
-							type="text"
-							id="project_link"
-							name="project_link"
-							defaultValue={selectedProject?.project_link ?? ''}
-						/>
-					</div>
-					<div>
-						<label htmlFor="tech_stack">Tech Stack: </label>
-						<input
-							type="text"
-							id="tech_stack"
-							name="tech_stack"
-							defaultValue={selectedProject?.tech_stack.join(', ')}
-							placeholder="React, TypeScript, Prisma..."
-							required
-						/>
-					</div>
-					<div>
-						<label htmlFor="description">Description: </label>
-						<input
-							type="text"
-							id="description"
-							name="description"
-							defaultValue={selectedProject?.description ?? ''}
-						/>
-					</div>
-					<div>
-						<label htmlFor="projectYear">Project Year: </label>
-						<input
-							type="number"
-							id="projectYear"
-							name="projectYear"
-							defaultValue={selectedProject?.projectYear}
-							required
-						/>
-					</div>
-					<div>
-						<label htmlFor="preview_image_link">Preview Image: </label>
-						<input
-							type="text"
-							id="preview_image_link"
-							name="preview_image_link"
-							defaultValue={selectedProject?.preview_image_link ?? ''}
-						/>
-					</div>
-					<button type="submit">{selectedProject ? 'Update' : 'Add'}</button>
-					<button type="button" onClick={closeModal}>
-						Cancel
+		<section className="modal-container">
+			<div className="modal-window">
+				<div className="modal-header">
+					<p className="modal-header-title">Edit Project</p>
+					<button
+						onClick={closeModal}
+						className="text-gray-400 hover:text-gray-600 transition-colors"
+					>
+						<span className="sr-only">Close</span>
+						<svg
+							className="h-6 w-6"
+							fill="none"
+							viewBox="0 0 24 24"
+							strokeWidth="1.5"
+							stroke="currentColor"
+						>
+							<path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+						</svg>
 					</button>
+				</div>
+				<form onSubmit={handleSubmit} className="flex flex-col flex-1 overflow-hidden">
+					<div className="p-6 overflow-y-auto space-y-6">
+						<div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+							<div>
+								<label htmlFor="title" className="modal-label-text">
+									Title <span className="text-red-500">*</span>
+								</label>
+								<input
+									type="text"
+									id="title"
+									name="title"
+									className="modal-input"
+									defaultValue={selectedProject?.title}
+									required
+								/>
+							</div>
+							<div>
+								<label htmlFor="projectYear" className="modal-label-text">
+									Project Year <span className="text-red-500">*</span>
+								</label>
+								<input
+									type="number"
+									id="projectYear"
+									name="projectYear"
+									className="modal-input"
+									defaultValue={selectedProject?.projectYear}
+									required
+								/>
+							</div>
+						</div>
+
+						<div>
+							<label htmlFor="tech_stack" className="modal-label-text">
+								Tech Stack <span className="text-red-500">*</span>
+							</label>
+							<input
+								type="text"
+								id="tech_stack"
+								name="tech_stack"
+								className="modal-input"
+								defaultValue={selectedProject?.tech_stack.join(', ')}
+								placeholder="React, TypeScript, Prisma..."
+								required
+							/>
+						</div>
+
+						<div>
+							<label htmlFor="repo_link" className="modal-label-text">
+								Repo Link
+							</label>
+							<input
+								type="text"
+								id="repo_link"
+								name="repo_link"
+								className="modal-input"
+								defaultValue={selectedProject?.repo_link ?? ''}
+							/>
+						</div>
+
+						<div>
+							<label htmlFor="project_link" className="modal-label-text">
+								Project Link
+							</label>
+							<input
+								type="text"
+								id="project_link"
+								name="project_link"
+								className="modal-input"
+								defaultValue={selectedProject?.project_link ?? ''}
+							/>
+						</div>
+
+						<div>
+							<label htmlFor="description" className="modal-label-text">
+								Description
+							</label>
+							<textarea
+								rows={3}
+								id="description"
+								name="description"
+								className="modal-input"
+								defaultValue={selectedProject?.description ?? ''}
+							/>
+						</div>
+
+						{/* <div>
+							<label htmlFor="preview_image_link">Preview Image: </label>
+							<input
+								type="text"
+								id="preview_image_link"
+								name="preview_image_link"
+								defaultValue={selectedProject?.preview_image_link ?? ''}
+							/>
+						</div> */}
+					</div>
+					<div className="modal-footer">
+						<button type="button" onClick={closeModal} className="modal-secondary-btn">
+							Cancel
+						</button>
+						<button type="submit" className="modal-primary-btn">
+							{selectedProject ? 'Update' : 'Add'}
+						</button>
+					</div>
 				</form>
 			</div>
 		</section>

@@ -1,30 +1,9 @@
 import prisma from 'src/lib/prisma';
 import type { Project } from 'types/projectType';
-import { getUserIdByUsername } from './userController';
 
-export async function getUserProjectByUsername(username: string = 'zengks') {
-	const user = await getUserIdByUsername(username);
-	if (!user) return null;
+export async function getUserProject(username: string) {
 	return await prisma.project.findMany({
-		where: { userId: user.id },
-		select: {
-			id: true,
-			title: true,
-			repo_link: true,
-			project_link: true,
-			description: true,
-			preview_image_link: true,
-			tech_stack: true,
-			projectYear: true,
-		},
-	});
-}
-
-export async function getUserProject(userId: string) {
-	return await prisma.project.findMany({
-		where: {
-			userId,
-		},
+		where: { username },
 	});
 }
 
