@@ -4,7 +4,6 @@ import { getUserProject } from '@/controllers/userProjectController';
 
 export default async function Projects() {
 	const projects = await getUserProject('zengks');
-	console.log(projects);
 	return (
 		<>
 			<section className="section-container section-card">

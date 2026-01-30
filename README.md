@@ -10,9 +10,9 @@ This application features a fully integrated **Admin Dashboard** allowing for dy
 - **Library:** React 19
 - **Language:** TypeScript
 - **Styling:** [Tailwind CSS v4](https://tailwindcss.com/) & PostCSS
-- **Database:** PostgreSQL (via Neon / Supabase)
+- **Database:** PostgreSQL (via Neon)
 - **ORM:** [Prisma](https://www.prisma.io/) (v6)
-- **Authentication:** NextAuth.js (v4) with BcryptJS
+- **Authentication:** NextAuth.js (v4) with BcryptJS and JWT Strategy
 - **Content:** React Markdown (for rich text descriptions)
 - **Deployment:** Vercel
 

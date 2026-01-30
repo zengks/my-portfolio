@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { addSkill, updateSkill, deleteSkill } from '@/controllers/userSkillController';
 
-export async function POST(request: NextRequest, { params }: { params: { username: string } }) {
+export async function POST(
+	request: NextRequest,
+	{ params }: { params: Promise<{ username: string }> }
+) {
 	try {
 		const { username } = await params;
 		if (!username) {
@@ -17,7 +20,10 @@ export async function POST(request: NextRequest, { params }: { params: { usernam
 	}
 }
 
-export async function PUT(request: NextRequest, { params }: { params: { username: string } }) {
+export async function PUT(
+	request: NextRequest,
+	{ params }: { params: Promise<{ username: string }> }
+) {
 	try {
 		const { username } = await params;
 		if (!username) {
