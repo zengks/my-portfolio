@@ -167,7 +167,6 @@ export default function UsersPage() {
 			closeDeleteModal();
 			fetchCurrentUserData();
 			setLoading(false);
-			router.refresh();
 		}
 	};
 

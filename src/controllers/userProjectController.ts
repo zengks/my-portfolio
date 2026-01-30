@@ -1,5 +1,6 @@
 import prisma from 'src/lib/prisma';
 import type { Project } from 'types/projectType';
+import { revalidatePath } from 'next/cache';
 
 export async function getUserProject(username: string) {
 	return await prisma.project.findMany({
@@ -28,6 +29,10 @@ export async function addProject(username: string, projectData: Project) {
 			projectYear: projectData.projectYear,
 		},
 	});
+
+	revalidatePath('/');
+	revalidatePath('/projects');
+
 	return newProject;
 }
 
@@ -54,11 +59,19 @@ export async function updateUserProject(username: string, selectedProjectData: P
 		},
 	});
 
+	revalidatePath('/');
+	revalidatePath('/projects');
+
 	return updatedProject;
 }
 
 export async function deleteUserProject(projectId: number) {
-	return await prisma.project.delete({
+	const result = await prisma.project.delete({
 		where: { id: projectId },
 	});
+
+	revalidatePath('/');
+	revalidatePath('/projects');
+
+	return result;
 }

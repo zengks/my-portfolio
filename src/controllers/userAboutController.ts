@@ -1,5 +1,5 @@
 import prisma from '@/lib/prisma';
-
+import { revalidatePath } from 'next/cache';
 import { AboutUser } from 'types/aboutUserType';
 
 export async function getUserAbout(username: string) {
@@ -26,6 +26,9 @@ export async function addUserAbout(username: string, userAboutSectionData: About
 		},
 	});
 
+	revalidatePath('/');
+	revalidatePath('/about');
+
 	return newUserAbout;
 }
 
@@ -50,11 +53,19 @@ export async function updateUserAbout(username: string, selectedUserAboutSection
 		},
 	});
 
+	revalidatePath('/');
+	revalidatePath('/about');
+
 	return updatedUserAbout;
 }
 
 export async function deleteUserAbout(userAboutId: number) {
-	return await prisma.aboutUser.delete({
+	const result = await prisma.aboutUser.delete({
 		where: { id: userAboutId },
 	});
+
+	revalidatePath('/');
+	revalidatePath('/about');
+
+	return result;
 }
