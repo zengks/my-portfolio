@@ -2,7 +2,10 @@ import { NextRequest, NextResponse } from 'next/server';
 
 import { updateUserProfile } from '@/controllers/userProfileController';
 
-export async function PUT(request: NextRequest, { params }: { params: { username: string } }) {
+export async function PUT(
+	request: NextRequest,
+	{ params }: { params: Promise<{ username: string }> }
+) {
 	try {
 		const { username } = await params;
 		if (!username) {

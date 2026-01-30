@@ -1,7 +1,10 @@
 import { NextResponse, NextRequest } from 'next/server';
 import { getUserByUsername } from '@/controllers/userController';
 
-export async function GET(request: NextRequest, { params }: { params: { username: string } }) {
+export async function GET(
+	request: NextRequest,
+	{ params }: { params: Promise<{ username: string }> }
+) {
 	try {
 		const { username } = await params;
 

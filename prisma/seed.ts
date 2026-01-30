@@ -67,18 +67,21 @@ async function main() {
 				username: adminUser.username,
 				title: 'BCIT Quiz Page',
 				tech_stack: ['mongodb', 'reactjs', 'expressjs', 'nodejs'],
+				projectYear: 2023,
 			},
 			{
 				userId: adminUser.id,
 				username: adminUser.username,
 				title: 'Personal Portfolio Website',
 				tech_stack: ['nextjs', 'prisma', 'tailwindcss', 'typescript'],
+				projectYear: 2025,
 			},
 			{
 				userId: adminUser.id,
 				username: adminUser.username,
 				title: 'Kombucha Guide',
 				tech_stack: ['reactjs', 'python', 'css'],
+				projectYear: 2024,
 			},
 		],
 	});
