@@ -112,19 +112,30 @@ export default function NavBar() {
 			</button>
 
 			{isMobileMenuOpen && (
-				<div className="absolute top-16 left-0 w-full bg-white/95 backdrop-blur-md shadow-lg border-t border-gray-100 py-6 lg:hidden z-40 flex flex-col items-center gap-6 animate-in slide-in-from-top-5 fade-in duration-200">
-					{MENU_ITEMS.map((item) => (
-						<Link
-							key={item.name}
-							href={item.link}
-							onClick={closeMenu}
-							className={`text-md font-medium transition-colors ${
-								pathname === item.link ? 'text-black' : 'text-neutral-500 hover:text-neutral-900'
-							}`}
-						>
-							{item.name.toUpperCase()}
-						</Link>
-					))}
+				<nav className="absolute top-10 left-0 w-full bg-white/95 backdrop-blur-md shadow-lg border-t border-gray-100 py-6 lg:hidden z-40 flex flex-col items-center gap-6 animate-in slide-in-from-top-5 fade-in duration-200">
+					{MENU_ITEMS.map((item) => {
+						const isActive = pathname === item.link;
+						return (
+							<Link
+								key={item.name}
+								href={item.link}
+								onClick={closeMenu}
+								className="group relative pb-1 text-neutral-600 hover:text-neutral-900 transition-colors"
+							>
+								{item.name.toUpperCase()}
+								<span
+									className={`
+                    absolute bottom-0 left-1/2 -translate-x-1/2
+                    h-0.5 bg-neutral-700 rounded-full
+                    transition-all duration-400 ease-out
+                    ${isActive ? 'w-2' : 'w-0'}
+                    ${'group-hover:w-full'}
+                  `}
+								/>
+							</Link>
+						);
+					})}
+
 					<Link
 						key="myInfo"
 						href="/myInfo"
@@ -142,16 +153,26 @@ export default function NavBar() {
                   `}
 						/>
 					</Link>
+
 					{status === 'authenticated' && (
 						<Link
 							href={`/${session.user.username}/dashboard`}
 							onClick={closeMenu}
-							className="text-lg font-medium text-neutral-500 hover:text-neutral-900"
+							className="group relative pb-1 text-neutral-600 hover:text-neutral-900 transition-colors"
 						>
-							Dashboard
+							DASHBOARD
+							<span
+								className={`
+                    absolute bottom-0 left-1/2 -translate-x-1/2
+                    h-0.5 bg-neutral-700 rounded-full
+                    transition-all duration-400 ease-out
+                    ${pathname === `/${session.user.username}/dashboard` ? 'w-2' : 'w-0'}
+                    ${'group-hover:w-full'}
+                  `}
+							/>
 						</Link>
 					)}
-				</div>
+				</nav>
 			)}
 
 			{/* only for style purposes */}
