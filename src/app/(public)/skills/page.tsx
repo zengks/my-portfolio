@@ -4,10 +4,30 @@ import SkillsAccordion from '@/app/components/accordion/SkillsAccordion';
 export default async function Skills() {
 	const skillsData = await getUserSkills('zengks');
 
+	const PREFERRED_ORDER = [
+		'Core Skills',
+		'Professional Workflow',
+		'QA & Testing',
+		'CMS & E-Commerce',
+		'Actively Learning',
+	];
+
 	const uniqueSkillCategories = () => {
 		if (!skillsData) return [];
-		const categories = skillsData.map((s) => s.categoryName);
-		return Array.from(new Set(categories));
+
+		const categories = Array.from(
+			new Set(skillsData.map((s) => s.categoryName).filter((name): name is string => name !== null))
+		);
+
+		return categories.sort((a, b) => {
+			const indexA = PREFERRED_ORDER.indexOf(a);
+			const indexB = PREFERRED_ORDER.indexOf(b);
+
+			if (indexA === -1) return 1;
+			if (indexB === -1) return -1;
+
+			return indexA - indexB;
+		});
 	};
 
 	return (
