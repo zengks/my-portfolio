@@ -47,6 +47,33 @@ import BlueHostIcon from '@/assets/icons/bluehost.svg';
 import PostManIcon from '@/assets/icons/postman.svg';
 import AppWriteIcon from '@/assets/icons/appwrite.svg';
 
+export const MENU_ITEMS = [
+	{
+		name: 'home',
+		link: '/',
+	},
+	{
+		name: 'about',
+		link: '/about',
+	},
+	{
+		name: 'projects',
+		link: '/projects',
+	},
+	{
+		name: 'Work',
+		link: '/work',
+	},
+	{
+		name: 'Skills',
+		link: '/skills',
+	},
+	{
+		name: 'contact',
+		link: '/contact',
+	},
+];
+
 export const SKILLS_MAP = {
 	woocommerce: WooCommerceIcon,
 	bluehost: BlueHostIcon,
