@@ -2,7 +2,7 @@ import ViewMore from '../ViewMoreLink';
 import { getUserSkills } from '@/controllers/userSkillController';
 import SkillsAccordion from '../accordion/SkillsAccordion';
 
-const TARGET_CATEGORIES = ['Core Skills', 'Web Development'];
+const TARGET_CATEGORIES = ['Core Skills'];
 
 export default async function SkillSection() {
 	const skillsData = await getUserSkills('zengks');
