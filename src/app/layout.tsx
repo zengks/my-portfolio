@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { Manrope, Lora, Hurricane } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
 
 import SessionWrapper from './components/SessionWrapper';
 import NavBar from './components/UI/NavBar';
@@ -49,6 +50,7 @@ export default function RootLayout({
 					</main>
 					<Footer />
 				</SessionWrapper>
+				<Analytics />
 			</body>
 		</html>
 	);
