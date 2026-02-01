@@ -37,7 +37,7 @@ export default function SkillsAccordion({ skill }: { skill: Skill }) {
 											alt={`${each} icon`}
 											width={30}
 											height={30}
-											className="object-contain opacity-80 group-hover/icon:opacity-100 transition-opacity"
+											className="object-contain w-6 h-6 lg:w-[30px] lg:h-[30px] opacity-80 group-hover/icon:opacity-100 transition-opacity"
 										/>
 									) : (
 										<Image
@@ -45,7 +45,7 @@ export default function SkillsAccordion({ skill }: { skill: Skill }) {
 											alt={'default programming icon'}
 											width={30}
 											height={30}
-											className="object-contain opacity-80 group-hover/icon:opacity-100 transition-opacity"
+											className="object-contain w-6 h-6 lg:w-[30px] lg:h-[30px] opacity-80 group-hover/icon:opacity-100 transition-opacity"
 										/>
 									)}
 								</div>

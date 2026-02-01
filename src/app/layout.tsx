@@ -42,10 +42,10 @@ export default function RootLayout({
 				<SessionWrapper>
 					<NavBar />
 					<main className="flex flex-col lg:flex-row flex-1">
-						<section className="w-full lg:w-1/4">
+						<section className="w-full lg:w-1/3 xl:w-1/4">
 							<SideBar />
 						</section>
-						<section className="w-full lg:w-3/4">{children}</section>
+						<section className="w-full lg:w-2/3 xl:w-3/4">{children}</section>
 					</main>
 					<Footer />
 				</SessionWrapper>
