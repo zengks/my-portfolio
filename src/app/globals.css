@@ -21,7 +21,7 @@ body {
 }
 
 .section-container {
-	@apply mx-[20] lg:mx-[100] md:mx-[60];
+	@apply mx-[20] md:mx-[30] lg:mx-[40] xl:mx-[100];
 }
 
 .section-card {
@@ -50,6 +50,12 @@ body {
 	font-style: normal;
 	font-size: 32px;
 	text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+	.logo {
+		font-size: 23px;
+	}
 }
 
 .logo-creative {
