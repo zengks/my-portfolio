@@ -81,7 +81,7 @@ export default function ProjectAccordion({ project }: { project: Project }) {
 						</div>
 					</div>
 
-					{(project.repo_link || project.project_link) && (
+					{project.repo_link && (
 						<div className="mt-4 flex gap-3">
 							<a
 								href={project.repo_link || '/'}
@@ -89,6 +89,18 @@ export default function ProjectAccordion({ project }: { project: Project }) {
 								className="flex items-center hover:underline italic"
 							>
 								View Repo <Image src={NewTabIcon} alt="New Tab Icon" width={20} />
+							</a>
+						</div>
+					)}
+
+					{project.project_link && (
+						<div className="mt-2 flex gap-3">
+							<a
+								href={project.project_link || '/'}
+								target="_blank"
+								className="flex items-center hover:underline italic"
+							>
+								View LIVE Site <Image src={NewTabIcon} alt="New Tab Icon" width={20} />
 							</a>
 						</div>
 					)}

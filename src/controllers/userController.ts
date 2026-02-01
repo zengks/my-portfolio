@@ -101,6 +101,7 @@ export async function getUserByUsername(username: string) {
 					},
 				},
 				project: {
+					orderBy: { projectYear: 'desc' },
 					select: {
 						id: true,
 						title: true,

@@ -5,6 +5,7 @@ import { revalidatePath } from 'next/cache';
 export async function getUserProject(username: string) {
 	return await prisma.project.findMany({
 		where: { username },
+		orderBy: { projectYear: 'desc' },
 	});
 }
 
