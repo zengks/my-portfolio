@@ -87,7 +87,7 @@ export default function ProjectAccordion({ project }: { project: Project }) {
 							<a
 								href={project.repo_link || '/'}
 								target="_blank"
-								className="flex items-center hover:underline italic"
+								className="flex items-center hover:underline italic cursor-pointer"
 							>
 								View Repo <Image src={NewTabIcon} alt="New Tab Icon" width={20} />
 							</a>
@@ -99,7 +99,7 @@ export default function ProjectAccordion({ project }: { project: Project }) {
 							<a
 								href={project.project_link || '/'}
 								target="_blank"
-								className="flex items-center hover:underline italic"
+								className="flex items-center hover:underline italic cursor-pointer"
 							>
 								View LIVE Site <Image src={NewTabIcon} alt="New Tab Icon" width={20} />
 							</a>
