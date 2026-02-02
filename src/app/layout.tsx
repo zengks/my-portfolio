@@ -29,8 +29,20 @@ const hurricane = Hurricane({
 });
 
 export const metadata: Metadata = {
-	title: 'Steven Portfolio',
-	description: "CZ's portfolio website",
+	metadataBase: new URL('https://www.czsteven.com'),
+
+	title: {
+		template: "%s | Steven's Portfolio",
+		default: "Steven's Portfolio",
+	},
+
+	description: 'Full-stack developer portfolio showcasing projects and skills.',
+
+	openGraph: {
+		type: 'website',
+		locale: 'en_CA',
+		siteName: "Steven's Portfolio",
+	},
 };
 
 export default function RootLayout({
