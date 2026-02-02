@@ -51,7 +51,7 @@ import VisualStudio from '@/assets/icons/visualstudio.svg';
 import MaterialUI from '@/assets/icons/materialui.svg';
 import Redux from '@/assets/icons/redux.svg';
 import Jquery from '@/assets/icons/jquery.svg';
-import mcp from '@/assets/mcp.png';
+import mcp from '@/assets/icons/mcp.png';
 
 export const MENU_ITEMS = [
 	{
