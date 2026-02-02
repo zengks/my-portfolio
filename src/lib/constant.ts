@@ -52,6 +52,7 @@ import MaterialUI from '@/assets/icons/materialui.svg';
 import Redux from '@/assets/icons/redux.svg';
 import Jquery from '@/assets/icons/jquery.svg';
 import mcp from '@/assets/icons/mcp.png';
+import googleplus from '@/assets/icons/googleplus.svg';
 
 export const MENU_ITEMS = [
 	{
@@ -81,6 +82,7 @@ export const MENU_ITEMS = [
 ];
 
 export const SKILLS_MAP = {
+	googleplus: googleplus,
 	mcp: mcp,
 	jquery: Jquery,
 	redux: Redux,
