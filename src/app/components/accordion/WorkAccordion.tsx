@@ -63,7 +63,7 @@ export default function WorkAccordion({ work }: { work: WorkExperience }) {
 
 			<div
 				className={`overflow-hidden transition-all duration-500 ease-in-out ${
-					isOpen ? 'max-h-[1000px]' : 'max-h-0'
+					isOpen ? 'max-h-[1200px]' : 'max-h-0'
 				}`}
 			>
 				<div className="p-5 pt-0 border-t border-gray-100 mt-2">
@@ -74,6 +74,7 @@ export default function WorkAccordion({ work }: { work: WorkExperience }) {
 						<div className="prose prose-slate list-disc max-w-none">
 							<Markdown
 								components={{
+									p: ({ ...props }) => <p className="mb-3 last:mb-0 leading-normal" {...props} />,
 									ul: ({ ...props }) => <ul className="list-disc pl-5 space-y-1" {...props} />,
 									ol: ({ ...props }) => <ol className="list-decimal pl-5 space-y-1" {...props} />,
 									li: ({ ...props }) => <li className="pl-1" {...props} />,
