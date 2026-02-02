@@ -1,5 +1,17 @@
 import { getUserSkills } from '@/controllers/userSkillController';
 import SkillsAccordion from '@/app/components/accordion/SkillsAccordion';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+	title: 'Technical Skills | Full Stack Developer',
+	description:
+		"Explore Steven's technical proficiency and expertise in various programming languages, frameworks, and tools.",
+	openGraph: {
+		title: 'Technical Skills | Steven',
+		description:
+			"A breakdown of Steven's technical stack including JavaScript, React, Node.js, and Cloud Infrastructure.",
+	},
+};
 
 export default async function Skills() {
 	const skillsData = await getUserSkills('zengks');
@@ -32,6 +44,8 @@ export default async function Skills() {
 
 	return (
 		<section className="section-container section-card text-wrap">
+			{/* Hidden for SEO */}
+			<h1 className="sr-only">Technical Skills and Proficiency</h1>
 			<p className="section-title">Technical Skills</p>
 			{skillsData &&
 				skillsData.length > 0 &&

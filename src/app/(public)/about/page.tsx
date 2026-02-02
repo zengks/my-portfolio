@@ -1,5 +1,16 @@
 import { getUserAbout } from '@/controllers/userAboutController';
 import Markdown from 'react-markdown';
+import { Metadata } from 'next';
+
+export const metadata: Metadata = {
+	title: 'About Me | Full Stack Developer Portfolio',
+	description:
+		'Learn about my journey as a software developer and what drives my passion for coding.',
+	openGraph: {
+		title: 'About Steven | Full Stack Developer',
+		description: 'My background, philosophy, and journey in software engineering.',
+	},
+};
 
 export default async function About() {
 	const userAbout = await getUserAbout('zengks');

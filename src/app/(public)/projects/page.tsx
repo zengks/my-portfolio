@@ -1,6 +1,17 @@
-import ProjectAccordion from '@/app/components/accordion/ProjectAccordion';
+import { Metadata } from 'next';
 
+import ProjectAccordion from '@/app/components/accordion/ProjectAccordion';
 import { getUserProject } from '@/controllers/userProjectController';
+
+export const metadata: Metadata = {
+	title: 'Projects | Portfolio Showcase',
+	description:
+		'Browse my latest web development projects. A showcase of applications built with Next.js, React, Node.js, and more.',
+	openGraph: {
+		title: "Steven\'s Project Portfolio",
+		description: 'Case studies and live demos of my software engineering work.',
+	},
+};
 
 export default async function Projects() {
 	const projects = await getUserProject('zengks');

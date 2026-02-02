@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import { Manrope, Lora, Hurricane } from 'next/font/google';
+import { Analytics } from '@vercel/analytics/next';
+import { SpeedInsights } from '@vercel/speed-insights/next';
 
 import SessionWrapper from './components/SessionWrapper';
 import NavBar from './components/UI/NavBar';
@@ -27,8 +29,20 @@ const hurricane = Hurricane({
 });
 
 export const metadata: Metadata = {
-	title: 'Steven Portfolio',
-	description: "CZ's portfolio website",
+	metadataBase: new URL('https://www.czsteven.com'),
+
+	title: {
+		template: "%s | Steven's Portfolio",
+		default: "Steven's Portfolio",
+	},
+
+	description: 'Full-stack developer portfolio showcasing projects and skills.',
+
+	openGraph: {
+		type: 'website',
+		locale: 'en_CA',
+		siteName: "Steven's Portfolio",
+	},
 };
 
 export default function RootLayout({
@@ -49,6 +63,8 @@ export default function RootLayout({
 					</main>
 					<Footer />
 				</SessionWrapper>
+				<Analytics />
+				<SpeedInsights />
 			</body>
 		</html>
 	);

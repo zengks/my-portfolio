@@ -1,5 +1,6 @@
 import { getUserProfile } from '@/controllers/userProfileController';
 import Image from 'next/image';
+import { Metadata } from 'next';
 
 import emailIcon from 'src/assets/icons/email.svg';
 import locationIcon from 'src/assets/icons/location.svg';
@@ -11,6 +12,16 @@ import NewTabIcon from '@/assets/icons/newTab.svg';
 import userIcon from 'src/assets/icons/user.svg';
 import jobIcon from 'src/assets/icons/job.svg';
 import Link from 'next/link';
+
+export const metadata: Metadata = {
+	title: "Steven's Profile & Resume",
+	description:
+		'View my resume, contact details, social links (Github, LinkedIn), and current location.',
+	robots: {
+		index: false,
+		follow: true,
+	},
+};
 
 const socialIconSize = {
 	width: 25,
