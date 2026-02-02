@@ -46,6 +46,8 @@ import WooCommerceIcon from '@/assets/icons/woocommerce.svg';
 import BlueHostIcon from '@/assets/icons/bluehost.svg';
 import PostManIcon from '@/assets/icons/postman.svg';
 import AppWriteIcon from '@/assets/icons/appwrite.svg';
+import DotNet from '@/assets/icons/dotnet.svg';
+import VisualStudio from '@/assets/icons/visualstudio.svg';
 
 export const MENU_ITEMS = [
 	{
@@ -75,6 +77,8 @@ export const MENU_ITEMS = [
 ];
 
 export const SKILLS_MAP = {
+	dotnet: DotNet,
+	visualstudio: VisualStudio,
 	woocommerce: WooCommerceIcon,
 	bluehost: BlueHostIcon,
 	postman: PostManIcon,
