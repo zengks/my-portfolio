@@ -48,6 +48,10 @@ import PostManIcon from '@/assets/icons/postman.svg';
 import AppWriteIcon from '@/assets/icons/appwrite.svg';
 import DotNet from '@/assets/icons/dotnet.svg';
 import VisualStudio from '@/assets/icons/visualstudio.svg';
+import MaterialUI from '@/assets/icons/materialui.svg';
+import Redux from '@/assets/icons/redux.svg';
+import Jquery from '@/assets/icons/jquery.svg';
+import mcp from '@/assets/icons/mcp.png';
 
 export const MENU_ITEMS = [
 	{
@@ -77,6 +81,10 @@ export const MENU_ITEMS = [
 ];
 
 export const SKILLS_MAP = {
+	mcp: mcp,
+	jquery: Jquery,
+	redux: Redux,
+	materialui: MaterialUI,
 	dotnet: DotNet,
 	visualstudio: VisualStudio,
 	woocommerce: WooCommerceIcon,
