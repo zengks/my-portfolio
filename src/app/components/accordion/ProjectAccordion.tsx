@@ -72,8 +72,10 @@ export default function ProjectAccordion({ project }: { project: Project }) {
 							<Markdown
 								components={{
 									p: ({ ...props }) => <p className="mb-3 last:mb-0 leading-normal" {...props} />,
-									ul: ({ ...props }) => <ul className="list-disc pl-5 space-y-1" {...props} />,
-									ol: ({ ...props }) => <ol className="list-decimal pl-5 space-y-1" {...props} />,
+									ul: ({ ...props }) => <ul className="list-disc pl-5 space-y-1 mb-3" {...props} />,
+									ol: ({ ...props }) => (
+										<ol className="list-decimal pl-5 space-y-1 mb-3" {...props} />
+									),
 									li: ({ ...props }) => <li className="pl-1" {...props} />,
 								}}
 							>
