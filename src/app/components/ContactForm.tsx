@@ -1,8 +1,11 @@
 'use client';
 
 import { useState } from 'react';
+import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 
 export default function ContactForm() {
+	const { executeRecaptcha } = useGoogleReCaptcha();
+
 	const [name, setName] = useState('');
 	const [email, setEmail] = useState('');
 	const [message, setMessage] = useState('');
@@ -13,6 +16,12 @@ export default function ContactForm() {
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
+
+		if (!executeRecaptcha) {
+			console.warn('reCAPTCHA not yet available!');
+			return;
+		}
+
 		setIsLoading(true);
 		setStatusMessage(null);
 		setIsError(false);
@@ -24,12 +33,14 @@ export default function ContactForm() {
 		};
 
 		try {
+			const token = await executeRecaptcha('contact_form');
+
 			const response = await fetch('/api/email', {
 				method: 'POST',
 				headers: {
 					'Content-Type': 'application/json',
 				},
-				body: JSON.stringify(formData),
+				body: JSON.stringify({ ...formData, gRecaptchaToken: token }),
 			});
 
 			const data = await response.json();
@@ -120,6 +131,17 @@ export default function ContactForm() {
 					</button>
 				</section>
 			</form>
+			<p className="text-[10px] text-gray-400 text-end">
+				This site is protected by reCAPTCHA and the Google
+				<a href="https://policies.google.com/privacy" target="_blank" className="mx-1 underline">
+					Privacy Policy
+				</a>
+				and
+				<a href="https://policies.google.com/terms" target="_blank" className="mx-1 underline">
+					Terms of Service
+				</a>
+				apply.
+			</p>
 		</section>
 	);
 }
