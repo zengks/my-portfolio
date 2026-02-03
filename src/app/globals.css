@@ -118,3 +118,7 @@ body {
 .icon-result-row {
 	@apply flex justify-start items-center gap-3 border-b border-gray-300 my-2 py-3 cursor-pointer text-gray-700;
 }
+
+.grecaptcha-badge {
+	visibility: hidden;
+}
