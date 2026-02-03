@@ -1,5 +1,7 @@
-import ContactForm from '../../components/ContactForm';
 import { Metadata } from 'next';
+import { ReCaptchaProvider } from '@/app/components/ReCaptchaProvider';
+
+import ContactForm from '../../components/ContactForm';
 
 export const metadata: Metadata = {
 	title: 'Contact Me | Hire a Developer',
@@ -10,7 +12,9 @@ export const metadata: Metadata = {
 export default function Contact() {
 	return (
 		<section className="w-full">
-			<ContactForm />
+			<ReCaptchaProvider>
+				<ContactForm />
+			</ReCaptchaProvider>
 		</section>
 	);
 }

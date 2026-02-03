@@ -2,7 +2,26 @@ import { NextRequest, NextResponse } from 'next/server';
 
 export async function POST(req: NextRequest) {
 	const body = await req.json();
-	const { name, email, message } = body;
+	const { name, email, message, gRecaptchaToken } = body;
+
+	const secretKey = process.env.RECAPTCHA_SECRET_KEY;
+
+	const verifyRes = await fetch(`https://www.google.com/recaptcha/api/siteverify`, {
+		method: 'POST',
+		headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+		body: `secret=${secretKey}&response=${gRecaptchaToken}`,
+	});
+
+	const captchaData = await verifyRes.json();
+
+	console.log('reCAPTCHA Response:', captchaData);
+
+	if (!captchaData.success || captchaData.score < 0.5) {
+		return NextResponse.json(
+			{ message: 'Security check failed. Please try again.', score: captchaData.score },
+			{ status: 403 }
+		);
+	}
 
 	if (!name || !email || !message) {
 		return NextResponse.json({ message: 'All fields are required' }, { status: 400 });
