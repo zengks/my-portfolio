@@ -17,10 +17,6 @@ export const metadata: Metadata = {
 	title: "Steven's Profile & Resume",
 	description:
 		'View my resume, contact details, social links (Github, LinkedIn), and current location.',
-	robots: {
-		index: false,
-		follow: true,
-	},
 };
 
 const socialIconSize = {
