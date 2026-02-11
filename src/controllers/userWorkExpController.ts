@@ -5,7 +5,7 @@ import { revalidatePath } from 'next/cache';
 export async function getUserWorkExp(username: string) {
 	return await prisma.workExperience.findMany({
 		where: { username },
-		orderBy: [{ startYear: 'desc' }, { endYear: 'desc' }],
+		orderBy: [{ endYear: 'desc' }, { startYear: 'desc' }],
 	});
 }
 
