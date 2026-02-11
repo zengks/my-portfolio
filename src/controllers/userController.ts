@@ -82,7 +82,7 @@ export async function getUserByUsername(username: string) {
 				},
 
 				workExperience: {
-					orderBy: [{ startYear: 'desc' }, { endYear: 'desc' }],
+					orderBy: [{ endYear: 'desc' }, { startYear: 'desc' }],
 					select: {
 						id: true,
 						jobTitle: true,
