@@ -39,7 +39,7 @@ export default function WorkAccordion({ work }: { work: WorkExperience }) {
 						<p className="text-gray-700 text-[14px]">{work.company}</p>
 						<p className="text-gray-500 text-[14px]">{`${work.employmentType} ${work.locationType}`}</p>
 						<p className="text-gray-500 text-[14px]">{`${getMonthInWords(work.startMonth)} ${work.startYear} - ${work.endMonth ? getMonthInWords(work.endMonth) : ''} ${
-							work.endYear ? work.endYear : 'Present'
+							work.endYear && work.endYear !== 9999 ? work.endYear : 'Present'
 						}`}</p>
 						<p className="text-gray-500 text-[14px]">{`${work.city}, ${work.province}, ${work.country}`}</p>
 					</div>
