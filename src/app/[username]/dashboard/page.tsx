@@ -321,6 +321,7 @@ export default function UsersPage() {
 												province: currentUserData.profile.province ?? '',
 												country: currentUserData.profile.country ?? '',
 												resumeUrl: currentUserData.profile.resumeUrl ?? '',
+												resumeData: currentUserData.profile.resumeData ?? '',
 												linkedInUrl: currentUserData.profile.linkedInUrl ?? '',
 												githubUrl: currentUserData.profile.githubUrl ?? '',
 												aboutUser: currentUserData.profile.aboutUser ?? null,
