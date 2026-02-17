@@ -250,7 +250,7 @@ export default function UsersPage() {
 													<a
 														// href={currentUserData.profile.resumeUrl}
 														href={currentUserData.profile.resumeData || ''}
-														download={currentUserData.profile.resumeUrl}
+														// download={currentUserData.profile.resumeUrl}
 														target="_blank"
 														className="font-medium hover:text-indigo-600 transition-colors"
 													>
