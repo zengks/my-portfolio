@@ -68,6 +68,7 @@ export async function getUserByUsername(username: string) {
 						linkedInUrl: true,
 						jobTitle: true,
 						resumeUrl: true,
+						resumeData: true,
 						aboutUser: {
 							select: {
 								id: true,

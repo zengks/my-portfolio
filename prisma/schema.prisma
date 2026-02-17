@@ -44,6 +44,7 @@ model Profile {
   province    String?
   country     String?
   resumeUrl   String?
+  resumeData  String?
   linkedInUrl String?
   githubUrl   String?
   createdAt   DateTime    @default(now())

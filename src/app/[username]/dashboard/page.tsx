@@ -248,8 +248,9 @@ export default function UsersPage() {
 											<span className="col-span-2">
 												{currentUserData.profile.resumeUrl ? (
 													<a
-														href={currentUserData.profile.resumeUrl}
+														href={`/api/users/${currentUserData.profile.username}/resume`}
 														target="_blank"
+														rel="noopener noreferrer"
 														className="font-medium hover:text-indigo-600 transition-colors"
 													>
 														<span className="italic flex items-center hover:underline">
@@ -319,6 +320,7 @@ export default function UsersPage() {
 												province: currentUserData.profile.province ?? '',
 												country: currentUserData.profile.country ?? '',
 												resumeUrl: currentUserData.profile.resumeUrl ?? '',
+												resumeData: currentUserData.profile.resumeData ?? '',
 												linkedInUrl: currentUserData.profile.linkedInUrl ?? '',
 												githubUrl: currentUserData.profile.githubUrl ?? '',
 												aboutUser: currentUserData.profile.aboutUser ?? null,
