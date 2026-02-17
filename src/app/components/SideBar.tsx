@@ -110,9 +110,7 @@ export default async function SideBar() {
 						<p>
 							{profileData?.resumeUrl || profileData?.resumeUrl?.includes('.pdf') ? (
 								<a
-									// href={profileData.resumeUrl}
-									href={profileData.resumeData || ''}
-									download={profileData.resumeUrl}
+									href={`/api/users/${profileData.username}/resume`}
 									className="flex items-center hover:underline"
 									target="_blank"
 									rel="noopener noreferrer"

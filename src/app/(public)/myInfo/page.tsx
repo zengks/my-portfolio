@@ -103,11 +103,9 @@ export default async function MyInfo() {
 					<p>
 						{profileData?.resumeUrl || profileData?.resumeUrl?.includes('.pdf') ? (
 							<a
-								// href={profileData.resumeUrl}
-								href={profileData.resumeData || ''}
-								download={profileData.resumeUrl}
-								className="flex items-center hover:underline"
+								href={`/api/users/${profileData.username}/resume`}
 								target="_blank"
+								className="flex items-center hover:underline"
 								rel="noopener noreferrer"
 							>
 								View Resume <Image src={NewTabIcon} alt="New Tab Icon" width={21} />
