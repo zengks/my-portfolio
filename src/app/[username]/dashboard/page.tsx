@@ -248,7 +248,9 @@ export default function UsersPage() {
 											<span className="col-span-2">
 												{currentUserData.profile.resumeUrl ? (
 													<a
-														href={currentUserData.profile.resumeUrl}
+														// href={currentUserData.profile.resumeUrl}
+														href={currentUserData.profile.resumeData || ''}
+														download={currentUserData.profile.resumeUrl}
 														target="_blank"
 														className="font-medium hover:text-indigo-600 transition-colors"
 													>
