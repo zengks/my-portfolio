@@ -14,6 +14,8 @@ export default function WorkAccordion({ work }: { work: WorkExperience }) {
 		setIsOpen((prev) => !prev);
 	};
 
+	console.log('work image: ', work.companyLogoUrl ? work.companyLogoUrl : DefaultCompanyIcon);
+
 	return (
 		<div className="mb-3 rounded-lg border border-gray-200 bg-neutral-50 shadow-sm overflow-hidden">
 			<button
@@ -63,7 +65,7 @@ export default function WorkAccordion({ work }: { work: WorkExperience }) {
 
 			<div
 				className={`overflow-hidden transition-all duration-500 ease-in-out ${
-					isOpen ? 'max-h-[1200px]' : 'max-h-0'
+					isOpen ? 'max-h-300' : 'max-h-0'
 				}`}
 			>
 				<div className="p-5 pt-0 border-t border-gray-100 mt-2">

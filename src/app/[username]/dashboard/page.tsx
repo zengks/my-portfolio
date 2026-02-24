@@ -1,4 +1,5 @@
 'use client';
+
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
@@ -100,10 +101,6 @@ export default function UsersPage() {
 	}, [username]);
 
 	useEffect(() => {
-		if (status === 'unauthenticated') {
-			router.replace('/users/login');
-		}
-
 		setLoading(status === 'loading');
 
 		if (status === 'authenticated') fetchCurrentUserData();

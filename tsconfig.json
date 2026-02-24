@@ -11,7 +11,7 @@
 		"moduleResolution": "bundler",
 		"resolveJsonModule": true,
 		"isolatedModules": true,
-		"jsx": "preserve",
+		"jsx": "react-jsx",
 		"incremental": true,
 		"baseUrl": ".",
 		"plugins": [
@@ -21,8 +21,7 @@
 		],
 		"paths": {
 			"@/*": ["./src/*"]
-		},
-		"types": ["next-auth"]
+		}
 	},
 	"include": [
 		"next-env.d.ts",
@@ -31,7 +30,8 @@
 		".next/types/**/*.ts",
 		"tsconfig.seed.json",
 		"types/*.d.ts",
-		"types/**/*.d.ts"
+		"types/**/*.d.ts",
+		".next/dev/types/**/*.ts"
 	],
 	"exclude": ["node_modules"]
 }

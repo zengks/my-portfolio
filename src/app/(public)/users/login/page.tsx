@@ -1,15 +1,16 @@
 'use client';
 
-import { useState, FormEvent, useEffect } from 'react';
-import { SignInButton } from '@/app/components/UI/AuthButtons';
+import { useState, useEffect } from 'react';
+import { useFormStatus } from 'react-dom';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
+import { loginAction } from '@/app/actions/auth';
 
 const INPUT_STYLE =
 	'block w-full rounded-md border-0 py-1.5 px-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6';
 const LABEL_STYLE = 'block text-sm font-medium leading-6 text-gray-900';
 const BUTTON_STYLE =
-	'flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors';
+	'flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 transition-colors disabled:opacity-50';
 
 type AuthErrorMessages = {
 	CredentialsSignin: string;
@@ -17,9 +18,16 @@ type AuthErrorMessages = {
 	Configuration: string;
 };
 
+function SubmitButton() {
+	const { pending } = useFormStatus();
+	return (
+		<button type="submit" disabled={pending} className={BUTTON_STYLE}>
+			{pending ? 'Signing in...' : 'Log In'}
+		</button>
+	);
+}
+
 export default function LoginPage() {
-	const [username, setUsername] = useState('');
-	const [password, setPassword] = useState('');
 	const [error, setError] = useState('');
 
 	const router = useRouter();
@@ -38,20 +46,13 @@ export default function LoginPage() {
 		Configuration: 'Server Configuration Error.',
 	};
 
-	const handleLogin = async (event: FormEvent) => {
-		event.preventDefault();
+	const handleLogin = async (formData: FormData) => {
 		setError('');
 
-		const result = await SignInButton('credentials', {
-			redirect: false,
-			username,
-			password,
-		});
+		const result = await loginAction(formData);
 
 		if (result?.error) {
 			setError(result.error);
-		} else if (result?.ok) {
-			router.refresh();
 		}
 	};
 
@@ -71,21 +72,13 @@ export default function LoginPage() {
 
 			<div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
 				<div className="bg-white px-6 py-8 shadow-lg rounded-xl border border-gray-100 sm:px-10">
-					<form className="space-y-6" onSubmit={handleLogin}>
+					<form className="space-y-6" action={handleLogin}>
 						<div>
 							<label htmlFor="username" className={LABEL_STYLE}>
 								Username
 							</label>
 							<div className="mt-2">
-								<input
-									id="username"
-									name="username"
-									type="text"
-									required
-									value={username}
-									onChange={(e) => setUsername(e.target.value)}
-									className={INPUT_STYLE}
-								/>
+								<input id="username" name="username" type="text" required className={INPUT_STYLE} />
 							</div>
 						</div>
 
@@ -101,8 +94,6 @@ export default function LoginPage() {
 									name="password"
 									type="password"
 									required
-									value={password}
-									onChange={(e) => setPassword(e.target.value)}
 									className={INPUT_STYLE}
 								/>
 							</div>
@@ -134,9 +125,7 @@ export default function LoginPage() {
 						)}
 
 						<div>
-							<button type="submit" className={BUTTON_STYLE}>
-								{status === 'loading' ? 'Signing in...' : 'Log In'}
-							</button>
+							<SubmitButton />
 						</div>
 					</form>
 
