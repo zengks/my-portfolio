@@ -1,6 +1,7 @@
 import { getUserAbout } from '@/controllers/userAboutController';
 import Markdown from 'react-markdown';
 import { Metadata } from 'next';
+import { AboutUser } from 'types/aboutUserType';
 
 export const metadata: Metadata = {
 	title: 'About Me | Full Stack Developer Portfolio',
@@ -14,7 +15,7 @@ export const metadata: Metadata = {
 
 export default async function About() {
 	const userAbout = await getUserAbout('zengks');
-	const sortedAbout = userAbout?.sort((a, b) => a.id - b.id);
+	const sortedAbout = userAbout?.sort((a: AboutUser, b: AboutUser) => a.id - b.id);
 	return (
 		<>
 			{sortedAbout &&
