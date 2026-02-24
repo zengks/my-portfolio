@@ -1,6 +1,7 @@
 import ViewMore from '../ViewMoreLink';
 import { getUserSkills } from '@/controllers/userSkillController';
 import SkillsAccordion from '../accordion/SkillsAccordion';
+import type { Skill } from 'types/skillType';
 
 const TARGET_CATEGORIES = ['Core Skills'];
 
@@ -21,8 +22,8 @@ export default async function SkillSection() {
 								{eachCategory}
 							</p>
 							{skillsData
-								.filter((skill) => skill.categoryName === eachCategory)
-								.map((each, index) => (
+								.filter((skill: Skill) => skill.categoryName === eachCategory)
+								.map((each: Skill, index: number) => (
 									<section key={index}>
 										<SkillsAccordion skill={each} />
 									</section>

@@ -650,8 +650,8 @@ export default function UsersPage() {
 											{eachCategory}
 										</p>
 										{currentUserData.skills
-											.filter((skill) => skill.categoryName === eachCategory)
-											.map((each, index) => (
+											.filter((skill: Skill) => skill.categoryName === eachCategory)
+											.map((each: Skill, index: number) => (
 												<div key={index} className="mb-4">
 													<SkillsAccordion skill={each} />
 													<div className={BUTTON_WRAPPER_STYLE}>
