@@ -59,7 +59,7 @@ export default function EducationAccordion({ education }: { education: Education
 
 			<div
 				className={`overflow-hidden transition-all duration-500 ease-in-out ${
-					isOpen ? 'max-h-[1200px]' : 'max-h-0'
+					isOpen ? 'max-h-300' : 'max-h-0'
 				}`}
 			>
 				<div className="p-5 pt-0 border-t border-gray-100 mt-2">

@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Manrope, Lora, Hurricane } from 'next/font/google';
 import { Analytics } from '@vercel/analytics/next';
 import { SpeedInsights } from '@vercel/speed-insights/next';
+import { auth } from '@/lib/auth';
 
 import SessionWrapper from './components/SessionWrapper';
 import NavBar from './components/UI/NavBar';
@@ -45,16 +46,18 @@ export const metadata: Metadata = {
 	},
 };
 
-export default function RootLayout({
+export default async function RootLayout({
 	children,
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
+	const session = await auth();
+	const username = session?.user?.username;
 	return (
 		<html lang="en" className={`${manrope.variable} ${lora.variable} ${hurricane.variable}`}>
-			<body className="flex flex-col min-h-screen max-w-[1440px] mx-auto">
+			<body className="flex flex-col min-h-screen max-w-360 mx-auto">
 				<SessionWrapper>
-					<NavBar />
+					<NavBar username={username ?? null} />
 					<main className="flex flex-col lg:flex-row flex-1">
 						<section className="w-full lg:w-1/3 xl:w-1/4">
 							<SideBar />

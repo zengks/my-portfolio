@@ -43,8 +43,8 @@ export default function ProjectModal({
 		const techStackArray = rawTechStack
 			? rawTechStack
 					.split(',')
-					.map((item) => item.trim())
-					.filter((item) => item.length > 0)
+					.map((item: string) => item.trim())
+					.filter((item: string) => item.length > 0)
 			: [];
 
 		const payload = {

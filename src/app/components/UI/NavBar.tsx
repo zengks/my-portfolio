@@ -3,17 +3,15 @@
 import { MENU_ITEMS } from '@/lib/constant';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { useSession } from 'next-auth/react';
 import { useState } from 'react';
 
 // import moonIcon from 'src/assets/icons/moon.svg';
 // import sunIcon from 'src/assets/icons/sun.svg';
 // import Image from 'next/image';
 
-export default function NavBar() {
-	const pathname = usePathname();
+export default function NavBar({ username }: { username: string | null }) {
 	// const [theme, setTheme] = useState('light');
-	const { data: session, status } = useSession();
+	const pathname = usePathname();
 	const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
 	const toggleMenu = () => {
@@ -27,7 +25,7 @@ export default function NavBar() {
 	return (
 		<div className="relative flex justify-between lg:justify-around items-center my-8 px-6 lg:px-0">
 			<Link href="/" className="tracking-[16]" onClick={closeMenu}>
-				<p className="logo logo-creative lg:ps-[35px]">steven</p>
+				<p className="logo logo-creative lg:ps-8.75">steven</p>
 			</Link>
 			<div className="hidden lg:flex justify-between items-center gap-10">
 				<nav className="flex justify-center gap-10 text-[15px] items-center">
@@ -54,10 +52,10 @@ export default function NavBar() {
 						);
 					})}
 
-					{status === 'authenticated' && (
+					{username && (
 						<Link
 							key="dashboard"
-							href={`/${session.user.username}/dashboard`}
+							href={`/${username}/dashboard`}
 							className="group relative pb-1 text-neutral-600 hover:text-neutral-900 transition-colors"
 						>
 							DASHBOARD
@@ -66,7 +64,7 @@ export default function NavBar() {
                     absolute bottom-0 left-1/2 -translate-x-1/2
                     h-0.5 bg-neutral-700 rounded-full
                     transition-all duration-400 ease-out
-                    ${pathname === `/${session.user.username}/dashboard` ? 'w-2' : 'w-0'}
+                    ${pathname === `/${username}/dashboard` ? 'w-2' : 'w-0'}
                     ${'group-hover:w-full'}
                   `}
 							/>
@@ -154,9 +152,9 @@ export default function NavBar() {
 						/>
 					</Link>
 
-					{status === 'authenticated' && (
+					{username && (
 						<Link
-							href={`/${session.user.username}/dashboard`}
+							href={`/${username}/dashboard`}
 							onClick={closeMenu}
 							className="group relative pb-1 text-neutral-600 hover:text-neutral-900 transition-colors"
 						>
@@ -166,7 +164,7 @@ export default function NavBar() {
                     absolute bottom-0 left-1/2 -translate-x-1/2
                     h-0.5 bg-neutral-700 rounded-full
                     transition-all duration-400 ease-out
-                    ${pathname === `/${session.user.username}/dashboard` ? 'w-2' : 'w-0'}
+                    ${pathname === `/${username}/dashboard` ? 'w-2' : 'w-0'}
                     ${'group-hover:w-full'}
                   `}
 							/>

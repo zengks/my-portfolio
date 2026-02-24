@@ -1,6 +1,7 @@
 import { getUserSkills } from '@/controllers/userSkillController';
 import SkillsAccordion from '@/app/components/accordion/SkillsAccordion';
 import { Metadata } from 'next';
+import type { Skill } from 'types/skillType';
 
 export const metadata: Metadata = {
 	title: 'Technical Skills | Full Stack Developer',
@@ -27,8 +28,12 @@ export default async function Skills() {
 	const uniqueSkillCategories = () => {
 		if (!skillsData) return [];
 
-		const categories = Array.from(
-			new Set(skillsData.map((s) => s.categoryName).filter((name): name is string => name !== null))
+		const categories: string[] = Array.from(
+			new Set(
+				skillsData
+					.map((s: Skill) => s.categoryName)
+					.filter((name: string | null): name is string => name !== null)
+			)
 		);
 
 		return categories.sort((a, b) => {
@@ -49,7 +54,7 @@ export default async function Skills() {
 			<p className="section-title">Technical Skills</p>
 			{skillsData &&
 				skillsData.length > 0 &&
-				uniqueSkillCategories().map((eachCategory) => (
+				uniqueSkillCategories().map((eachCategory: string) => (
 					<div
 						key={eachCategory}
 						className="mb-5 rounded-lg border py-2 px-4 border-gray-200 bg-neutral-50 shadow-sm"
@@ -58,8 +63,8 @@ export default async function Skills() {
 							{eachCategory}
 						</p>
 						{skillsData
-							.filter((skill) => skill.categoryName === eachCategory)
-							.map((each, index) => (
+							.filter((skill: Skill) => skill.categoryName === eachCategory)
+							.map((each: Skill, index: number) => (
 								<section key={index}>
 									<SkillsAccordion skill={each} />
 								</section>
