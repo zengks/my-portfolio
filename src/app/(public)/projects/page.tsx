@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 
 import ProjectAccordion from '@/app/components/accordion/ProjectAccordion';
 import { getUserProject } from '@/controllers/userProjectController';
+import type { Project } from 'types/projectType';
 
 export const metadata: Metadata = {
 	title: 'Projects | Portfolio Showcase',
@@ -21,7 +22,7 @@ export default async function Projects() {
 				<p className="section-title">Projects</p>
 				{projects &&
 					projects.length > 0 &&
-					projects.map((each) => <ProjectAccordion key={each.id} project={each} />)}
+					projects.map((each: Project) => <ProjectAccordion key={each.id} project={each} />)}
 			</section>
 		</>
 	);

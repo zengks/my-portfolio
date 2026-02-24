@@ -2,6 +2,7 @@ import { Metadata } from 'next';
 
 import WorkAccordion from '../../components/accordion/WorkAccordion';
 import { getUserWorkExp } from '@/controllers/userWorkExpController';
+import type { WorkExperience } from 'types/workExpType';
 
 export const metadata: Metadata = {
 	title: 'Work History | Professional Experience',
@@ -16,7 +17,7 @@ export default async function Work() {
 			<p className="section-title">Work History</p>
 			{workData &&
 				workData.length > 0 &&
-				workData.map((work) => <WorkAccordion work={work} key={work.id} />)}
+				workData.map((work: WorkExperience) => <WorkAccordion work={work} key={work.id} />)}
 		</section>
 	);
 }
