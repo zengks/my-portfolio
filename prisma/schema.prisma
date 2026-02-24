@@ -3,8 +3,8 @@ datasource db {
 }
 
 generator client {
-  provider = "prisma-client"
-  output   = "./generated/client"
+  provider = "prisma-client-js"
+  // output   = "./generated/client"
 }
 
 model User {
