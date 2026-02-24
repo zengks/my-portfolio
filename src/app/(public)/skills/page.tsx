@@ -36,7 +36,7 @@ export default async function Skills() {
 			)
 		);
 
-		return categories.sort((a, b) => {
+		return categories.sort((a: string, b: string) => {
 			const indexA = PREFERRED_ORDER.indexOf(a);
 			const indexB = PREFERRED_ORDER.indexOf(b);
 
