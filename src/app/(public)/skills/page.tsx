@@ -28,7 +28,7 @@ export default async function Skills() {
 	const uniqueSkillCategories = () => {
 		if (!skillsData) return [];
 
-		const categories = Array.from(
+		const categories: string[] = Array.from(
 			new Set(
 				skillsData
 					.map((s: Skill) => s.categoryName)
@@ -36,7 +36,7 @@ export default async function Skills() {
 			)
 		);
 
-		return categories.sort((a: string, b: string) => {
+		return categories.sort((a, b) => {
 			const indexA = PREFERRED_ORDER.indexOf(a);
 			const indexB = PREFERRED_ORDER.indexOf(b);
 
