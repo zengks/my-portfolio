@@ -20,7 +20,7 @@ export default async function About() {
 		<>
 			{sortedAbout &&
 				sortedAbout.length > 0 &&
-				sortedAbout.map((each) => (
+				sortedAbout.map((each: AboutUser) => (
 					<section key={each.id} className="section-container section-card text-wrap">
 						<p className="section-title">{each.header}</p>
 						<div className="prose prose-slate list-disc max-w-none">
