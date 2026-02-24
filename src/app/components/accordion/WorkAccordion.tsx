@@ -14,8 +14,6 @@ export default function WorkAccordion({ work }: { work: WorkExperience }) {
 		setIsOpen((prev) => !prev);
 	};
 
-	console.log('work image: ', work.companyLogoUrl ? work.companyLogoUrl : DefaultCompanyIcon);
-
 	return (
 		<div className="mb-3 rounded-lg border border-gray-200 bg-neutral-50 shadow-sm overflow-hidden">
 			<button
