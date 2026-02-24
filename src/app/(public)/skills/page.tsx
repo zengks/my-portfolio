@@ -30,7 +30,9 @@ export default async function Skills() {
 
 		const categories = Array.from(
 			new Set(
-				skillsData.map((s: Skill) => s.categoryName).filter((name): name is string => name !== null)
+				skillsData
+					.map((s: Skill) => s.categoryName)
+					.filter((name: string | null): name is string => name !== null)
 			)
 		);
 
@@ -61,7 +63,7 @@ export default async function Skills() {
 							{eachCategory}
 						</p>
 						{skillsData
-							.filter((skill) => skill.categoryName === eachCategory)
+							.filter((skill: Skill) => skill.categoryName === eachCategory)
 							.map((each: Skill, index: number) => (
 								<section key={index}>
 									<SkillsAccordion skill={each} />
